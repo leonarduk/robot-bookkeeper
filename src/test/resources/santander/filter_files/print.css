@@ -1,0 +1,19 @@
+.noPrint,
+.button,
+table.myAccounts span.button,
+#header,
+#informationBar,
+#auxcontentBar,
+#pagetools,
+#foot,
+input {
+  display: none;
+}
+
+#content {
+  background-image: none;
+}
+
+.hiddenWithoutJavaScript {
+	display: none;
+}
