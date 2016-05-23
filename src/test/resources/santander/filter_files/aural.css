@@ -1,0 +1,21 @@
+/*
+ * Aural styles for Abbey v0.9
+ *
+ *
+ * Author: Vector SF
+ * Version: 1.0
+ *
+ * Copyright (c) 2009 Isban UK.  All Rights Reserved.
+ */
+
+div.guide li span.hidemeaural {
+  display: none;
+}
+
+.myOffersBanner span {
+  display: inline;
+}
+
+.auralOnly {
+	display: inherit;
+}

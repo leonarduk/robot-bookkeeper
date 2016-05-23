@@ -1,0 +1,2709 @@
+/*
+ * Copyright (c) 2010 Isban UK.	All Rights Reserved.
+ * @date    23/01/2014
+ * @version V1R41F03
+ */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,hr,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,ssub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,textarea,tfoot,thead,tr,th,td,center,u,b,i
+	{
+	border: 0;
+	font-size: 100%;
+	font-style: normal;
+	font-family: inherit;
+	margin: 0;
+	padding: 0;
+	vertical-align: baseline;
+}
+
+h1,h2,h3,h4,h5,h6,strong,th {
+	font-weight: bold;
+}
+
+body,select,input {
+	font-family: verdana, arial, helvetica, sans-serif;
+}
+
+body {
+	background: #e4e4e4 none no-repeat fixed 0 0;
+	font-size: 0.63em;
+	line-height: 1.85em;
+}
+
+body,a,select,input,#pagetools ul li a,div.container.viewonlyaccess h2,#content p.auxlinks a,#content .linkList a,#content .auxinfo a,#content .listOfCreditCards a,#content table thead.sortable th a,#content div.pagination ul ul li a,#content div.otpinformation ul li a,#content div.tokeninformation div a,#content .newmessage .content h1.subject
+	{
+	color: #666;
+}
+
+a:hover,li.active a,#content a,#content a:hover {
+	color: #f00;
+}
+
+a,a:hover {
+	text-decoration: underline;
+}
+
+ol,ul {
+	list-style: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	font-size: 1.2em;
+	table-layout: auto;
+	width: 100%;
+}
+
+table thead th {
+	border-bottom: 1px solid #000;
+	padding: 0.3em 0.4em 0.2em 0.3em;
+	text-align: left;
+}
+
+table tbody tr {
+	background: #fff url("../Images/cell_bg.gif") repeat-x bottom left;
+}
+
+table tbody tr.last {
+	background-image: none;
+}
+
+table tbody tr.last td {
+	border-bottom: 1px solid #c4c3c3;
+	padding-bottom: 0.5em;
+}
+
+table td {
+	padding: 0.5em 0.3em 1.4em 0.3em;
+	vertical-align: top;
+}
+
+table td input {
+	vertical-align: middle
+}
+
+table caption,h2.caption {
+	background: #676767 url("../Images/title_bg.png") repeat-x top left;
+	color: #ffffff;
+	padding: 0.4em 0 0.5em 0.8em;
+	text-align: left;
+}
+
+table caption {
+	font-size: 1.25em;
+	font-weight: bold;
+}
+
+h2.caption {
+	font-size: 1.5em;
+}
+
+#content .caption a:hover {
+	color: #fff;
+}
+
+blockquote,q {
+	quotes: "" "";
+}
+
+hr {
+	background-color: #000;
+	color: #000;
+	height: 0.1em;
+}
+
+em {
+	font-style: italic;
+}
+
+#global {
+	margin: auto;
+	text-align: left;
+	width: 99em;
+}
+
+/* FORMS, GENERAL STYLING */
+form {
+	display: inline;
+}
+
+select {
+	overflow: hidden;
+}
+
+option {
+	padding-left: 0.6em;
+}
+
+input {
+	border: 0;
+	font-size: 1em;
+	margin: 0;
+	padding: 0.1em;
+}
+
+select,input[type="text"],input[type="password"] {
+	border: 1px solid #bdbdbd;
+}
+
+textarea {
+	resize: none;
+}
+
+/* END FORMS, GENERAL STYLING */
+iframe {
+	margin-bottom: 0.5em;
+	background-color: white;
+	color: black;
+}
+
+iframe.pay3D {
+	text-align: center;
+}
+
+/* Estilos :after para evitar problemas de float */
+#header:after,#headinfo:after,#navigationBar ul:after,#submenu ul:after,div.form-item:after,div.pagination ul:after,div.imageMessage:after,.sbbiSteps:after
+	{
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+/* END Estilos :after para evitar problemas de float */
+
+/* HEADER */
+#header {
+	background: #ffffff url("../Images/headtop_bg.gif") repeat-x bottom left;
+	padding: 1em 1em 0 1em;
+}
+
+#header #logo {
+	float: left;
+}
+
+#header .subtitle {
+	color: #f00;
+	float: left;
+	font-size: 1.5em;
+	font-weight: bold;
+	line-height: 53px;
+	margin: 0 1.2em;
+	vertical-align: middle;
+}
+
+#headinfo {
+	margin-bottom: 1em;
+}
+
+#welcome {
+	float: right;
+	background: transparent url("../Images/userwelcome.gif") no-repeat left;
+	padding-left: 2em;
+}
+
+#welcome form,#welcome fieldset {
+	display: inline;
+}
+
+#welcome li,#welcome div {
+	display: inline;
+}
+
+#welcome .log {
+	padding-right: 0;
+}
+
+#welcome .user {
+	display: block;
+	font-weight: bold;
+}
+
+#welcome .lastlog {
+	background: transparent url("../Images/userwelcome_border.gif") repeat-y
+		left 0;
+	padding: 0 0 0 0.5em;
+}
+
+#navigationBar {
+	margin: 1em 0 0 0;
+}
+
+#navigationBar li {
+	background: transparent url("../Images/menu_main.gif") no-repeat 0 0;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#navigationBar li:hover {
+	background-image: url("../Images/menu_main_active.gif");
+}
+
+#navigationBar li a {
+	background: transparent url("../Images/menu_main02.gif") no-repeat right
+		top;
+	display: table-cell;
+	height: 4em;
+	text-decoration: none;
+	vertical-align: middle;
+	width: 12em;
+}
+
+#navigationBar li.active {
+	background-image: url("../Images/menu_main_active.gif");
+}
+
+#navigationBar li.active a,#navigationBar li a:hover {
+	background-image: url("../Images/menu_main02_active.gif");
+}
+
+#navigationBar li a span {
+	display: block;
+	font-weight: bold;
+	font-size: 1.2em;
+	line-height: normal;
+	padding-right: 0.6em;
+	padding-left: 0.6em;
+}
+
+#navigationBar li a span.helpicon {
+	background: transparent url("../Images/ico_externallink.gif") no-repeat
+		scroll 8em 0.7em;
+	display: block;
+	height: 2.1em;
+	padding-right: 1.2em;
+}
+/* END HEADER */
+#informationBar {
+	float: left;
+	margin: 0 0 0 0.9em;
+	width: 17.9em;
+}
+
+#informationBar #submenu a.helpicon {
+	background: transparent url("../Images/ico_externallink.gif") no-repeat
+		scroll 9em 1em;
+	padding-right: 1.2em;
+}
+
+#submenu {
+	background: #ffffff url("../Images/leftmenu_active.gif") repeat-x bottom
+		left;
+	padding: 0 0 9px 0;
+	margin: 1em 0;
+}
+
+#submenu ul li {
+	background: transparent url("../Images/leftmenu_bg.gif") no-repeat top
+		right;
+}
+
+#submenu ul li.first {
+	background-image: none;
+}
+
+#submenu ul li a {
+	display: block;
+	font-size: 1.2em;
+	font-weight: bold;
+	padding: 0.73em 0.9em;
+	text-decoration: none;
+}
+
+#fasttransfer {
+	margin: 3.3em 0 2em 1em;
+	width: 15.6em;
+	text-align: center;
+}
+
+#fasttransfer div.ftcontainer {
+	background: url("../Images/fasttransfer01.png") no-repeat top left;
+}
+
+#fasttransfer div.top {
+	background: url("../Images/fasttransfer02.png") no-repeat top right;
+}
+
+#fasttransfer div.bottom {
+	background: url("../Images/fasttransfer03.png") no-repeat bottom left;
+}
+
+#fasttransfer div.end {
+	background: url("../Images/fasttransfer04.png") no-repeat bottom right;
+	padding-bottom: 0.6em;
+}
+
+#fasttransfer strong {
+	color: #ffffff;
+	display: block;
+	font-size: 1.2em;
+	margin: 0.5em 0 1.4em 0;
+	padding-top: 0.2em;
+	text-align: center;
+	text-transform: uppercase;
+	width: 100%;
+}
+
+#fasttransfer strong span {
+	margin-right: 0.2em;
+	display: block;
+	float: right;
+	width: 20px;
+	height: 22px;
+	background: transparent url("../Images/info_quicktransfer.gif")
+		no-repeat center center;
+	color: white;
+}
+
+#fasttransfer select {
+	display: block;
+	font-size: 1.1em;
+	margin: 0 0 0.4em 0.5em;
+	width: 13.3em;
+}
+
+#fasttransfer label span {
+	color: #ffffff;
+	display: block;
+	font-weight: bold;
+	font-size: 1.1em;
+	margin-left: 0.6em;
+	width: 90%;
+}
+
+#fasttransfer .currencyInteger {
+	width: 6.2em;
+}
+
+#contactus {
+	background: url("../Images/contactus_01.png") no-repeat top left;
+	margin: 1em 0 2em 1em;
+	width: 16.2em;
+}
+
+#contactus .contactustop {
+	background: url("../Images/contactus_02.png") no-repeat top right;
+}
+
+#contactus .contactusbottom {
+	background: url("../Images/contactus_03.png") no-repeat bottom left;
+}
+
+#contactus .contactusend {
+	padding-bottom: 14px;
+	background: url("../Images/contactus_04.png") no-repeat bottom right;
+}
+
+#contactus p.headercontactus a {
+	color: #f00;
+	display: block;
+	font-size: 1.2em;
+	padding: 1.2em 0.5em;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+#contactus ul li {
+	margin: 0.65em 0.25em;
+}
+
+#contactus ul li a {
+	font-size: 1.08em;
+}
+
+#contactus ul li.send,#contactus ul li.callus,#contactus ul li.visit {
+	padding-left: 2.3em;
+}
+
+#contactus ul li.send {
+	background: transparent url("../Images/ico_sendMessage.gif") no-repeat
+		scroll 0 00
+}
+
+#contactus ul li.callus {
+	background: transparent url("../Images/ico_callus.gif") no-repeat scroll
+		0 0;
+}
+
+#contactus ul li.visit {
+	background: transparent url("../Images/ico_visitbranch.gif") no-repeat
+		scroll 0 0;
+}
+
+#contactus ul li.msg {
+	background: transparent url("../Images/ico_msgcontactus.gif") no-repeat
+		scroll left center;
+}
+
+#contactus .msg div {
+	color: #f00;
+	float: left;
+	font-size: 1.17em;
+	font-weight: bold;
+	margin-right: 0.4em;
+	text-align: center;
+	width: 1.6em;
+}
+
+#bodycontent {
+	float: left;
+	margin: 1em 0 0 0;
+	width: 62.7em;
+}
+
+#bodycontent.maximized {
+	width: 79em;
+}
+
+#bodycontent.iframe {
+	margin: 0;
+}
+
+#fpinterstitial #bodycontent,#internetaccess #bodycontent {
+	float: none;
+	margin: 1em auto auto auto;
+}
+
+#content,#timeout {
+	padding: 1.2em 1.7em 2.4em 1.7em;
+}
+
+#content {
+	background: #ffffff url("../Images/leftmenu_active.gif") repeat-x scroll
+		center bottom;
+}
+
+#timeout {
+	background-color: #fff;
+}
+
+#bodycontent h1 {
+	color: #fe0002;
+	font-size: 2.2em;
+	font-weight: normal;
+	line-height: 1.2em;
+	margin-bottom: 1em;
+}
+
+#bodycontent h1.nopagetools {
+	margin-top: 1.2em;
+}
+
+#bodycontent h1 span {
+	font-size: 0.81em;
+}
+
+#bodycontent h1.lock {
+	background: transparent url("../Images/customerID_small.gif") no-repeat
+		scroll right top;
+	padding-top: 0.5em;
+	padding-right: 46px;
+}
+
+#fpinterstitial h1 {
+	color: #000;
+	font-weight: bold;
+	font-size: 1.4em;
+}
+
+#pagetools {
+	display: table;
+	margin-top: 0.6em;
+	text-align: right;
+	width: 100%;
+}
+
+#pagetools ul li {
+	background: transparent url("../Images/print_border.gif") no-repeat
+		right 0.6em;
+	float: right;
+	margin-left: 1em;
+}
+
+#pagetools ul li a {
+	display: block;
+	font-size: 1.1em;
+	padding: 0.2em 1.1em 0.5em 2em;
+}
+
+#pagetools ul li.iconprint a {
+	background: url("../Images/ico_print.gif") no-repeat 0 0.1em;
+}
+
+#pagetools ul li.download a,#content p.auxlinks a.download {
+	background: transparent url("../Images/ico_download.gif") no-repeat left
+		0.5em;
+}
+
+#pagetools ul li.iconhelp,#pagetools ul li.last {
+	background: none;
+}
+
+#pagetools ul li.iconhelp a {
+	background: url("../Images/ico_info.gif") no-repeat 0 0.1em;
+	padding-right: 0;
+}
+
+#foot {
+	margin: 2em 0 4.9em 0;
+	text-align: center;
+}
+
+#foot ul li {
+	background: transparent url("../Images/print_border.gif") no-repeat
+		bottom right;
+	display: inline;
+	padding: 0 0.6em 0 0.3em;
+}
+
+#foot ul li a {
+	font-size: 1.1em;
+}
+
+#foot ul li.last {
+	background: none;
+	padding-right: 0;
+}
+
+div.guide {
+	display: block;
+	margin: 1em 0 2.5em 0;
+}
+
+div.guide ol {
+	display: table-row;
+}
+
+div.guide li {
+	background: transparent url("../Images/guide_arrow.gif") no-repeat right
+		top;
+	display: table-cell;
+	padding-right: 2.8em;
+}
+
+div.guide li.selected>span {
+	border-bottom: 2px solid #fe0002;
+	color: #fe0002;
+}
+
+div.guide li.last {
+	background-image: none;
+}
+
+div.guide li>span {
+	display: table-cell;
+	font-weight: bold;
+	font-size: 1.2em;
+	padding: 0 0.6em 0.4em 0.6em;
+}
+
+/* CONTAINER AND H styles */
+.container {
+	margin: 1em 0 2em 0;
+}
+
+.container h2 {
+	background: #676767 url("../Images/title_bg.png") repeat-x top left;
+	color: #fff;
+	font-size: 1.6em;
+	padding: 0.4em 0.8em;
+	margin-bottom: 0.5em;
+}
+
+.container h3 {
+	background: transparent url("../Images/subagrup_midborder.png") repeat-x
+		center left;
+	margin-top: 1em;
+}
+
+.container h3 span {
+	background: #e3e3e3;
+	display: inline-block;
+	font-size: 1.4em;
+	padding: 0.2em 1em 0.2em 1em;
+}
+
+.oneTimePasscode h3 {
+	background-image: none;
+	font-size: 1.3em;
+	margin-bottom: 1.5em;
+}
+
+.oneTimePasscode h4,.oneTimePasscode h5 {
+	background-image: none;
+	font-size: 1.1em;
+	margin: 0.5em 0;
+}
+
+.otp h2,.otp h3,.blockaccess h2 {
+	background: none;
+	color: #666;
+	font-size: 1.3em;
+}
+
+.DirectDebitGuarantee h3 {
+	background: none;
+	font-size: 1.2em;
+	display: inline;
+}
+
+.blockaccess h2 {
+	margin: 0;
+	padding: 0.5em 0 0 0;
+}
+
+h2 span {
+	font-weight: normal;
+}
+
+.imagePhrase h2 {
+	background: transparent url("../Images/subagrup_midborder.png") repeat-x
+		center;
+	color: #666;
+	font-size: 1em;
+}
+
+.imagePhrase h2 span {
+	background: #e3e3e3;
+	display: inline-block;
+	font-size: 1.2em;
+	font-weight: bold;
+	padding: 0.2em 1em 0.2em 1em;
+}
+
+.viewonlyaccess h2 {
+	background: none;
+	font-size: 1.3em;
+	padding: 0 0 0.5em 0;
+}
+
+.importantOverseasAddress h3 {
+	font-size: 1.5em;
+	margin-bottom: 0.4em;
+}
+
+#interstitial h2 {
+	background: none;
+	color: #000;
+	float: left;
+	font-size: 1.2em;
+	padding-left: 0;
+}
+
+.termsandconditions div.container h3 {
+	background: none;
+	color: #f00;
+	font-size: 1.3em;
+}
+
+.termsandconditions div.container h3.faq {
+	color: #000;
+}
+
+#termsandconditions h1 {
+	color: #000;
+	font-size: 2em;
+	font-weight: bold;
+	margin: 1em 0 2em 0;
+}
+
+#termsandconditions h2 {
+	background: none;
+	color: #000;
+	font-size: 1.5em;
+	margin: 1em 1em 1.5em 1em;
+	padding: 0;
+}
+
+#content.otpa h3 {
+	color: #f00;
+	background: none;
+	font-size: 1.5em;
+}
+
+#popup h1.alternate {
+	color: #000;
+	font-size: 1.4em;
+	font-weight: bold;
+}
+
+#popup h2.alternate {
+	background: none;
+	color: #000;
+	font-size: 1.2em;
+	margin-top: 1em;
+	padding: 0;
+}
+
+#popup h3 {
+	background: none;
+	color: #000;
+	font-size: 1em;
+	margin: 1em 0;
+}
+
+.help123 {
+	background-color: #fff;
+}
+
+.help123 #content {
+	background: none;
+}
+
+#popup.help123 #bodycontent {
+	width: 100%;
+}
+
+div.lookup h2 {
+	margin-bottom: 1px;
+}
+
+div.contents {
+	clear: both;
+	font-size: 1.1em;
+}
+
+div.contents ul,div.contents ol {
+	font-size: 1.2em;
+}
+
+div.contents ol ul {
+	font-size: 0.9em;
+}
+/* END CONTAINER AND H styles */
+
+/* SHEET */
+div.sheet {
+	background: transparent url("../Images/boxcontent.jpg") no-repeat scroll
+		0 bottom;
+	font-size: 1.1em;
+	padding: 2em 1.2em;
+}
+
+div.sheet h2 {
+	background: none;
+	color: #000;
+	font-size: 1.5em;
+	margin: 0.5em 0;
+	padding: 0.5em 0 0 0;
+}
+
+div.sheet h3,div.sheet .listLabel span {
+	background: none;
+	font-size: 1.3em;
+	font-weight: bold;
+	margin: 0.5em 0 1em 0;
+	padding: 0.5em 0 0 0;
+}
+
+div.sheet div.odd {
+	background: transparent url("../Images/arrowimgr.gif") no-repeat scroll
+		0 bottom;
+	float: right;
+	margin: 0.5em 0 0.5em 1em;
+	padding: 0 0 25px 0;
+}
+
+div.sheet div.even {
+	background: transparent url("../Images/arrowimgl.gif") no-repeat scroll
+		0 bottom;
+	float: left;
+	margin: 0.5em 1em 0.5em 0;
+	padding: 0 0 25px 0;
+}
+
+div.sheet div.odd div,div.sheet div.even div {
+	border: 1px solid #F1EFF0;
+	border-bottom: none;
+	padding: 3px;
+}
+
+div.sheet .listLabel {
+	background: transparent url("../Images/subagrup_midborder.png") repeat-x
+		scroll left center
+}
+
+div.sheet .listLabel span,div.sheet .listLabel img {
+	background-color: #fff;
+	padding: 0 0.5em;
+}
+
+div.sheet .listLabel img,.imageIcon {
+	vertical-align: middle;
+}
+
+div.sheet .list {
+	float: left;
+}
+
+div.sheet ul {
+	list-style-type: square;
+	margin: 1em 1.5em;
+}
+
+div.sheet li {
+	font-size: 1.2em;
+	margin: 1em 0;
+}
+
+.clearer {
+	clear: both;
+}
+/* END SHEET */
+.plainText,ul.checked {
+	margin: 1em 0em 1em 1em;
+}
+
+.steps {
+	margin: 1em 0em 1em 3em;
+}
+
+ul.checked {
+	margin-top: 1em;
+}
+
+.plainText li {
+	background: transparent url("../Images/bullet_disc.gif") no-repeat left
+		0.5em;
+	padding-left: 1em;
+}
+
+ul.checked li {
+	background: transparent url("../Images/bullet_check.gif") no-repeat top
+		left;
+	font-size: 0.9em;
+	padding: 0 0 0.5em 2em;
+}
+
+.plainText li,ul.checked li {
+	margin: 0.3em 0;
+}
+
+ul.checked li ol li {
+	background: none;
+	padding: 0;
+}
+
+.steps.megalogon li {
+	color: #f00;
+	font-weight: bold;
+}
+
+.steps.megalogon li .olContent {
+	color: #666;
+	font-weight: normal;
+}
+
+/* MESSAGES */
+div.message {
+	background: #ffc;
+	border: 1px solid #ececec;
+	padding: 1.3em 0 1.3em 1.5em;
+	margin: 1.3em 0;
+}
+
+#bodycontent .message div,#bodycontent .message p {
+	font-size: 1.2em;
+	font-weight: bold;
+	margin: 1.5em 0 1.3em 0;
+}
+
+#bodycontent .message div {
+	color: #000;
+	font-weight: normal;
+}
+
+#bodycontent .message div ul {
+	list-style-type: disc;
+	list-style-position: inside;
+}
+
+#bodycontent div.success,#bodycontent div.error,#bodycontent div.info,#bodycontent div.alert
+	{
+	padding: 0 2em 0 3.9em;
+}
+
+#bodycontent div.success {
+	background: #FFFFCC url("../Images/ico_confirm.gif") no-repeat 1.5em
+		1.8em;
+}
+
+#bodycontent div.error {
+	background: #FFFFCC url("../Images/ico_error.gif") no-repeat 1.5em 1.8em;
+}
+
+#bodycontent div.info {
+	background: #FFFFCC url("../Images/ico_information.gif") no-repeat 1.5em
+		1.8em;
+}
+
+#bodycontent div.alert {
+	background: #FFFFCC url("../Images/ico_alert.gif") no-repeat 1.5em 1.8em;
+}
+
+#content div.importantnotice {
+	background: #fff;
+	border-left: 0;
+	border-right: 0;
+	padding: 0.5em 0 0 1.5em;
+}
+
+#content div.importantnotice h3 {
+	background-image: none;
+	font-size: 1.4em;
+	margin: 0 0 0.6em;
+	padding: 0 0 0.1em;
+}
+
+#content div.importantnotice p {
+	margin: 0 0 0.6em;
+	padding: 0 0 0.3em;
+}
+
+#content div.importantnotice p.description,#content div.importantnotice p label
+	{
+	font-weight: normal;
+}
+
+#content .importantnotice #visalogo {
+	margin: 0;
+	text-align: right;
+}
+
+/* MESSAGES - Welcome message @ my accounts */
+.announcement {
+	background: #fef2ca;
+	margin: 1.3em 0;
+	padding: 0.85em 1em;
+}
+
+#content .announcement p {
+	margin: 0;
+}
+/* END MESSAGES */
+
+/* FORMS */
+div.form,div.show {
+	border-bottom: 1px solid #eee;
+	font-size: 1.2em;
+	margin-top: 1em;
+}
+
+.form-item {
+	border-top: 1px solid #eee;
+	padding: 0.7em 0.6em;
+}
+
+span.labeltext,.form-item span.openinghours {
+	float: left;
+	width: 17.5em;
+}
+
+span.labeltext {
+	clear: left;
+}
+
+span.data span.labeltext {
+	padding-left: 2em;
+}
+
+.form-item span.phone {
+	float: left;
+	width: 10em;
+}
+
+.form-item span.additionalData {
+	float: right;
+}
+
+div.form .remark {
+	font-size: 0.65em;
+	font-style: italic;
+	margin-left: 0.5em;
+	vertical-align: middle;
+}
+
+.form-item label .labeltext {
+	line-height: 1.75em;
+}
+
+.form-item label .data {
+	vertical-align: middle;
+}
+
+.form-item label .data select {
+	margin: 0.2em 0;
+}
+
+/* SPECIAL LABELS SIZES */
+.challengeQuestion .labeltext {
+	width: 10em;
+}
+
+.search .labeltext {
+	width: 11em;
+}
+
+.changeImage .labeltext,.downloadtransactions .labeltext {
+	width: 12em;
+}
+
+.formchangeotpservice .labeltext,.transferbetweenmyaccounts .labeltext {
+	width: 14em;
+}
+
+.customerID .labeltext {
+	width: 15em;
+}
+
+.changeImageconfirm .labeltext {
+	width: 16em;
+}
+
+.payanewbill .labeltext,.payanewperson .labeltext,.pullmoneyinfrom .labeltext,.setupstandingorders .labeltext
+	{
+	width: 18em;
+}
+
+.otpbox .labeltext,.lookup .labeltext {
+	width: 20em;
+}
+
+.oneTimePasscode .labeltext,.contactdetails02 .labeltext {
+	width: 22em;
+}
+
+.passcodeRegNumber .labeltext,.changepasscodeandreg .labeltext {
+	width: 25em;
+}
+
+.changeID .labeltext {
+	width: 29em;
+}
+/* END SPECIAL LABELS SIZES */
+div.form div.form-item .fieldhelp {
+	margin-left: 0.3em;
+}
+
+div.form div.form-item .fieldhelp img {
+	vertical-align: middle;
+}
+
+div.form div.form-item span.data,div.show div.form-item span.data {
+	float: left;
+	margin: 0 0.1em;
+}
+
+div.form-item span.data.unmanagedInput {
+	width: 26em;
+}
+
+.maximized div.form-item span.data.unmanagedInput {
+	width: 38em;
+}
+
+div.form select {
+	vertical-align: top;
+}
+
+div.form div.multiple span.data span.row,div.show div.multiple span.data span.row,div.downloadtransactions span.data span.allavailabletransactions,span.allavailabletransactions span
+	{
+	display: block;
+	margin-bottom: 0.5em;
+}
+
+input.currencyInteger {
+	text-align: right;
+	width: 8em;
+}
+
+input.currencyFractional {
+	width: 1.4em;
+}
+
+div.withagrupation {
+	border: 0;
+	margin-top: 0.3em;
+}
+
+div.withagrupation div.first {
+	border-top: 0;
+}
+
+/* OTP AND TOKEN */
+div.otp {
+	background: #f5f8fc url("../Images/otp_bg.gif") repeat-x top left;
+	border: 1px solid #ececec;
+	margin: 1.8em 0;
+	padding: 1.3em 0 1em 0;
+}
+
+div.otp div.form,div.otp div.form div.form-item {
+	border: 0;
+	margin: 0;
+}
+
+div.otp div.form div.form-item {
+	text-align: center;
+}
+
+div.otp div.form div.form-item label strong {
+	font-size: 1.05em;
+	padding-right: 0.6em;
+}
+
+div.otp h2,div.otp h3 {
+	padding: 0;
+	text-align: center;
+}
+
+div.otp h2 {
+	margin: 0 0 0.3em 0;
+}
+
+div.otp h3 {
+	margin: 0 0.84em;
+}
+
+div.otpinformation,div.tokeninformation {
+	background-color: #ffc;
+	border: 1px solid #ececec;
+	margin: 2em 0 1em 0;
+	padding: 1.5em;
+}
+
+div.otpinformation h3,div.tokeninformation h3,div.otpinformation h4 {
+	font-size: 1.3em;
+	margin: 0.2em 0 0.5em 0;
+	padding: 0 0 0 2em;
+}
+
+div.otpinformation h3,div.otpinformation h4,.lock.tokeninformation h3 {
+	background: transparent url("../Images/lock.png") no-repeat 0 0;
+}
+
+div.tokeninformation h3 {
+	background-image: none;
+}
+
+div.otpinformation ul {
+	margin-left: 3em;
+}
+
+div.otpinformation ul li {
+	margin: 0.2em 0;
+}
+
+div.otpinformation ul li a {
+	background: transparent url("../Images/externallink.gif") no-repeat
+		right 0.3em;
+	font-weight: bold;
+	padding: 0 1.5em 0 0;
+}
+
+div.otpinformation ul li.chargeinfo a {
+	font-size: 0.8em;
+	font-weight: normal;
+}
+
+div.tokeninformation div {
+	padding: 0 2.6em;
+}
+
+div.tokeninformation div a {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+div.tokenSteps {
+	background: #ffffcc url("../Images/DP270_Xpress_150.jpg") no-repeat 43em
+		3em;
+}
+
+div.sbbi.tokenSteps {
+	background: #ffffcc url("../SpecialImagesSBBI/token_device.jpg")
+		no-repeat 43em 3em;
+}
+
+div.tokenSteps ul {
+	margin: 0.5em 10em 1em 2.15em;
+}
+
+div.tokenSteps ul img {
+	vertical-align: text-bottom;
+}
+
+.arrowKeyImage {
+	background: transparent url("../Images/mobileLeftArrowKey.gif") scroll
+		no-repeat 0 0;
+	padding: 3px 6px;
+}
+
+.lockKeyImage {
+	background: transparent url("../Images/mobileLockKey.gif") scroll
+		no-repeat 0 0;
+	padding: 3px 8px;
+}
+/* END OTP AND TOKEN*/
+#content p {
+	font-size: 1.2em;
+	margin: 1em 0;
+}
+
+#content p.explain {
+	margin-top: 1.8em;
+}
+
+#content p.intro {
+	font-size: 1em;
+	margin: 1.5em 0.5em 1em 0.5em;
+}
+
+#content .endExplanation {
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	margin: 2em 0 1em 0;
+	padding: 0.4em 0.5em;
+}
+
+#content p.relatedtobottomcont {
+	margin-top: 2em;
+}
+
+#content p.auxlinks {
+	margin: 0;
+	padding-bottom: 0.5em;
+	text-align: right;
+}
+
+#content p.auxlinks a.download {
+	display: inline-block;
+	padding: 0.3em 0 0.3em 2em;
+}
+
+.mandatory input,.mandatory select,.mandatory textarea,input.mandatory,select.mandatory,textarea.mandatory
+	{
+	background: #eaf4fc none repeat scroll 0 0;
+}
+
+.error input,.error select,.error textarea,input.error,select.error,textarea.error
+	{
+	background-color: #ffe3c7;
+}
+
+input.radioInput,div.form input.radioInput {
+	margin-right: 0.2em;
+	vertical-align: middle;
+}
+
+div.form span.radioSelection {
+	margin-left: 2em;
+}
+
+div.form span.radioSelection label {
+	vertical-align: middle;
+}
+
+div.form span.radioSelection span {
+	display: block;
+}
+
+span.dateField button.calendar {
+	background: transparent url("../Images/ico_calendar.png");
+	border: 0;
+	cursor: pointer;
+	height: 16px;
+	margin: 0 0.2em;
+	vertical-align: middle;
+	width: 16px;
+}
+
+/* SPECIFIC INPUTS, SIZE SETTINGS */
+.datefield input.day,.datefield input.month,.datefield input.year {
+	margin-left: 0.3em;
+}
+
+input.day,input.month {
+	width: 1.3em;
+}
+
+input.cvv,input.sortcode {
+	width: 2em;
+}
+
+input.year {
+	width: 2.5em;
+}
+
+input.postcode {
+	width: 4em;
+}
+
+div.formchangeotpservice input.firstnumber {
+	width: 5em;
+}
+
+div.amendstandingorders input.theirreference {
+	width: 13em;
+}
+
+input.yourPhrase {
+	width: 25em;
+}
+
+.search input.transactionDescription {
+	width: 30em;
+}
+
+input.cardNumber {
+	width: 10.3em;
+}
+
+#payAnotherAmount\.integer {
+	width: 7em;
+}
+
+.longField {
+	width: 20em;
+}
+/* END SPECIFIC INPUTS, SIZE SETTINGS */
+.form.formchangeotpservice .form-item .description,.form.formchangeotpservice .form-item .alsootpmobile
+	{
+	margin: 0.5em 0 0 14em;
+}
+
+.alsootpmobile {
+	display: block;
+	width: 24em;
+}
+
+div.downloadtransactions input.fromtop {
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+}
+
+/* END FORMS */
+div.container div.auxinfo {
+	background: transparent url("../Images/auxinfo_bg.png") repeat-x bottom
+		left;
+	border-bottom: 1px solid #d9d9d9;
+	padding: 0.7em 1.3em;
+}
+
+#content div.container div.auxinfo p {
+	margin: 0;
+}
+
+#content div.container div.auxinfo p.headerauxinfo strong {
+	color: #f00;
+}
+
+#content div.container div.auxinfo li {
+	background: transparent url("../Images/print_border.gif") no-repeat
+		scroll left 0.5em;
+	display: inline;
+	padding: 0 0.5em;
+}
+
+#content div.container div.auxinfo li:first-child {
+	background: none;
+	padding-left: 0;
+}
+
+/* CONTEXT: SELECT ACCOUNT AND INFO AND STATEMENT ENQUIRY */
+div.selectaccount {
+	background: #dedede;
+	color: #000;
+	font-size: 1.2em;
+	margin-top: 1em;
+	padding: 0.6em;
+}
+
+div.selectaccount label,div.statementEnquiry label,div.statementEnquiry select
+	{
+	vertical-align: middle;
+}
+
+div.selectaccount label {
+	display: inline-block;
+	max-width: 19em;
+	padding-right: 0.5em;
+}
+
+div.selectaccount select {
+	font-size: 1em;
+	vertical-align: middle;
+	max-width: 37em;
+}
+
+.maximized .selectaccount select {
+	max-width: 50em;
+}
+
+.accountinfo,div.statementEnquiry {
+	background: #eee;
+	margin: 0.1em 0 1em 0;
+	padding: 0.6em 0.8em;
+}
+
+.accountinfo ul {
+	display: table;
+	width: 100%;
+}
+
+.accountinfo ul li {
+	display: table-cell;
+	font-size: 1.2em;
+	width: 50%;
+}
+
+.accountinfo ul li strong {
+	margin-right: 1.2em;
+}
+
+div.statementEnquiry {
+	border: 1px solid #d6d6d6;
+	border-width: 1px 0;
+	font-size: 1.2em;
+	padding: 1em 0.8em;
+}
+/* END CONTEXT: SELECT ACCOUNT AND INFO AND STATEMENT ENQUIRY */
+.search {
+	background-color: #eee;
+	border-bottom: 1px solid #D6D6D6;
+	margin: 1em 0;
+}
+
+.search .form {
+	margin-top: 0;
+}
+
+.search .form .form-item {
+	border-top: 1px solid #D6D6D6;
+	padding: 0.5em 0.6em;
+}
+
+#content table thead.sortable th a {
+	background: transparent url("../Images/ico_sortable_up.gif") no-repeat
+		left 0.4em;
+	padding-left: 1.2em;
+	text-decoration: none;
+}
+
+#content table thead.sortable th a.active {
+	background-image: url("../Images/ico_sortable_down.gif");
+}
+
+/* NEW TABLES */
+table.data td.date {
+	text-align: center;
+	width: 8em;
+}
+
+table.data td.index,table.data td.action {
+	width: 1em;
+}
+
+table.data td.date,table.data td.action,table.data td.currency,table.data td.action span,table.data td.currency span
+	{
+	white-space: nowrap;
+}
+
+table.data th.currency,table.data td.currency {
+	text-align: right;
+}
+
+table.data th.action {
+	text-align: left;
+}
+
+table.data td.currency {
+	width: 7em;
+}
+/* END NEW TABLES */
+
+/* TABLE MY ACCOUNTS */
+#content table.myAccounts caption a,#content h2 a {
+	color: #fff;
+	font-size: 0.7em;
+	font-weight: normal;
+	float: right;
+	padding-right: 1em;
+}
+
+#content table.myAccounts td a {
+	font-weight: bold;
+	font-size: 1.18em;
+}
+
+table.myAccounts td span.accountmyaccounts,.myAccounts .companyName {
+	display: block;
+}
+
+table.myAccounts td span.accountmyaccounts {
+	font-size: 0.9em;
+}
+
+table.myAccounts select {
+	vertical-align: middle;
+	width: 10em;
+}
+
+table.viewExistingPayee select {
+	width: 10.5em;
+}
+
+table.viewDirectDebit select,table.viewExistingPayee select {
+	vertical-align: middle;
+	width: 9.1em;
+}
+
+table.myAccounts td {
+	vertical-align: middle;
+}
+
+.myAccounts .companyName {
+	font-weight: bold;
+}
+
+table.myphp td.currency {
+	font-weight: bold;
+}
+/* END TABLE MY ACCOUNTS */
+div.pagination {
+	background: #ededed url("../Images/pagination_bg.png") repeat top left;
+	border-bottom: 1px solid #c3c3c3;
+	font-size: 1.2em;
+	height: 26px;
+	margin: 0 0 1em 0;
+	padding: 1em 0.6em 0.7em 0.6em;
+}
+
+div.pagination ul span {
+	color: #000;
+	float: left;
+	margin: 0.6em 0 0.3em 0;
+}
+
+div.pagination ul ul {
+	float: right;
+}
+
+div.pagination ul ul li {
+	float: left;
+}
+
+div.pagination ul ul li a,div.pagination ul ul li .button input {
+	background-color: transparent;
+	border: 0;
+	color: #666;
+	font-size: 1em;
+	padding: 0.5em 1.2em 0.5em 2.2em;
+	text-decoration: underline;
+}
+
+div.pagination ul ul li.first a,div.pagination ul ul li.first .button input
+	{
+	background: transparent url("../Images/pagination_first.gif") no-repeat
+		left 0.3em;
+}
+
+div.pagination ul ul li.previous a,div.pagination ul ul li.previous .button input
+	{
+	background: transparent url("../Images/pagination_prev.gif") no-repeat
+		left 0.3em;
+}
+
+div.pagination ul ul li.next a,div.pagination ul ul li.next .button input
+	{
+	background: transparent url("../Images/pagination_next.gif") no-repeat
+		right 0.3em;
+	padding: 0.5em 2.2em 0.5em 1.2em;
+}
+
+div.pagination ul ul li.last a,div.pagination ul ul li.last .button input
+	{
+	background: transparent url("../Images/pagination_last.gif") no-repeat
+		right 0.3em;
+	padding: 0.5em 2.2em 0.5em 1.2em;
+}
+
+div.pagination ul ul li:first-child+li+li a,div.pagination ul ul li:first-child+li+li .button
+	{
+	border-left: 1px solid #666;
+}
+
+div.pagination ul ul li .button {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	border: 0;
+	border-radius: 0;
+	margin: 0;
+}
+
+.address,.linkList {
+	padding: 1em;
+}
+
+.linkList li {
+	background: transparent url("../Images/bullet_rounded.gif") no-repeat
+		left 0.4em;
+	margin: 0.2em 0;
+	padding-left: 1em;
+}
+
+.linkList a {
+	
+}
+
+/* BUTTONS */
+.buttonholder {
+	margin-top: 1em;
+	text-align: center;
+}
+
+.button {
+	-moz-box-shadow: 0.1em 0.1em 0.1em #888;
+	-webkit-box-shadow: 0.1em 0.1em 0.1em #888;
+	border: 1px solid #8f4346;
+	display: inline-block;
+	margin-right: 0.4em;
+}
+
+.button input,#content .button a {
+	background-color: #f00;
+	border-color: #fc0000 #b4061d #b4061d #ff9094;
+	border-style: solid;
+	border-width: 2px;
+	color: #fff;
+	cursor: pointer;
+	font-size: 0.9em;
+	overflow: visible;
+}
+
+.button input {
+	padding: 0.2em;
+}
+
+#content .button a {
+	display: block;
+	padding: 0.1em 0.2em;
+	text-decoration: none;
+}
+
+.button,.button input,#content .button a {
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.button input:hover,#content .button a:hover {
+	background-color: #d62835;
+	border-color: #c62431 #91121d #91121d #f2acae;
+}
+
+.buttonholder .link {
+	border-right: 1px solid #bfbfbf;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 1.1em;
+	line-height: 2em;
+	padding: 0 0.5em;
+	margin: 0 0.5em;
+	vertical-align: top;
+}
+
+.buttonholder .link a {
+	text-decoration: none;
+}
+
+div.tablebuttonholder {
+	background: #fbfbfb url("../Images/tablebuttons_bg.png") repeat-x top
+		left;
+	border-bottom: 1px solid #efefef;
+	font-size: 1.2em;
+	margin-bottom: 1em;
+	padding: 0.6em 0;
+	text-align: right;
+}
+
+div.tablebuttonholder .button {
+	margin-right: 1em;
+}
+
+div.tablebuttonholder .button,div.tablebuttonholder select {
+	vertical-align: middle;
+}
+
+#interstitial .buttonholder,.message .buttonholder,.search .buttonholder,.lookup .buttonholder,.secondary
+	{
+	text-align: right;
+}
+
+.termsandconditions .buttonholder {
+	margin-bottom: 2em;
+}
+
+.buttonholder.siteDemo {
+	margin-top: 4em;
+}
+
+.newmessage .buttonholder {
+	background-color: #fdfbca;
+	font-size: 1.2em;
+	margin-top: 3.5em;
+	padding: 1.5em 0 1.5em 0;
+}
+
+.form-item label .data .button {
+	margin-left: 0.5em;
+}
+
+#welcome .button {
+	font-size: 1.05em;
+	margin-right: 0;
+}
+
+.migration .button {
+	font-size: 1.6em;
+}
+
+.viewDirectDebit .button,.eBankingTable .button {
+	font-size: 0.9em;
+}
+
+table.data .button,.myAccounts .button,.viewDirectDebit .button {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+.selectaccount .button input,.statementEnquiry .button input,#fasttransferfrom .button input
+	{
+	display: inline; /* Fix for Firefox */
+}
+
+#logoff .button input {
+	padding: 0.3em 0.5em;
+}
+
+.migration .button input,.search .button input,.siteDemo .button input {
+	font-weight: bold;
+}
+
+table.data .button input,.myAccounts .button input,.viewDirectDebit .button input
+	{
+	background: #f00 url("../Images/go_background.png") repeat-x scroll 0 0;
+	border-width: 1px;
+	border-color: #fc0000 #b4061d #b4061d #ff9094;
+	font-size: 1em;
+	font-weight: bold;
+	padding: 0.2em;
+}
+
+.newmessage .button input,#content .newmessage .button a {
+	font-size: 0.75em;
+	font-weight: bold;
+}
+
+.button.linkButton {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	background: none;
+	border: 0;
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+table.data .button.linkButton input,.button.linkButton input:hover,.button.linkButton input,.myAccounts .button.linkButton input,.viewDirectDebit .button.linkButton input
+	{
+	background: none;
+	background-color: transparent;
+	border: 0;
+	color: #f00;
+	font-size: 1em;
+	font-weight: normal;
+	text-decoration: underline;
+}
+/* END BUTTONS */
+.hideme,.skipToContent,.auralOnly,span.allavailabletransactions span.auralOnly,#fasttransfer label span.auralOnly
+	{
+	display: none;
+}
+
+.changeImage .images,.securityItems .securityItem {
+	display: inline-block;
+}
+
+.changeImage span.images input,.changeImage span.images .radioText,.securityItems .securityItem a
+	{
+	display: block;
+	text-align: center;
+}
+
+.changeImage span.images input,.securityItems .securityItem a {
+	margin: 0.4em auto auto;
+}
+
+.changeImage span.images .radioText input {
+	display: inline;
+	margin: 0 0.4em;
+}
+
+.blockaccess .form .form-item,.blockaccess .form {
+	border: 0;
+	padding-top: 0;
+}
+
+/* CUSTOMER ID, AUTHENTICATION ABBEY */
+#content .customerID fieldset {
+	background: transparent url("../Images/customerID.gif") no-repeat 1em
+		1em;
+	padding: 0 0 0 7em;
+}
+
+#content .container .keycode p {
+	font-size: 1em;
+	padding-left: 0.6em;
+}
+
+.container .keycode .digitsKeycode {
+	text-align: center;
+}
+
+.container .keycode ul {
+	background-color: #fafafa;
+	border: 1px solid #e4e4e4;
+	display: inline-block;
+	font-size: 1em;
+}
+
+.container .keycode ul li {
+	float: left;
+}
+
+.container .keycode ul span {
+	border: 1px solid #ddd;
+	display: block;
+	font-weight: bold;
+	height: 1.5em;
+	margin: 0.08em 0.08em 0 0.08em;
+}
+
+.container .keycode ul .number {
+	border: 0;
+	border-right: 1px solid #ddd;
+	display: inline-block;
+	margin-right: 0;
+	padding: 0.1em 0;
+	width: 2em;
+}
+
+.container .keycode ul .input span {
+	background: #f1f1f1;
+	border-color: #c00;
+	color: #c00;
+}
+
+.container .keycode ul .input .number {
+	border-color: #ddd;
+}
+
+.container .keycode ul .last .number {
+	border-right: 0;
+}
+
+.container .keycode ul input {
+	text-align: center;
+	width: 1.5em;
+}
+
+.publicComputer {
+	display: block;
+	margin-top: 0.5em;
+	width: 30em;
+}
+
+#content .customerID .explainPasscode {
+	margin: 0 0 2em 0;
+}
+
+.passcodeRegNumber input {
+	width: 12em;
+}
+
+#content p.customerID {
+	font-size: 1.3em;
+	font-weight: bold;
+}
+
+#content img.customerID,.DirectDebitGuarantee img,#fpinterstitial .contents p img,.image2Explain
+	{
+	float: left;
+	margin: 0 1em 0 0;
+}
+
+.imagePhrase .image,.explainingImage {
+	float: right;
+	margin: 0 0 0 1em;
+}
+
+#content p.customerID.title {
+	font-size: 1.2em;
+	margin-top: 1.5em;
+}
+
+.passcodeGuidelines {
+	list-style-type: disc;
+	margin: 0.5em 0 0 2em;
+}
+
+.oneTimePasscode ol {
+	list-style-type: lower-alpha;
+	padding-left: 2em;
+}
+
+.oneTimePasscode ol li {
+	margin: 0.4em 0;
+}
+
+.telephonePrefix {
+	margin-right: 0.2em;
+	width: 4em;
+}
+
+/* END CUSTOMER ID, AUTHENTICATION ABBEY */
+
+/* NEW MESSAGE */
+.newmessage {
+	background: #ffffff url("../Images/messagewindow_alert.gif") no-repeat
+		1px 1px;
+	border: 8px solid #aaaaaa;
+	margin: 2.7em 0 32em 0;
+	width: 577px; /* Fix this in the future using proper images */
+}
+
+.newmessage .content {
+	min-height: 18em;
+}
+
+#content .newmessage .content h1.subject {
+	font-size: 1.5em;
+	font-weight: bold;
+	margin: 1.5em 0.5em 0.5em 6em;
+}
+
+.newmessage .content .title {
+	color: #f00;
+	font-size: 2.3em;
+	margin: 1.5em 1.5em 1em 3.52em;
+}
+
+#content .newmessage .content p {
+	font-size: 1.3em;
+	margin: 1em 1em 1em 7em;
+}
+/* END NEW MESSAGE */
+.importantOverseasAddress {
+	border-top: 1px solid #bfbfbf;
+	border-bottom: 1px solid #bfbfbf;
+	padding: 0.8em 0.5em 0.5em 1em;
+	margin-bottom: 2em;
+}
+
+/* INTERSTITIAL PAGES */
+#interstitial #bodycontent {
+	float: none;
+	margin: 3em auto auto auto;
+	width: 78em;
+}
+
+#interstitial #content {
+	padding-bottom: 1.1em;
+}
+
+#interstitial .promoHolder {
+	clear: both;
+	text-align: center;
+	padding-top: 0.5em;
+}
+
+#interstitial .banner {
+	margin-bottom: 1.5em;
+}
+
+#interstitial .doubleBanner {
+	display: inline-block;
+	width: 100%;
+}
+
+#interstitial .doubleBanner .bannerLeft {
+	float: left;
+}
+
+#interstitial .doubleBanner .bannerRight {
+	float: right;
+}
+/* END INTERSTITIAL PAGES */
+.externallink {
+	background: transparent url("../Images/externallink2.gif") no-repeat
+		scroll right 3px;
+	padding-right: 15px;
+}
+
+.dateField,.allavailabletransactions .dateField {
+	display: inline;
+}
+
+div.calendarUI {
+	display: inline;
+	position: relative;
+	z-index: 100;
+}
+
+.calendarUI .wrapper {
+	-moz-box-shadow: 0.4em 0.4em 2em #888;
+	-webkit-box-shadow: 0.4em 0.4em 2em #888;
+	-moz-border-radius: 1em;
+	-webkit-border-radius: 1em;
+	background-color: #fff;
+	border: 4px solid #e2e2e2;
+	border-radius: 1em;
+	box-shadow: 0.4em 0.4em 2em #888;
+	position: absolute;
+	right: 0;
+	top: 1em;
+	width: 16em;
+}
+
+.calendarUI .bleach {
+	display: none;
+}
+
+.calendarUI .controls {
+	border-bottom: 1px solid #000000;
+	text-align: right;
+}
+
+.calendarUI .controls button {
+	background-color: transparent;
+	border: 0;
+	cursor: pointer;
+	font-size: 1.3em;
+	margin-right: 0.3em;
+}
+
+.calendarUI .combos,.calendarUI .monthScroll {
+	margin: 0.5em 0.5em 0.2em 0.5em;
+}
+
+.calendarUI table {
+	width: 12em;
+}
+
+.calendarUI .monthScroll {
+	position: relative;
+}
+
+.calendarUI .monthScroll span {
+	display: block;
+	text-align: center;
+}
+
+.calendarUI .previousMonthButton,.calendarUI .nextMonthButton {
+	border: 0;
+	color: transparent;
+	cursor: pointer;
+	height: 23px;
+	width: 22px;
+}
+
+.calendarUI .previousMonthButton {
+	background: transparent url("../Images/pagination_prev.gif") no-repeat;
+	position: absolute;
+	left: 0.5em;
+	top: 0;
+}
+
+.calendarUI .monthScroll .nextMonthButton {
+	background: transparent url("../Images/pagination_next.gif") no-repeat;
+	position: absolute;
+	right: 0.5em;
+	top: 0;
+}
+
+.calendarUI .combos {
+	background-color: #eee;
+	border-bottom: 1px solid #bfbfbf;
+	border-top: 1px solid #bfbfbf;
+	padding: 0.5em 0;
+	text-align: center;
+}
+
+.calendarUI table {
+	margin: 0.5em auto;
+}
+
+.calendarUI .sunday {
+	background-color: #ccc;
+}
+
+.calendarUI td,.calendarUI th {
+	font-size: 0.7em;
+	padding: 0;
+	text-align: center;
+	width: 1.7em;
+}
+
+.calendarUI th {
+	font-weight: normal;
+}
+
+.calendarUI td {
+	background: none;
+	background-color: #eee;
+	color: #000;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.calendarUI td.selected,.calendarUI td:hover {
+	background-color: #fff;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.calendarUI .outOfRange {
+	color: #aaa;
+	text-decoration: none;
+}
+
+.calendarUI td.outOfRange:hover {
+	background-color: #eee;
+	cursor: default;
+	font-weight: normal;
+}
+
+.calendarUI td.outOfRange.sunday:hover {
+	background-color: #ccc;
+}
+
+#termsandconditions #bodycontent {
+	color: #000;
+	font-size: 0.9em;
+	width: 100%;
+}
+
+#termsandconditions #content ol,#termsandconditions #content ul {
+	margin-left: 8em;
+}
+
+#termsandconditions #content ol,ol.steps {
+	list-style: decimal;
+}
+
+.termsandconditions .backtotop {
+	margin-top: 1em;
+	text-align: center;
+}
+
+.termsandconditions .backtotop a {
+	font-size: 1.17em;
+	font-weight: bold;
+}
+
+.termsandconditions p strong {
+	margin-left: 4em;
+}
+
+.changepasscodeandreg .form {
+	border-bottom: 0;
+}
+
+.changepasscodeandreg div.form div.form-item {
+	border-top: 0;
+	border-bottom: 1px solid #eee;
+}
+
+.changepasscodeandreg div.form div.form-item.last {
+	border-bottom: 0;
+}
+
+a.siteDemo {
+	display: block;
+	float: right;
+	margin: 0.5em 0 0.5em 0.5em;
+}
+
+.textSiteDemo,.buttonSiteDemo {
+	margin-top: 2em;
+}
+
+div.textSiteDemo {
+	float: left;
+	font-size: 1.2em;
+	width: 60%;
+}
+
+.buttonSiteDemo {
+	float: right;
+	text-align: right;
+}
+
+div.form .form-item.selectImage,div.form.selectImage {
+	border: 0;
+}
+
+div.form .form-item.selectImage {
+	padding: 0;
+}
+
+#popup #header {
+	background-image: none;
+	padding: 1em 0 0 0;
+	width: 78em;
+}
+
+#popup #header #logo {
+	padding: 1em 0 0 1.7em;
+}
+
+#popup #global {
+	width: auto;
+}
+
+#popup #bodycontent {
+	margin: 0;
+	width: 78em;
+}
+
+#popup div.container {
+	margin: 0;
+}
+
+/* OTP BOX AND OTP PHONE */
+.otpbox {
+	border: 2px solid #f00;
+	margin: 1em 0;
+	padding: 1em;
+}
+
+.otpbox div.form div.form-item {
+	border: 0;
+	padding: 0.5em 0;
+}
+
+.otpbox div.form div.explanation {
+	padding: 0;
+}
+
+#content .otpbox p {
+	margin: 0 0 1.5em 0;
+}
+
+#content .otpbox .form {
+	border: 0;
+	margin-top: 0;
+}
+
+.otpbox span.telephone {
+	font-weight: bold;
+}
+
+.otpconfirm {
+	margin: 1em 0;
+}
+
+.otpconfirm .otpbox,#content .otpphone {
+	display: inline-block;
+	text-align: center;
+	vertical-align: top;
+}
+
+.otpconfirm .otpbox {
+	margin-right: 4em;
+	width: 35em;
+}
+
+#content .otpconfirm .otpbox p {
+	font-size: 1.5em;
+	margin: 0;
+}
+
+#content .otpconfirm .otpbox p strong {
+	color: #f00;
+}
+
+#content .otpconfirm .otpbox p.phone {
+	color: #000;
+	font-size: 2em;
+	font-weight: bold;
+	margin: 0.5em 0;
+}
+
+#content .otpconfirm .otpbox p.phone a {
+	font-size: 0.6em;
+}
+/* OTP BOX AND OTP PHONE */
+.right {
+	background: transparent url("../Images/right.gif") no-repeat scroll
+		right top;
+	padding-right: 20px;
+}
+
+.wrong {
+	background: transparent url("../Images/wrong.gif") no-repeat scroll
+		right top;
+	padding-right: 20px;
+}
+
+.lookup .form {
+	margin-top: 0;
+}
+
+.lookup .form .form-item {
+	background-color: #eee;
+	border-top: 1px solid #d6d6d6;
+	padding: 0.5em 0;
+}
+
+.lookup .form input,.lookup select {
+	font-size: 1em;
+	width: 20em;
+}
+
+.maximized .lookup .form input,.maximized .lookup select {
+	width: 36em;
+}
+/* LIMIT SELECT WIDTH */
+select.variableWidth,div.transferbetweenmyaccounts select.variableWidth.withButton
+	{
+	width: 25em;
+}
+
+.maximized select.account,.maximized select.variableWidth {
+	width: 37em;
+}
+
+select.account,select.variableWidth.withButton {
+	width: 21em;
+}
+
+.maximized select.variableWidth.withButton {
+	width: 33em;
+}
+
+div.transferbetweenmyaccounts select.variableWidth {
+	width: 29em;
+}
+
+.maximized div.transferbetweenmyaccounts select.variableWidth {
+	width: 41em;
+}
+
+.maximized div.transferbetweenmyaccounts select.variableWidth.withButton
+	{
+	width: 37em;
+}
+/* END LIMIT SELECT ACCOUNT	WIDTH */
+.pendingMessages {
+	font-size: 1.1em;
+	margin-bottom: 1em;
+	text-align: right;
+}
+
+.pendingMessages a {
+	padding: 9px 0 9px 20px;
+	text-decoration: none;
+}
+
+.pendingMessages a span {
+	text-decoration: underline;
+}
+
+.pendingMessages.unread a {
+	background: transparent url("../Images/icoMensajeNuevo.gif") no-repeat
+		scroll left center;
+}
+
+.pendingMessages.read a {
+	background: transparent url("../Images/icoMensajeLeido.gif") no-repeat
+		scroll left center;
+}
+
+.santanderHtml {
+	background-color: #fff;
+	color: #000;
+}
+
+.santanderHtml p {
+	font-size: 1.2em;
+	margin: 1.5em 1em;
+	text-align: justify;
+}
+
+.santanderHtml ol {
+	list-style-type: decimal;
+}
+
+.santanderHtml ul {
+	list-style-type: disc;
+}
+
+.santanderHtml ol,.santanderHtml ul {
+	font-size: 1.2em;
+	margin: 0.5em 0;
+	padding: 0 1em 0 10em;
+	text-align: justify;
+}
+
+.santanderHtml h1 {
+	font-size: 2em;
+	margin: 1em 0.5em;
+}
+
+.santanderHtml h2 {
+	font-size: 1.5em;
+	margin: 1em 1.5em;
+}
+
+.santanderHtml h3 {
+	font-size: 1.3em;
+	margin: 1em 2.5em;
+}
+
+.santanderHtml h4 {
+	font-size: 1.1em;
+	margin: 1em 3.5em;
+}
+
+#auxcontentBar {
+	float: right;
+	width: 16em;
+}
+
+#importantNotes,.importantNotes,.stepsGuide,.myOffersBanner,.applyOnline,.genericBanner
+	{
+	margin: 0.9em 0;
+}
+
+.stepsGuide {
+	background: transparent url("../Images/stepsguide.gif") no-repeat 0 0;
+	height: 110px;
+	width: 172px;
+}
+
+.myOffersBanner a {
+	background: transparent url("../Images/myOffers.gif") no-repeat 0 0;
+	display: block;
+	height: 120px;
+	width: 158px;
+}
+
+.myOffersBanner span {
+	display: none;
+}
+
+.applyOnline {
+	font-size: 1.2em;
+}
+
+.applyOnline .applyOnlineContent {
+	background: transparent url("../Images/applyOnline_curves.gif")
+		no-repeat bottom right;
+	margin-bottom: 1.4em;
+}
+
+.applyOnline .applyOnlineContent2 {
+	background: transparent url("../Images/applyonline02.png") repeat-y
+		bottom left;
+}
+
+.applyOnline ul {
+	background: transparent url("../Images/applyonline_bottom.gif")
+		no-repeat bottom left;
+	padding: 0.6em 0.7em 1.4em 0.6em;
+}
+
+.applyOnline ul a {
+	background: transparent url("../Images/bullet_rounded.gif") no-repeat 0
+		0.5em;
+	padding-left: 1.2em;
+	display: block;
+	margin-bottom: 0.2em;
+}
+
+#importantNotes,.importantNotes {
+	background-color: #fff;
+	border: 2px solid #f00;
+	font-size: 1.1em;
+	padding: 1em 0.5em;
+}
+
+#importantNotes .title,#importantNotes .subtitle,.importantNotes .title,.importantNotes .subtitle,.importantNotes .link
+	{
+	font-weight: bold;
+}
+
+#importantNotes .title,.importantNotes .title {
+	color: #f00;
+	font-size: 1.2em;
+	margin-bottom: 0.5em;
+}
+
+#importantNotes .subtitle,.importantNotes .subtitle {
+	color: #000;
+	font-size: 1.1em;
+	margin: 1em 0 0.5em 0;
+}
+
+#importantNotes p,.importantNotes p {
+	margin: 0.3em 0;
+}
+
+#importantNotes .emphasis,.importantNotes .emphasis {
+	color: #000;
+	font-weight: bold;
+}
+
+.importantNotes .link,#content .imageMessage .link {
+	float: right;
+}
+
+#content .imageMessage .link {
+	font-size: 1em;
+}
+
+.importantNotes.withTwoColumns {
+	width: 45%;
+}
+
+.imageRow {
+	text-align: center;
+}
+
+#content .securityItem span,#content .securityItem a {
+	font-size: 1.2em;
+	font-weight: bold;
+	padding: 0 1em;
+}
+
+#content .securityItem span {
+	color: #000;
+}
+
+.securityItems .securityItem {
+	margin: 1em 6.5em;
+}
+
+#content .show .securityItem span,#content .show .securityItem a {
+	font-size: 1em;
+}
+
+.imageMessage {
+	border: 1px solid #ececec;
+	margin: 1em 0;
+	width: auto;
+}
+
+.imageMessage img {
+	float: left;
+	padding: 1em;
+}
+
+#content .imageMessage p {
+	margin: 0;
+	padding: 0.5em 1em;
+}
+
+.message123 p {
+	color: #000;
+}
+
+.positionKey {
+	display: table;
+}
+
+.positionKey .positions,.positionKey .inputs {
+	display: table-row;
+}
+
+.positionKey .positions label,.positionKey .inputs span {
+	display: table-cell;
+	padding: 0 1em;
+}
+
+.positionKey .positions label,.positionKey .inputs input {
+	text-align: center;
+}
+
+.positionKey .positions {
+	font-weight: bold;
+}
+
+.positionKey .positions sup {
+	font-size: 0.8em;
+	font-weight: normal;
+	vertical-align: top;
+}
+
+.oddImage {
+	background: transparent url("../Images/arrowimgr2.gif") no-repeat scroll
+		right bottom;
+	float: right;
+	margin: 0.5em 0 0.5em 1em;
+	padding: 0 0 25px 0;
+}
+
+.oddImage div {
+	border: 1px solid #F1EFF0;
+	border-bottom: none;
+	padding: 1em;
+}
+
+#content .sbbiStep1,#content .sbbiStep2,#content .sbbiStepAsterisk {
+	float: left;
+	margin: 1em;
+	padding: 0 0 0 30px;
+	width: 40%;
+}
+
+.sbbiStep1 {
+	background: transparent url("../SpecialImagesSBBI/unoB.png") no-repeat
+		left center;
+}
+
+.sbbiStep2 {
+	background: transparent url("../SpecialImagesSBBI/dosB.png") no-repeat
+		left center;
+}
+
+.sbbiStepAsterisk {
+	background: transparent url("../SpecialImagesSBBI/asterixR.png")
+		no-repeat left center;
+}
+
+#content .explainingImage .sbbiStep1,#content .explainingImage .sbbiStep2,#content .explainingImage .sbbiStepAsterisk
+	{
+	float: none;
+	height: 22px;
+	width: auto;
+}
+
+.plainTextLink {
+	text-decoration: underline;
+}
+
+.hiddenWithoutJavaScript {
+	display: none;
+}
+
+.capitalized {
+	text-transform: capitalize;
+}
+
+#content .data .ghost a {
+	color: #666;
+}
