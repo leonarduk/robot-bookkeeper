@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.leonarduk</groupId>
 	<artifactId>robotbookkeeper</artifactId>
-	<version>1.5.1</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>Robot Bookkeeper</name>
 	<description>Robot Bookkeeper</description>
 	<url>http://leonarduk.com/maven2</url>
@@ -15,7 +15,7 @@
 		<log4j.version>1.2.17</log4j.version>
 		<junit.version>4.11</junit.version>
 		<java.version>1.8</java.version>
-		<core.version>1.5</core.version>
+		<webscraper-core.version>1.0.7</webscraper-core.version>
 		<jacoco.version>0.7.5.201505241946</jacoco.version>
 	</properties>
 	<repositories>
@@ -33,30 +33,30 @@
 	</repositories>
 	<build>
 		<defaultGoal>deploy</defaultGoal>
-    <plugins>
-        <plugin>
-            <groupId>com.google.code.maven-replacer-plugin</groupId>
-            <artifactId>replacer</artifactId>
-            <version>1.5.3</version>
-            <executions>
-                <execution>
-                    <phase>prepare-package</phase>
-                    <goals>
-                        <goal>replace</goal>
-                    </goals>                    
-                </execution>
-            </executions>
-            <configuration>
-                <ignoreMissingFile>true</ignoreMissingFile>
-                <file>src/main/shell/run.sh</file>
-                <outputFile>
-                    run.sh
-                </outputFile>
-                <regex>false</regex>
-                <token>$VERSION$</token>
-                <value>${project.version}</value>
-            </configuration>
-        </plugin>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<ignoreMissingFile>true</ignoreMissingFile>
+					<file>src/main/shell/run.sh</file>
+					<outputFile>
+						run.sh
+					</outputFile>
+					<regex>false</regex>
+					<token>$VERSION$</token>
+					<value>${project.version}</value>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.9</version>
@@ -118,11 +118,11 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				 <version>${jacoco.version}</version>
+				<version>${jacoco.version}</version>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
@@ -173,15 +173,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.leonarduk</groupId>
-			<artifactId>core</artifactId>
-			<version>${core.version}</version>
+			<artifactId>webscraper-core</artifactId>
+			<version>${webscraper-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
 			<version>1.4.01</version>
 		</dependency>
-<!--  for htmlunit -->
+		<!-- for htmlunit -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>

@@ -5,8 +5,8 @@ package com.leonarduk.bookkeeper.email;
 
 import org.apache.log4j.Logger;
 
-import com.leonarduk.core.email.EmailMessage;
-import com.leonarduk.core.email.EmailProcessor;
+import com.leonarduk.webscraper.core.email.EmailMessage;
+import com.leonarduk.webscraper.core.email.EmailProcessor;
 
 /**
  * The Class VodafoneProcessor.
@@ -35,11 +35,11 @@ public class VodafoneProcessor implements EmailProcessor {
 		final String emailSender = VodafoneProcessor.VODAFONE;
 		final String subjectPrefix = "Your Bill is Ready ";
 		if (!emailMessage.getSender().equals(emailSender)
-				|| !emailMessage.getSubject().startsWith(subjectPrefix)) {
+		        || !emailMessage.getSubject().startsWith(subjectPrefix)) {
 			return false;
 		}
 		VodafoneProcessor.LOGGER
-		.info("Processing " + emailSender + " " + emailMessage.getSubject());
+		        .info("Processing " + emailSender + " " + emailMessage.getSubject());
 		return true;
 
 	}

@@ -5,8 +5,8 @@ package com.leonarduk.bookkeeper.email;
 
 import org.apache.log4j.Logger;
 
-import com.leonarduk.core.email.EmailMessage;
-import com.leonarduk.core.email.EmailProcessor;
+import com.leonarduk.webscraper.core.email.EmailMessage;
+import com.leonarduk.webscraper.core.email.EmailProcessor;
 
 /**
  * The Class BFCAInvoiceProcessor.

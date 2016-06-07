@@ -3,19 +3,18 @@
  */
 package uk.co.sleonard.accounts.web;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.net.URL;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
-import com.leonarduk.core.FileUtils;
 import com.leonarduk.web.SeleniumUtils;
+import com.leonarduk.webscraper.core.FileUtils;
 
 import uk.co.sleonard.accounts.web.UploadToClearCheckbook.Setting;
 
@@ -28,7 +27,7 @@ public class UploadToClearCheckbookSIT {
 
 	@BeforeClass
 	public static void setupStatic() {
-		internetAvailable = SeleniumUtils.isInternetAvailable();
+		UploadToClearCheckbookSIT.internetAvailable = SeleniumUtils.isInternetAvailable();
 	}
 
 	/**
@@ -42,23 +41,13 @@ public class UploadToClearCheckbookSIT {
 	}
 
 	/**
-	 * Test upload to clear checkbook.
-	 * 
-	 * @throws Exception
+	 * Test convert money string.
 	 */
 	@Test
-
-	public void testUploadToClearCheckbookNationwide() throws Exception {
-		if (internetAvailable) {
-			String userName = "virtualagent";
-			String password = "eggsandbacon123";
-			String account = "ZZZ  - Test Nationwide";
-			String fileToUpload = "test";
-			File tempDir = FileUtils.createTempDir();
-			WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
-			Setting setting = UploadToClearCheckbook.Setting.NATIONWIDE;
-			UploadToClearCheckbook.uploadToClearCheckbook(userName, password, account, fileToUpload, driver, setting);
-		}
+	public final void testConvertMoneyString() {
+		final double convertMoneyString = UploadToClearCheckbook.convertMoneyString("£750,055");
+		final int expected = 750055;
+		Assert.assertEquals(expected, convertMoneyString, 0);
 	}
 
 	/**
@@ -72,10 +61,10 @@ public class UploadToClearCheckbookSIT {
 	public void testUpdateEstimate() throws Exception {
 		final File tempDir = FileUtils.createTempDir();
 
-		WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
+		final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
 
-		String name = "clearcheckbook/";
-		URL url = UploadToClearCheckbook.class.getClass().getResource(name);
+		final String name = "clearcheckbook/";
+		final URL url = UploadToClearCheckbook.class.getClass().getResource(name);
 		driver.get(url.getPath());
 		// UploadToClearCheckbook.updateEstimate(account, currentValue,
 		// userName,
@@ -83,12 +72,23 @@ public class UploadToClearCheckbookSIT {
 	}
 
 	/**
-	 * Test convert money string.
+	 * Test upload to clear checkbook.
+	 *
+	 * @throws Exception
 	 */
 	@Test
-	public final void testConvertMoneyString() {
-		double convertMoneyString = UploadToClearCheckbook.convertMoneyString("£750,055");
-		final int expected = 750055;
-		assertEquals(expected, convertMoneyString, 0);
+
+	public void testUploadToClearCheckbookNationwide() throws Exception {
+		if (UploadToClearCheckbookSIT.internetAvailable) {
+			final String userName = "virtualagent";
+			final String password = "eggsandbacon123";
+			final String account = "ZZZ  - Test Nationwide";
+			final String fileToUpload = "test";
+			final File tempDir = FileUtils.createTempDir();
+			final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
+			final Setting setting = UploadToClearCheckbook.Setting.NATIONWIDE;
+			UploadToClearCheckbook.uploadToClearCheckbook(userName, password, account, fileToUpload,
+			        driver, setting);
+		}
 	}
 }
