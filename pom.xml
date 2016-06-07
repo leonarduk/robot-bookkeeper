@@ -16,23 +16,16 @@
 		<junit.version>4.11</junit.version>
 		<java.version>1.8</java.version>
 		<webscraper-core.version>1.0.7</webscraper-core.version>
-		<jacoco.version>0.7.5.201505241946</jacoco.version>
+		<jacoco.version>0.7.6.201602180812</jacoco.version>
 	</properties>
 	<repositories>
 		<repository>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>fail</checksumPolicy>
-			</releases>
-			<id>leonarduk.com</id>
-			<name>leonarduk</name>
-			<url>http://leonarduk.com/maven2/</url>
-			<layout>default</layout>
+			<id>central.maven.org</id>
+			<url>http://central.maven.org/maven2/</url>
 		</repository>
 	</repositories>
 	<build>
-		<defaultGoal>deploy</defaultGoal>
+		<defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
@@ -47,7 +40,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<ignoreMissingFile>true</ignoreMissingFile>
+					<ignoreMissingFile>false</ignoreMissingFile>
 					<file>src/main/shell/run.sh</file>
 					<outputFile>
 						run.sh
@@ -74,6 +67,14 @@
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -104,16 +105,12 @@
 						</manifest>
 					</archive>
 					<skipTests>${skipTests}</skipTests>
-					<descriptors>
-						<descriptor>src/main/assembly/kit.xml</descriptor>
-					</descriptors>
 				</configuration>
 				<executions>
 					<execution>
-						<id>make-assembly</id>
 						<phase>package</phase>
 						<goals>
-							<goal>attached</goal>
+							<goal>single</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -125,14 +122,13 @@
 				<version>${jacoco.version}</version>
 				<executions>
 					<execution>
-						<id>default-prepare-agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
 					<execution>
-						<id>default-report</id>
-						<phase>prepare-package</phase>
+						<id>report</id>
+						<phase>test</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
@@ -158,6 +154,32 @@
 								</rule>
 							</rules>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
@@ -229,11 +251,34 @@
 			<url>http://www.spdx.org/licenses/GPL-3.0+</url>
 		</license>
 	</licenses>
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	<developers>
 		<developer>
 			<id>leonarduk</id>
 			<name>Stephen Leonard</name>
-			<email>sourceforge@leonarduk.com</email>
+			<email>github@leonarduk.com</email>
 			<roles>
 				<role>Project Manager</role>
 				<role>Architect</role>
@@ -257,4 +302,11 @@
 			</url>
 		</repository>
 	</distributionManagement>
+	<scm>
+		<connection>scm:git:git@github.com:leonarduk/robot-bookkeeper.git
+		</connection>
+		<developerConnection>scm:git:git@github.com:leonarduk/robot-bookkeeper.git
+		</developerConnection>
+		<url>git@github.com:leonarduk/robot-bookkeeper.git</url>
+	</scm>
 </project>

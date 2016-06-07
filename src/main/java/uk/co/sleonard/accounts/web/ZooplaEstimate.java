@@ -35,6 +35,7 @@ public class ZooplaEstimate extends BaseSeleniumPage {
 	 * @param args
 	 *            the arguments
 	 * @throws Exception
+	 *             the exception
 	 */
 	public static void main(final String[] args) throws Exception {
 		final ZooplaEstimate zooplaEstimate = new ZooplaEstimate(new FirefoxDriver());
@@ -62,18 +63,17 @@ public class ZooplaEstimate extends BaseSeleniumPage {
 	 *
 	 * @param webDriver
 	 *            the web driver
-	 * @param customerNumber
-	 *            the customer number
-	 * @param memorableword
-	 *            the memorableword
-	 * @param password
-	 *            the password
 	 */
 	public ZooplaEstimate(final WebDriver webDriver) {
 		super(webDriver,
 		        "http://www.zoopla.co.uk/property/60-willoughby-road/kingston-upon-thames/kt2-6lj/11760869");
 	}
 
+	/**
+	 * Gets the estimate.
+	 *
+	 * @return the estimate
+	 */
 	public String getEstimate() {
 		final WebElement estimateNode = this
 		        .findElementByXpath("//*[@id=\"estimate-property\"]/ul[1]/li[1]/p/span/strong");
@@ -85,7 +85,7 @@ public class ZooplaEstimate extends BaseSeleniumPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.openqa.selenium.support.ui.LoadableComponent#load()
 	 */
 	@Override
