@@ -56,8 +56,13 @@ public class FreeagentLoginTest {
 	@Ignore
 	// get Jenkins working for now
 	public final void testIsLoaded() {
-		this.login.get();
-		this.login.uploadTransactions("/tmp/heaDd2/Statements09015613132580.qif");
+		try {
+			this.login.get();
+			this.login.uploadTransactions("/tmp/heaDd2/Statements09015613132580.qif");
+		}
+		catch (final Exception e) {
+			Assert.fail("Caught exception: " + e.getLocalizedMessage());
+		}
 	}
 
 	// @Test

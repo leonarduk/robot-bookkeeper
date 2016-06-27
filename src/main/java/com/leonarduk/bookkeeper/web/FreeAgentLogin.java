@@ -27,7 +27,7 @@ import com.leonarduk.webscraper.core.FileUtils;
 public class FreeAgentLogin extends BaseSeleniumPage {
 
 	/** The Constant LOGGER. */
-	static final Logger LOGGER = Logger.getLogger(FreeAgentLogin.class);
+	private static final Logger LOGGER = Logger.getLogger(FreeAgentLogin.class);
 
 	/** The login url. */
 	private final String loginUrl;

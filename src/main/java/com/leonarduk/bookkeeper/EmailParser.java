@@ -26,7 +26,7 @@ import com.leonarduk.webscraper.core.email.impl.SimplePrintEmailProcessor;
  */
 public final class EmailParser {
 	/** The Constant LOGGER. */
-	static final Logger LOGGER = Logger.getLogger(EmailParser.class);
+	private static final Logger LOGGER = Logger.getLogger(EmailParser.class);
 
 	/**
 	 * The main method.
