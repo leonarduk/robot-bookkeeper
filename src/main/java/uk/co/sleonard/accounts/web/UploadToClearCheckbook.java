@@ -27,7 +27,7 @@ import com.leonarduk.web.SeleniumUtils;
  */
 public class UploadToClearCheckbook {
 	/** The Constant LOGGER. */
-	static final Logger LOGGER = Logger.getLogger(UploadToClearCheckbook.class);
+	private static final Logger LOGGER = Logger.getLogger(UploadToClearCheckbook.class);
 
 	/**
 	 * Amex settings.

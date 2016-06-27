@@ -23,7 +23,7 @@ public class BFCAInvoiceProcessor implements EmailProcessor {
 	public static final String BFCA_INVOICE = "BFCA Invoice";
 
 	/** The Constant LOGGER. */
-	static final Logger LOGGER = Logger.getLogger(BFCAInvoiceProcessor.class);
+	private static final Logger LOGGER = Logger.getLogger(BFCAInvoiceProcessor.class);
 
 	/*
 	 * (non-Javadoc)

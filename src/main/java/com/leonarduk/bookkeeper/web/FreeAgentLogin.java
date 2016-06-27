@@ -14,7 +14,6 @@ import org.openqa.selenium.WebElement;
 import com.leonarduk.web.BaseSeleniumPage;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
-import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class FreeAgentLogin.
@@ -48,12 +47,11 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 	 *             the exception
 	 */
 	public static void main(final String[] args) throws Exception {
-		final Config config = new Config("bookkeeper.properties");
 		final File tempDir = FileUtils.createTempDir();
 
 		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
 
-		final FreeAgentLogin freeAgentLogin = new FreeAgentLogin(webDriver, config);
+		final FreeAgentLogin freeAgentLogin = new FreeAgentLogin(webDriver);
 		freeAgentLogin.get();
 
 	}
@@ -66,7 +64,7 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 	 * @param config
 	 *            the config
 	 */
-	public FreeAgentLogin(final WebDriver webDriver, final Config config) {
+	public FreeAgentLogin(final WebDriver webDriver) {
 		super(webDriver, "https://leonarduk.freeagentcentral.com/overview");
 		this.loginUrl = "https://leonarduk.freeagentcentral.com/login";
 		this.userName = "accounts@leonarduk.com";
@@ -92,7 +90,7 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.openqa.selenium.support.ui.LoadableComponent#load()
 	 */
 	@Override
@@ -106,7 +104,7 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 			this.waitForPageToLoad();
 		}
 		catch (final NoSuchElementException e) {
-			FreeAgentLogin.LOGGER.info("No filter screen. Ignore and try next page");
+			FreeAgentLogin.LOGGER.info("No filter screen. Ignore and try next page", e);
 		}
 		this.waitForPageToLoad();
 	}
