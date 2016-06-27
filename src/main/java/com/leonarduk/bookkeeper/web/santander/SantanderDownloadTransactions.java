@@ -3,6 +3,8 @@
  */
 package com.leonarduk.bookkeeper.web.santander;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 
 import com.leonarduk.bookkeeper.web.MyAccountsMenu;
@@ -66,8 +68,12 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 
 	/**
 	 * Download transactions.
+	 *
+	 * @param tempDir
+	 *
+	 * @return
 	 */
-	public final void downloadTransactions() {
+	public final String downloadTransactions(final File tempDir) {
 		// select transactions
 		final String xpath = "//*[@id=\"submenu\"]/ul/li[2]/a";
 		this.findElementByXpath(xpath).click();
@@ -77,12 +83,20 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 		this.waitForPageToLoad();
 		// select all since last download
 		this.findElementByXpath("//*[@id=\"AllorLastL\"]").click();
-		// select QIF
+		// select 1 - XLS ; 2 - QIF ; 3 - QIF ; 4 - PDF ; 5 - TXT
 		this.findElementByXpath("//*[@id=\"sel_downloadto\"]/option[2]").click();
 		// click Download
 		this.findElementByXpath(
 		        "//*[@id=\"content\"]/div[2]/div/form/fieldset/div[2]/span[1]/input").click();
 		this.waitForPageToLoad();
+
+		String file = null;
+		if (tempDir.list().length > 0) {
+			SantanderDownloadTransactions.LOGGER.debug("uploadSantanderToFreeAgent");
+			file = tempDir + "/" + tempDir.list()[0];
+			System.out.println("File " + file);
+		}
+		return file;
 	}
 
 	/*

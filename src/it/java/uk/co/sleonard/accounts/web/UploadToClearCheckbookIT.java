@@ -20,13 +20,13 @@ import uk.co.sleonard.accounts.web.UploadToClearCheckbook.Setting;
 /**
  * The Class UploadToClearCheckbookTest.
  */
-public class UploadToClearCheckbookSIT {
+public class UploadToClearCheckbookIT {
 
 	private static boolean internetAvailable;
 
 	@BeforeClass
 	public static void setupStatic() {
-		UploadToClearCheckbookSIT.internetAvailable = SeleniumUtils.isInternetAvailable();
+		UploadToClearCheckbookIT.internetAvailable = SeleniumUtils.isInternetAvailable();
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class UploadToClearCheckbookSIT {
 
 	public void testUploadToClearCheckbookNationwide() throws Exception {
 		try {
-			if (UploadToClearCheckbookSIT.internetAvailable) {
+			if (UploadToClearCheckbookIT.internetAvailable) {
 				final String userName = "virtualagent";
 				final String password = "eggsandbacon123";
 				final String account = "ZZZ  - Test Nationwide";
