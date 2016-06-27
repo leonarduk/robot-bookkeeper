@@ -7,7 +7,6 @@ import java.io.File;
 import java.net.URL;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -19,16 +18,6 @@ import com.leonarduk.webscraper.core.FileUtils;
  * The Class UploadToClearCheckbookTest.
  */
 public class UploadToClearCheckbookTest {
-
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
 
 	/**
 	 * Test convert money string.
@@ -49,16 +38,21 @@ public class UploadToClearCheckbookTest {
 	@Test
 	@Ignore
 	public void testUpdateEstimate() throws Exception {
-		final File tempDir = FileUtils.createTempDir();
+		try {
+			final File tempDir = FileUtils.createTempDir();
 
-		final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
+			final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
 
-		final String name = "clearcheckbook/";
-		final URL url = UploadToClearCheckbook.class.getClass().getResource(name);
-		driver.get(url.getPath());
-		// UploadToClearCheckbook.updateEstimate(account, currentValue,
-		// userName,
-		// password, driver, valueXpath, memo);
+			final String name = "clearcheckbook/";
+			final URL url = UploadToClearCheckbook.class.getClass().getResource(name);
+			driver.get(url.getPath());
+			// UploadToClearCheckbook.updateEstimate(account, currentValue,
+			// userName,
+			// password, driver, valueXpath, memo);
+		}
+		catch (final Exception e) {
+			Assert.fail("Exception caught");
+		}
 	}
 
 	/**
