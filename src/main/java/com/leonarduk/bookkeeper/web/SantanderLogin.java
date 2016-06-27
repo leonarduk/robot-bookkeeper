@@ -18,6 +18,7 @@ import com.leonarduk.web.BaseSeleniumPage;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
 import com.leonarduk.webscraper.core.config.Config;
+import com.thoughtworks.selenium.SeleniumException;
 
 /**
  * The Class SantanderLogin.
@@ -98,7 +99,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 
 	/** The Constant _logger. */
 
-	static final Logger LOGGER = Logger.getLogger(SantanderLogin.class);
+	private static final Logger LOGGER = Logger.getLogger(SantanderLogin.class);
 
 	/** The Constant SECURITY_ID_POSITION_PREFIX. */
 	private static final String SECURITY_ID_POSITION_PREFIX = "passwordPosition";
@@ -204,7 +205,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 		for (int i = 1; i < (lastDigit + 1); i++) {
 			final WebElement node = this.getWebDriver()
 			        .findElement(By.name(signPositionPrefix + i));
-			int index = (Integer.valueOf(node.getAttribute("tabindex"))) - 1;
+			int index = (Integer.valueOf(node.getAttribute("tabindex"))).intValue() - 1;
 			if (index >= lastDigit) {
 				index -= lastDigit;
 			}
@@ -285,7 +286,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 			}
 		}
 		if (null == answer) {
-			throw new RuntimeException("Unexpected question:" + questionText);
+			throw new SeleniumException("Unexpected question:" + questionText);
 		}
 		this.enterValueIntoField(answer, SantanderLogin.ANSWER_XPATH);
 
@@ -295,7 +296,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.openqa.selenium.support.ui.LoadableComponent#load()
 	 */
 	@Override
@@ -309,7 +310,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 			this.waitForPageToLoad();
 		}
 		catch (final NoSuchElementException e) {
-			SantanderLogin.LOGGER.info("No filter screen. Ignore and try next page");
+			SantanderLogin.LOGGER.info("No filter screen. Ignore and try next page", e);
 		}
 		this.passwordPage();
 
@@ -321,7 +322,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 			}
 		}
 		catch (final NoSuchElementException e) {
-			// ignore
+			SantanderLogin.LOGGER.info("No pop up screen. Ignore and try next page", e);
 		}
 		this.waitForPageToLoad();
 	}
@@ -341,10 +342,10 @@ public class SantanderLogin extends BaseSeleniumPage {
 	class Question {
 
 		/** The config key. */
-		private final String configKeyString;
+		final String configKeyString;
 
 		/** The question text. */
-		private final String questionTextString;
+		final String questionTextString;
 
 		/**
 		 * Instantiates a new question.

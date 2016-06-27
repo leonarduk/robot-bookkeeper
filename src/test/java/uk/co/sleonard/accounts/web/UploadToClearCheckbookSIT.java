@@ -7,7 +7,6 @@ import java.io.File;
 import java.net.URL;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,16 +30,6 @@ public class UploadToClearCheckbookSIT {
 	}
 
 	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
 	 * Test convert money string.
 	 */
 	@Test
@@ -59,13 +48,18 @@ public class UploadToClearCheckbookSIT {
 	@Test
 	@Ignore
 	public void testUpdateEstimate() throws Exception {
-		final File tempDir = FileUtils.createTempDir();
+		try {
+			final File tempDir = FileUtils.createTempDir();
 
-		final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
+			final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
 
-		final String name = "clearcheckbook/";
-		final URL url = UploadToClearCheckbook.class.getClass().getResource(name);
-		driver.get(url.getPath());
+			final String name = "clearcheckbook/";
+			final URL url = UploadToClearCheckbook.class.getClass().getResource(name);
+			driver.get(url.getPath());
+		}
+		catch (final Exception e) {
+			Assert.fail("Exception caught");
+		}
 		// UploadToClearCheckbook.updateEstimate(account, currentValue,
 		// userName,
 		// password, driver, valueXpath, memo);
@@ -79,16 +73,21 @@ public class UploadToClearCheckbookSIT {
 	@Test
 
 	public void testUploadToClearCheckbookNationwide() throws Exception {
-		if (UploadToClearCheckbookSIT.internetAvailable) {
-			final String userName = "virtualagent";
-			final String password = "eggsandbacon123";
-			final String account = "ZZZ  - Test Nationwide";
-			final String fileToUpload = "test";
-			final File tempDir = FileUtils.createTempDir();
-			final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
-			final Setting setting = UploadToClearCheckbook.Setting.NATIONWIDE;
-			UploadToClearCheckbook.uploadToClearCheckbook(userName, password, account, fileToUpload,
-			        driver, setting);
+		try {
+			if (UploadToClearCheckbookSIT.internetAvailable) {
+				final String userName = "virtualagent";
+				final String password = "eggsandbacon123";
+				final String account = "ZZZ  - Test Nationwide";
+				final String fileToUpload = "test";
+				final File tempDir = FileUtils.createTempDir();
+				final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
+				final Setting setting = UploadToClearCheckbook.Setting.NATIONWIDE;
+				UploadToClearCheckbook.uploadToClearCheckbook(userName, password, account,
+				        fileToUpload, driver, setting);
+			}
+		}
+		catch (final Exception e) {
+			Assert.fail("Exception caught");
 		}
 	}
 }

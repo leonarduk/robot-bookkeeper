@@ -8,7 +8,6 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.leonarduk.bookkeeper.email.BFCAInvoiceProcessor;
-import com.leonarduk.bookkeeper.email.VodafoneProcessor;
 import com.leonarduk.webscraper.core.config.Config;
 import com.leonarduk.webscraper.core.email.EmailReader;
 import com.leonarduk.webscraper.core.email.ServerType;
@@ -63,7 +62,6 @@ public final class EmailParser {
 		final EmailProcessorChain processor = new EmailProcessorChain();
 		processor.addProcessor(new SimplePrintEmailProcessor());
 		processor.addProcessor(new BFCAInvoiceProcessor());
-		processor.addProcessor(new VodafoneProcessor());
 
 		reader.processMail(server, userName, password, serverType, attachmentsFolder, processor);
 		// final EmailSender emailSender = new EmailSender();
