@@ -1,10 +1,11 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package com.leonarduk.bookkeeper.web;
+package com.leonarduk.bookkeeper.web.santander;
 
 import org.apache.log4j.Logger;
 
+import com.leonarduk.bookkeeper.web.MyAccountsMenu;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -96,7 +97,7 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 			Thread.sleep(BaseSeleniumPage.ONE_SECOND_IN_MS);
 		}
 		catch (final InterruptedException e) {
-			SantanderDownloadTransactions.LOGGER.info("Interrupted");
+			SantanderDownloadTransactions.LOGGER.info("Interrupted", e);
 		}
 	}
 

@@ -1,7 +1,7 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package com.leonarduk.bookkeeper.web;
+package com.leonarduk.bookkeeper.web.santander;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -12,8 +12,6 @@ import org.mockito.Mockito;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class SantanderLoginTest.
@@ -33,7 +31,7 @@ public class SantanderLoginTest {
 	private WebDriver webDriver;
 
 	/** The config. */
-	private Config config;
+	private SantanderConfig config;
 
 	/**
 	 * Sets the up.
@@ -44,7 +42,7 @@ public class SantanderLoginTest {
 	@Before
 	public final void setUp() throws Exception {
 		this.webDriver = Mockito.mock(WebDriver.class);
-		this.config = new Config("bookkeeper.properties");
+		this.config = new SantanderConfig("bookkeeper.properties");
 
 		this.login = new SantanderLogin(this.webDriver, this.config);
 	}
@@ -66,11 +64,11 @@ public class SantanderLoginTest {
 	@Test
 	public final void testIsLoaded() {
 		try {
-			final String url = this.config.getProperty("bookkeeper.web.santander.url.accounts");
+			final String url = this.config.getSantanderAccountsUrl();
 			Mockito.when(this.webDriver.getCurrentUrl()).thenReturn(url);
 			final WebElement idSubmit = Mockito.mock(WebElement.class);
 			final WebElement questionNode = idSubmit;
-			final String questionText = SantanderLogin.IN_WHAT_CITY_OR_TOWN_WERE_YOU_BORN;
+			final String questionText = SantanderConfig.IN_WHAT_CITY_OR_TOWN_WERE_YOU_BORN;
 			Mockito.when(questionNode.getText()).thenReturn(questionText);
 			Mockito.when(questionNode.getAttribute(Matchers.anyString())).thenReturn("1");
 			Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.QUESTION_XPATH)))
