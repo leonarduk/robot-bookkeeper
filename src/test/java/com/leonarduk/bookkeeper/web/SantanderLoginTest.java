@@ -65,58 +65,66 @@ public class SantanderLoginTest {
 	 */
 	@Test
 	public final void testIsLoaded() {
-		final String url = this.config.getProperty("bookkeeper.web.santander.url.accounts");
-		Mockito.when(this.webDriver.getCurrentUrl()).thenReturn(url);
-		final WebElement idSubmit = Mockito.mock(WebElement.class);
-		final WebElement questionNode = idSubmit;
-		final String questionText = SantanderLogin.IN_WHAT_CITY_OR_TOWN_WERE_YOU_BORN;
-		Mockito.when(questionNode.getText()).thenReturn(questionText);
-		Mockito.when(questionNode.getAttribute(Matchers.anyString())).thenReturn("1");
-		Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.QUESTION_XPATH)))
-		        .thenReturn(questionNode);
-		final WebElement numberNode = idSubmit;
-		Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.CUSTOMER_ID_XPATH)))
-		        .thenReturn(numberNode);
+		try {
+			final String url = this.config.getProperty("bookkeeper.web.santander.url.accounts");
+			Mockito.when(this.webDriver.getCurrentUrl()).thenReturn(url);
+			final WebElement idSubmit = Mockito.mock(WebElement.class);
+			final WebElement questionNode = idSubmit;
+			final String questionText = SantanderLogin.IN_WHAT_CITY_OR_TOWN_WERE_YOU_BORN;
+			Mockito.when(questionNode.getText()).thenReturn(questionText);
+			Mockito.when(questionNode.getAttribute(Matchers.anyString())).thenReturn("1");
+			Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.QUESTION_XPATH)))
+			        .thenReturn(questionNode);
+			final WebElement numberNode = idSubmit;
+			Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.CUSTOMER_ID_XPATH)))
+			        .thenReturn(numberNode);
 
-		Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.CUSTOMER_ID_SUBMIT_XPATH)))
-		        .thenReturn(idSubmit);
-
-		final WebElement answerField = Mockito.mock(WebElement.class);
-		Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.ANSWER_XPATH)))
-		        .thenReturn(answerField);
-
-		final WebElement answerSubmitField = Mockito.mock(WebElement.class);
-		Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.ANSWER_SUBMIT_XPATH)))
-		        .thenReturn(answerSubmitField);
-		final int numberOfDigits = 3;
-		for (int i = 1; i <= numberOfDigits; i++) {
-			final WebElement signPosition = Mockito.mock(WebElement.class);
-			Mockito.when(signPosition.getAttribute("tabindex")).thenReturn(String.valueOf(i));
 			Mockito.when(
-			        this.webDriver.findElement(By.name(SantanderLogin.SIGN_POSITION_PREFIX + i)))
-			        .thenReturn(signPosition);
-			final String xpath = SantanderLogin.PASSWORD_INDEX_XPATH + (i + 1) + "]";
+			        this.webDriver.findElement(By.xpath(SantanderLogin.CUSTOMER_ID_SUBMIT_XPATH)))
+			        .thenReturn(idSubmit);
 
-			final WebElement passwordIDNode = Mockito.mock(WebElement.class);
-			Mockito.when(passwordIDNode.getText()).thenReturn(i + "th");
-			Mockito.when(this.webDriver.findElement(By.xpath(xpath))).thenReturn(passwordIDNode);
+			final WebElement answerField = Mockito.mock(WebElement.class);
+			Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.ANSWER_XPATH)))
+			        .thenReturn(answerField);
 
-			final String passwordEntryxpath = SantanderLogin.PASSWORD_INDEX_XPATH + (i + 1) + "]";
-			final WebElement passwordEntryNode = Mockito.mock(WebElement.class);
-			Mockito.when(passwordEntryNode.getText()).thenReturn(i + "St");
-			Mockito.when(this.webDriver.findElement(By.xpath(passwordEntryxpath)))
-			        .thenReturn(passwordEntryNode);
-			final String xpath2 = SantanderLogin.PASSWORD_VALUE_XPATH + i + "\"]";
-			final WebElement passwordValueNode = Mockito.mock(WebElement.class);
-			Mockito.when(this.webDriver.findElement(By.xpath(xpath2)))
-			        .thenReturn(passwordValueNode);
+			final WebElement answerSubmitField = Mockito.mock(WebElement.class);
+			Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.ANSWER_SUBMIT_XPATH)))
+			        .thenReturn(answerSubmitField);
+			final int numberOfDigits = 3;
+			for (int i = 1; i <= numberOfDigits; i++) {
+				final WebElement signPosition = Mockito.mock(WebElement.class);
+				Mockito.when(signPosition.getAttribute("tabindex")).thenReturn(String.valueOf(i));
+				Mockito.when(this.webDriver
+				        .findElement(By.name(SantanderLogin.SIGN_POSITION_PREFIX + i)))
+				        .thenReturn(signPosition);
+				final String xpath = SantanderLogin.PASSWORD_INDEX_XPATH + (i + 1) + "]";
 
+				final WebElement passwordIDNode = Mockito.mock(WebElement.class);
+				Mockito.when(passwordIDNode.getText()).thenReturn(i + "th");
+				Mockito.when(this.webDriver.findElement(By.xpath(xpath)))
+				        .thenReturn(passwordIDNode);
+
+				final String passwordEntryxpath = SantanderLogin.PASSWORD_INDEX_XPATH + (i + 1)
+				        + "]";
+				final WebElement passwordEntryNode = Mockito.mock(WebElement.class);
+				Mockito.when(passwordEntryNode.getText()).thenReturn(i + "St");
+				Mockito.when(this.webDriver.findElement(By.xpath(passwordEntryxpath)))
+				        .thenReturn(passwordEntryNode);
+				final String xpath2 = SantanderLogin.PASSWORD_VALUE_XPATH + i + "\"]";
+				final WebElement passwordValueNode = Mockito.mock(WebElement.class);
+				Mockito.when(this.webDriver.findElement(By.xpath(xpath2)))
+				        .thenReturn(passwordValueNode);
+
+			}
+			final WebElement passwordSubmitNode = Mockito.mock(WebElement.class);
+			Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.PASSWORD_SUBMIT_XPATH)))
+			        .thenReturn(passwordSubmitNode);
+
+			this.login.get();
 		}
-		final WebElement passwordSubmitNode = Mockito.mock(WebElement.class);
-		Mockito.when(this.webDriver.findElement(By.xpath(SantanderLogin.PASSWORD_SUBMIT_XPATH)))
-		        .thenReturn(passwordSubmitNode);
-
-		this.login.get();
+		catch (final Exception e) {
+			Assert.fail("Caught exception: " + e.getLocalizedMessage());
+		}
 	}
 
 	// @Test

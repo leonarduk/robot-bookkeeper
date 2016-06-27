@@ -55,13 +55,4 @@ public class UploadToClearCheckbookTest {
 		}
 	}
 
-	/**
-	 * Test upload to clear checkbook.
-	 */
-	@Test
-
-	public void testUploadToClearCheckbook() {
-		// UploadToClearCheckbook.uploadToClearCheckbook(userName, password,
-		// account, fileToUpload, driver, setting);
-	}
 }

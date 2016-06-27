@@ -174,10 +174,10 @@ public class SantanderLogin extends BaseSeleniumPage {
 		this.questions = new HashMap<>();
 		final String questionPrefix = "bookkeeper.web.santander.question.";
 		for (final Question question : this.filterQuestions) {
-			this.questions.put(question.configKeyString,
-			        config.getProperty(questionPrefix + question.configKeyString));
-			SantanderLogin.LOGGER.info("Q: " + question.configKeyString + " - "
-			        + this.questions.get(question.configKeyString));
+			this.questions.put(question.getConfigKeyString(),
+			        config.getProperty(questionPrefix + question.getConfigKeyString()));
+			SantanderLogin.LOGGER.info("Q: " + question.getConfigKeyString() + " - "
+			        + this.questions.get(question.getConfigKeyString()));
 
 		}
 		SantanderLogin.LOGGER.info("URL: " + this.loginUrl);
@@ -280,8 +280,8 @@ public class SantanderLogin extends BaseSeleniumPage {
 		String answer = null;
 
 		for (final Question question : this.filterQuestions) {
-			if (questionText.equals(question.questionTextString)) {
-				answer = this.questions.get(question.configKeyString);
+			if (questionText.equals(question.getQuestionTextString())) {
+				answer = this.questions.get(question.getConfigKeyString());
 				break;
 			}
 		}
@@ -342,10 +342,10 @@ public class SantanderLogin extends BaseSeleniumPage {
 	class Question {
 
 		/** The config key. */
-		final String configKeyString;
+		private final String configKeyString;
 
 		/** The question text. */
-		final String questionTextString;
+		private final String questionTextString;
 
 		/**
 		 * Instantiates a new question.
@@ -359,6 +359,14 @@ public class SantanderLogin extends BaseSeleniumPage {
 			super();
 			this.configKeyString = configKey;
 			this.questionTextString = questionText;
+		}
+
+		public String getConfigKeyString() {
+			return this.configKeyString;
+		}
+
+		public String getQuestionTextString() {
+			return this.questionTextString;
 		}
 
 	}
