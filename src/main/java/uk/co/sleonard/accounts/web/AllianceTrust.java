@@ -26,7 +26,7 @@ public class AllianceTrust extends BaseSeleniumPage {
 		final WebDriver webDriver = new FirefoxDriver();
 		final WebDriver freeAgentWebdriver = new FirefoxDriver();
 		final String ccbuserName = "stevel56";
-		final String ccbpassword = "N0bigm0mas!";
+		final String ccbpassword = "";
 		final String steveaccount = "155266";
 		final String lucyAccount = "155385";
 
@@ -113,14 +113,14 @@ public class AllianceTrust extends BaseSeleniumPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.openqa.selenium.support.ui.LoadableComponent#load()
 	 */
 	@Override
 	public final void load() {
 		this.getWebDriver().get("https://atonline.alliancetrust.co.uk/atonline/login.jsp");
 		final String accountNumber = "84871967";
-		final String password = "N0bigm0mas";
+		final String password = "";
 
 		this.getWebDriver().findElement(By.id("pid")).clear();
 		this.getWebDriver().findElement(By.id("pid")).sendKeys(accountNumber);
