@@ -9,10 +9,10 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import com.leonarduk.bookkeeper.web.clearcheckbook.UploadToClearCheckbook;
+import com.leonarduk.bookkeeper.web.clearcheckbook.UploadToClearCheckbook.Setting;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
-
-import uk.co.sleonard.accounts.web.UploadToClearCheckbook.Setting;
 
 /**
  * The Class AmexDownloadTransactions.

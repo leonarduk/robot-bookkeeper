@@ -1,7 +1,7 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package uk.co.sleonard.accounts.web;
+package com.leonarduk.bookkeeper.web.clearcheckbook;
 
 import java.io.File;
 import java.net.URL;

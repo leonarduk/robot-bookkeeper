@@ -1,9 +1,7 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package com.leonarduk.bookkeeper.web;
-
-import java.io.File;
+package com.leonarduk.bookkeeper.web.freeagent;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -12,8 +10,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.leonarduk.web.BaseSeleniumPage;
-import com.leonarduk.web.SeleniumUtils;
-import com.leonarduk.webscraper.core.FileUtils;
 
 /**
  * The Class FreeAgentLogin.
@@ -39,34 +35,17 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 	private final String userName;
 
 	/**
-	 * The main method.
-	 *
-	 * @param args
-	 *            the arguments
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static void main(final String[] args) throws Exception {
-		final File tempDir = FileUtils.createTempDir();
-
-		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
-
-		final FreeAgentLogin freeAgentLogin = new FreeAgentLogin(webDriver);
-		freeAgentLogin.get();
-
-	}
-
-	/**
 	 * Instantiates a new free agent login.
 	 *
 	 * @param webDriver
 	 *            the web driver
+	 * @param freeagentUrl
 	 */
-	public FreeAgentLogin(final WebDriver webDriver) {
-		super(webDriver, "https://leonarduk.freeagentcentral.com/overview");
-		this.loginUrl = "https://leonarduk.freeagentcentral.com/login";
-		this.userName = "accounts@leonarduk.com";
-		this.password = "N0bigm0mas!";
+	public FreeAgentLogin(final WebDriver webDriver, final FreeAgentConfig config) {
+		super(webDriver, config.getFreeagentUrl() + "/overview");
+		this.loginUrl = config.getFreeagentUrl() + "/login";
+		this.userName = config.getUsername();
+		this.password = config.getPassword();
 
 		FreeAgentLogin.LOGGER.info("URL: " + this.loginUrl);
 		FreeAgentLogin.LOGGER.info("ID: " + this.userName);

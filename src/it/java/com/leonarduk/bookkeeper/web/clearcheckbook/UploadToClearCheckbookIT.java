@@ -1,7 +1,7 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package uk.co.sleonard.accounts.web;
+package com.leonarduk.bookkeeper.web.clearcheckbook;
 
 import java.io.File;
 import java.net.URL;
@@ -12,10 +12,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
+import com.leonarduk.bookkeeper.web.clearcheckbook.UploadToClearCheckbook.Setting;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
-
-import uk.co.sleonard.accounts.web.UploadToClearCheckbook.Setting;
 
 /**
  * The Class UploadToClearCheckbookTest.

@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import com.leonarduk.bookkeeper.web.clearcheckbook.UploadToClearCheckbook;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -15,143 +16,132 @@ import com.leonarduk.web.BaseSeleniumPage;
  */
 public class AllianceTrust extends BaseSeleniumPage {
 
-    /**
-     * Instantiates a new alliance trust.
-     *
-     * @param webDriver
-     *            the web driver
-     */
-    public AllianceTrust(final WebDriver webDriver) {
-        super(webDriver,
-        // "https://atonline.alliancetrust.co.uk/atonline/index.jsp");
-                "https://atonline.alliancetrust.co.uk/atonline/secure/CustomerListView.action");
-    }
+	/**
+	 * The main method.
+	 *
+	 * @param args
+	 *            the arguments
+	 */
+	public static void main(final String[] args) {
+		final WebDriver webDriver = new FirefoxDriver();
+		final WebDriver freeAgentWebdriver = new FirefoxDriver();
+		final String ccbuserName = "stevel56";
+		final String ccbpassword = "N0bigm0mas!";
+		final String steveaccount = "155266";
+		final String lucyAccount = "155385";
 
-    /**
-     * The main method.
-     *
-     * @param args
-     *            the arguments
-     */
-    public static void main(final String[] args) {
-        final WebDriver webDriver = new FirefoxDriver();
-        WebDriver freeAgentWebdriver = new FirefoxDriver();
-        String ccbuserName = "stevel56";
-        String ccbpassword = "N0bigm0mas!";
-        String steveaccount = "155266";
-        String lucyAccount = "155385";
+		final AllianceTrust trust = new AllianceTrust(webDriver);
+		trust.get();
 
-        AllianceTrust trust = new AllianceTrust(webDriver);
-        trust.get();
+		final String pensionValue = trust.getValue(1, steveaccount);
+		System.out.println("Pension:" + pensionValue);
 
-        String pensionValue = trust.getValue(1, steveaccount);
-        System.out.println("Pension:" + pensionValue);
+		final String steveLisaValue = trust.getValue(2, steveaccount);
+		System.out.println("Steve ISA:" + steveLisaValue);
 
-        String steveLisaValue = trust.getValue(2, steveaccount);
-        System.out.println("Steve ISA:" + steveLisaValue);
+		final String lucyIsaValue = trust.getValue(1, lucyAccount);
+		System.out.println("Lucy ISA:" + lucyIsaValue);
+		UploadToClearCheckbook.updateEstimate("AT SIPP (StockMarket)", pensionValue, ccbuserName,
+		        ccbpassword, freeAgentWebdriver, "//*[@id=\"account-overviews\"]/div[3]/div[3]",
+		        "Updated from Alliance Trust");
+		UploadToClearCheckbook.updateEstimate("AT ISA Steve (StockMarket)", steveLisaValue,
+		        ccbuserName, ccbpassword, freeAgentWebdriver,
+		        "//*[@id=\"account-overviews\"]/div[2]/div[3]", "Updated from Alliance Trust");
+		UploadToClearCheckbook.updateEstimate("AT ISA Lucy (StockMarket)", lucyIsaValue,
+		        ccbuserName, ccbpassword, freeAgentWebdriver,
+		        "//*[@id=\"account-overviews\"]/div[1]/div[3]", "Updated from Alliance Trust");
 
-        String lucyIsaValue = trust.getValue(1, lucyAccount);
-        System.out.println("Lucy ISA:" + lucyIsaValue);
-        UploadToClearCheckbook.updateEstimate("AT SIPP (StockMarket)",
-                pensionValue, ccbuserName, ccbpassword, freeAgentWebdriver,
-                "//*[@id=\"account-overviews\"]/div[3]/div[3]",
-                "Updated from Alliance Trust");
-        UploadToClearCheckbook.updateEstimate("AT ISA Steve (StockMarket)",
-                steveLisaValue, ccbuserName, ccbpassword, freeAgentWebdriver,
-                "//*[@id=\"account-overviews\"]/div[2]/div[3]",
-                "Updated from Alliance Trust");
-        UploadToClearCheckbook.updateEstimate("AT ISA Lucy (StockMarket)",
-                lucyIsaValue, ccbuserName, ccbpassword, freeAgentWebdriver,
-                "//*[@id=\"account-overviews\"]/div[1]/div[3]",
-                "Updated from Alliance Trust");
+	}
 
-    }
+	/**
+	 * Instantiates a new alliance trust.
+	 *
+	 * @param webDriver
+	 *            the web driver
+	 */
+	public AllianceTrust(final WebDriver webDriver) {
+		super(webDriver,
+		        // "https://atonline.alliancetrust.co.uk/atonline/index.jsp");
+		        "https://atonline.alliancetrust.co.uk/atonline/secure/CustomerListView.action");
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see org.openqa.selenium.support.ui.LoadableComponent#load()
-     */
-    public final void load() {
-        this.getWebDriver().get(
-                "https://atonline.alliancetrust.co.uk/atonline/login.jsp");
-        String accountNumber = "84871967";
-        String password = "N0bigm0mas";
+	/**
+	 * Enter password.
+	 *
+	 * @param password
+	 *            the password
+	 */
+	public final void enterPassword(final String password) {
+		final int numberOfDigitsToEnter = 3;
+		for (int i = 0; i < numberOfDigitsToEnter; i++) {
+			final String xpathExpression = "//*[@id=\"login-r\"]/form/table/tbody/tr[1]/td["
+			        + (i + 1) + "]";
 
-        this.getWebDriver().findElement(By.id("pid")).clear();
-        this.getWebDriver().findElement(By.id("pid")).sendKeys(accountNumber);
-        this.getWebDriver()
-                .findElement(By.cssSelector("input[type=\"image\"]")).click();
-        enterPassword(password);
-        waitForPageToLoad();
+			final WebElement indexElement = this.getWebDriver()
+			        .findElement(By.xpath(xpathExpression));
+			final int index = Integer.valueOf(indexElement.getText().replaceAll("\\D+", ""));
 
-    }
+			this.getWebDriver().findElement(By.id("ppd" + (i))).clear();
+			final String character = password.substring(index - 1, index);
+			this.getWebDriver().findElement(By.id("ppd" + (i))).sendKeys(character);
+		}
+		this.getWebDriver().findElement(By.xpath("//input[@value='Continue >']")).click();
+	}
 
-    /**
-     * Gets the value.
-     *
-     * @param row
-     *            the row
-     * @param account
-     *            the account
-     * @return the value
-     */
-    public final String getValue(final int row, final String account) {
-        waitForPageToLoad(By.linkText(account)).click();
+	/**
+	 * Gets the value.
+	 *
+	 * @param row
+	 *            the row
+	 * @param account
+	 *            the account
+	 * @return the value
+	 */
+	public final String getValue(final int row, final String account) {
+		this.waitForPageToLoad(By.linkText(account)).click();
 
-        String xpath =
-                "//*[@id=\"hor-minimalist-b\"]/tbody/tr[" + (row + 1)
-                        + "]/td[5]";
+		final String xpath = "//*[@id=\"hor-minimalist-b\"]/tbody/tr[" + (row + 1) + "]/td[5]";
 
-        String value =
-                waitForPageToLoad(By.xpath(xpath)).getAttribute("textContent")
-                        .trim();
+		final String value = this.waitForPageToLoad(By.xpath(xpath)).getAttribute("textContent")
+		        .trim();
 
-        waitForPageToLoad(By.linkText("Home")).click();
+		this.waitForPageToLoad(By.linkText("Home")).click();
 
-        return value;
+		return value;
 
-    }
+	}
 
-    /**
-     * Wait for page to load.
-     *
-     * @param by
-     *            the by
-     * @return the web element
-     */
-    private WebElement waitForPageToLoad(final By by) {
-        while (!this.isElementPresent(by)) {
-            this.waitForPageToLoad();
-        }
-        return this.getWebDriver().findElement(by);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.openqa.selenium.support.ui.LoadableComponent#load()
+	 */
+	@Override
+	public final void load() {
+		this.getWebDriver().get("https://atonline.alliancetrust.co.uk/atonline/login.jsp");
+		final String accountNumber = "84871967";
+		final String password = "N0bigm0mas";
 
-    /**
-     * Enter password.
-     *
-     * @param password
-     *            the password
-     */
-    public final void enterPassword(final String password) {
-        final int numberOfDigitsToEnter = 3;
-        for (int i = 0; i < numberOfDigitsToEnter; i++) {
-            String xpathExpression =
-                    "//*[@id=\"login-r\"]/form/table/tbody/tr[1]/td[" + (i + 1)
-                            + "]";
+		this.getWebDriver().findElement(By.id("pid")).clear();
+		this.getWebDriver().findElement(By.id("pid")).sendKeys(accountNumber);
+		this.getWebDriver().findElement(By.cssSelector("input[type=\"image\"]")).click();
+		this.enterPassword(password);
+		this.waitForPageToLoad();
 
-            WebElement indexElement =
-                    this.getWebDriver().findElement(By.xpath(xpathExpression));
-            int index =
-                    Integer.valueOf(indexElement.getText().replaceAll("\\D+",
-                            ""));
+	}
 
-            this.getWebDriver().findElement(By.id("ppd" + (i))).clear();
-            String character = password.substring(index - 1, index);
-            this.getWebDriver().findElement(By.id("ppd" + (i)))
-                    .sendKeys(character);
-        }
-        this.getWebDriver()
-                .findElement(By.xpath("//input[@value='Continue >']")).click();
-    }
+	/**
+	 * Wait for page to load.
+	 *
+	 * @param by
+	 *            the by
+	 * @return the web element
+	 */
+	private WebElement waitForPageToLoad(final By by) {
+		while (!this.isElementPresent(by)) {
+			this.waitForPageToLoad();
+		}
+		return this.getWebDriver().findElement(by);
+	}
 
 }
