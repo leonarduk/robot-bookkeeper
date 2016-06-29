@@ -14,7 +14,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import com.leonarduk.web.BaseSeleniumPage;
-import com.leonarduk.web.SeleniumUtils;
 
 /**
  * The Class UploadToClearCheckbook.
@@ -25,9 +24,9 @@ import com.leonarduk.web.SeleniumUtils;
  * @version $Date: $: Date of last commit
  * @since 28 Mar 2015
  */
-public class UploadToClearCheckbook {
+public class ClearCheckbook {
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = Logger.getLogger(UploadToClearCheckbook.class);
+	private static final Logger LOGGER = Logger.getLogger(ClearCheckbook.class);
 
 	/**
 	 * Amex settings.
@@ -45,7 +44,7 @@ public class UploadToClearCheckbook {
 			        .selectByVisibleText(account);
 		}
 		catch (final NoSuchElementException e) {
-			UploadToClearCheckbook.LOGGER.error("Failed to find element in amexSettings", e);
+			ClearCheckbook.LOGGER.error("Failed to find element in amexSettings", e);
 			throw e;
 		}
 	}
@@ -91,7 +90,7 @@ public class UploadToClearCheckbook {
 		driver.findElement(By.cssSelector("input.btn.btn-default")).click();
 		BaseSeleniumPage.waitForPageToLoad(driver);
 
-		UploadToClearCheckbook.removeDuplicatesByPage(driver);
+		ClearCheckbook.removeDuplicatesByPage(driver);
 		driver.findElement(By.linkText("« Return to Imported Transactions")).click();
 		if (driver.findElements(By.id("jive")).size() > 0) {
 			driver.findElement(By.id("jive")).click();
@@ -129,28 +128,6 @@ public class UploadToClearCheckbook {
 	}
 
 	/**
-	 * The main method.
-	 *
-	 * @param args
-	 *            the arguments
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static void main(final String[] args) throws Exception {
-		final String userName = "stevel56";
-		final String password = "N0bigm0mas!";
-		final String account = "CC - AMEX";
-		final String fileToUpload = "/home/stephen/Downloads/ofx(10).qif";
-
-		final WebDriver webDriver = SeleniumUtils
-		        .getDownloadCapableBrowser("/home/stephen/Downloads");
-		final String results = UploadToClearCheckbook.uploadToClearCheckbook(userName, password,
-		        account, fileToUpload, webDriver, Setting.AMEX);
-		System.out.println(results);
-
-	}
-
-	/**
 	 * Nationwide settings.
 	 *
 	 * @param account
@@ -167,7 +144,7 @@ public class UploadToClearCheckbook {
 			        .selectByVisibleText(account);
 		}
 		catch (final NoSuchElementException e) {
-			UploadToClearCheckbook.LOGGER.error("Failed to find element in nationwideSettings", e);
+			ClearCheckbook.LOGGER.error("Failed to find element in nationwideSettings", e);
 			throw e;
 		}
 	}
@@ -216,26 +193,26 @@ public class UploadToClearCheckbook {
 	public static String updateEstimate(final String account, final String currentValue,
 	        final String userName, final String password, final WebDriver driver,
 	        final String valueXpath, final CharSequence memo) {
-		UploadToClearCheckbook.login(userName, password, driver);
+		ClearCheckbook.login(userName, password, driver);
 
 		final WebElement valueElement = driver.findElement(By.xpath(valueXpath));
 		final String ccbValueString = valueElement.getText();
 
 		// driver.findElement(By.linkText("Enter a Transaction")).click();
 		driver.findElement(By.id("amount")).clear();
-		final double ccbAmount = UploadToClearCheckbook.convertMoneyString(ccbValueString);
-		double amount = UploadToClearCheckbook.convertMoneyString(currentValue) - ccbAmount;
+		final double ccbAmount = ClearCheckbook.convertMoneyString(ccbValueString);
+		double amount = ClearCheckbook.convertMoneyString(currentValue) - ccbAmount;
 		if (Math.abs(amount) < 1) {
-			UploadToClearCheckbook.LOGGER.info("No change");
+			ClearCheckbook.LOGGER.info("No change");
 			return "No change";
 		}
 		final int veryLargeChange = 100000;
 		if (Math.abs(amount) > veryLargeChange) {
-			UploadToClearCheckbook.LOGGER
+			ClearCheckbook.LOGGER
 			        .warn("Suspected error, ignoring move from " + ccbAmount + " to " + amount);
 			return "No change";
 		}
-		UploadToClearCheckbook.LOGGER.info("Updating value from " + ccbAmount + " to " + amount);
+		ClearCheckbook.LOGGER.info("Updating value from " + ccbAmount + " to " + amount);
 
 		driver.findElement(By.id("amount")).sendKeys(String.valueOf(amount));
 		driver.findElement(By.id("memo")).sendKeys(memo);
@@ -279,20 +256,20 @@ public class UploadToClearCheckbook {
 	public static String uploadToClearCheckbook(final String userName, final String password,
 	        final String account, final String fileToUpload, final WebDriver driver,
 	        final Setting setting) throws Exception {
-		UploadToClearCheckbook.login(userName, password, driver);
-		UploadToClearCheckbook.chooseFileToUpload(fileToUpload, driver);
+		ClearCheckbook.login(userName, password, driver);
+		ClearCheckbook.chooseFileToUpload(fileToUpload, driver);
 		switch (setting) {
 			case AMEX:
-				UploadToClearCheckbook.amexSettings(account, driver);
+				ClearCheckbook.amexSettings(account, driver);
 				break;
 			case NATIONWIDE:
-				UploadToClearCheckbook.nationwideSettings(account, driver);
+				ClearCheckbook.nationwideSettings(account, driver);
 				break;
 			default:
 				throw new UnsupportedOperationException("Cant process " + setting.name());
 		}
 
-		return UploadToClearCheckbook.importTransactions(driver);
+		return ClearCheckbook.importTransactions(driver);
 
 	}
 

@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import com.leonarduk.bookkeeper.web.clearcheckbook.UploadToClearCheckbook;
-import com.leonarduk.bookkeeper.web.clearcheckbook.UploadToClearCheckbook.Setting;
+import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook;
+import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook.Setting;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
 
@@ -53,7 +53,7 @@ public class AmexDownloadTransactions {
 		final String account = "CC - AMEX";
 		final String fileToUpload = downloadDir.getAbsolutePath() + "/ofx.qif";
 
-		final String results = UploadToClearCheckbook.uploadToClearCheckbook(ccbuserName,
+		final String results = ClearCheckbook.uploadToClearCheckbook(ccbuserName,
 		        ccbpassword, account, fileToUpload, webDriver, Setting.AMEX);
 		System.out.println(results);
 		// transactions.finalize();

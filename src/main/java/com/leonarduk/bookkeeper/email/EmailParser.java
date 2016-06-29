@@ -1,13 +1,10 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package com.leonarduk.bookkeeper;
-
-import java.io.IOException;
+package com.leonarduk.bookkeeper.email;
 
 import org.apache.log4j.Logger;
 
-import com.leonarduk.bookkeeper.email.BFCAInvoiceProcessor;
 import com.leonarduk.webscraper.core.config.Config;
 import com.leonarduk.webscraper.core.email.EmailReader;
 import com.leonarduk.webscraper.core.email.ServerType;
@@ -27,19 +24,6 @@ import com.leonarduk.webscraper.core.email.impl.SimplePrintEmailProcessor;
 public final class EmailParser {
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = Logger.getLogger(EmailParser.class);
-
-	/**
-	 * The main method.
-	 *
-	 * @param args
-	 *            the arguments
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	public static void main(final String[] args) throws IOException {
-		final Config config = new Config("bookkeeper.properties");
-		EmailParser.processEmails(config);
-	}
 
 	/**
 	 * Process emails.

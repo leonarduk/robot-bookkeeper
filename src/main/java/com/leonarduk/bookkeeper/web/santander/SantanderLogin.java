@@ -3,7 +3,6 @@
  */
 package com.leonarduk.bookkeeper.web.santander;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +13,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.leonarduk.web.BaseSeleniumPage;
-import com.leonarduk.web.SeleniumUtils;
-import com.leonarduk.webscraper.core.FileUtils;
 import com.thoughtworks.selenium.SeleniumException;
 
 /**
@@ -82,26 +79,6 @@ public class SantanderLogin extends BaseSeleniumPage {
 	private final String securityNumber;
 
 	private final SantanderConfig config;
-
-	/**
-	 * The main method.
-	 *
-	 * @param args
-	 *            the arguments
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static void main(final String[] args) throws Exception {
-		final SantanderConfig config = new SantanderConfig("bookkeeper.properties");
-		final File tempDir = FileUtils.createTempDir();
-
-		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
-
-		final SantanderDownloadTransactions santanderLogin = new SantanderDownloadTransactions(
-		        new SantanderLogin(webDriver, config));
-		santanderLogin.get();
-
-	}
 
 	/**
 	 * Instantiates a new santander login.

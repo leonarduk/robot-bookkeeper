@@ -24,7 +24,7 @@ public class UploadToClearCheckbookTest {
 	 */
 	@Test
 	public final void testConvertMoneyString() {
-		final double convertMoneyString = UploadToClearCheckbook.convertMoneyString("£750,055");
+		final double convertMoneyString = ClearCheckbook.convertMoneyString("£750,055");
 		final int expected = 750055;
 		Assert.assertEquals(expected, convertMoneyString, 0);
 	}
@@ -44,7 +44,7 @@ public class UploadToClearCheckbookTest {
 			final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
 
 			final String name = "clearcheckbook/";
-			final URL url = UploadToClearCheckbook.class.getClass().getResource(name);
+			final URL url = ClearCheckbook.class.getClass().getResource(name);
 			driver.get(url.getPath());
 			// UploadToClearCheckbook.updateEstimate(account, currentValue,
 			// userName,

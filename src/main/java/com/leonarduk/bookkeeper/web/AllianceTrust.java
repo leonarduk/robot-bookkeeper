@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.leonarduk.bookkeeper.web.clearcheckbook.UploadToClearCheckbook;
+import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -41,13 +41,13 @@ public class AllianceTrust extends BaseSeleniumPage {
 
 		final String lucyIsaValue = trust.getValue(1, lucyAccount);
 		System.out.println("Lucy ISA:" + lucyIsaValue);
-		UploadToClearCheckbook.updateEstimate("AT SIPP (StockMarket)", pensionValue, ccbuserName,
+		ClearCheckbook.updateEstimate("AT SIPP (StockMarket)", pensionValue, ccbuserName,
 		        ccbpassword, freeAgentWebdriver, "//*[@id=\"account-overviews\"]/div[3]/div[3]",
 		        "Updated from Alliance Trust");
-		UploadToClearCheckbook.updateEstimate("AT ISA Steve (StockMarket)", steveLisaValue,
+		ClearCheckbook.updateEstimate("AT ISA Steve (StockMarket)", steveLisaValue,
 		        ccbuserName, ccbpassword, freeAgentWebdriver,
 		        "//*[@id=\"account-overviews\"]/div[2]/div[3]", "Updated from Alliance Trust");
-		UploadToClearCheckbook.updateEstimate("AT ISA Lucy (StockMarket)", lucyIsaValue,
+		ClearCheckbook.updateEstimate("AT ISA Lucy (StockMarket)", lucyIsaValue,
 		        ccbuserName, ccbpassword, freeAgentWebdriver,
 		        "//*[@id=\"account-overviews\"]/div[1]/div[3]", "Updated from Alliance Trust");
 

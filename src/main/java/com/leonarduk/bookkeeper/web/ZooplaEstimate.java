@@ -11,7 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.leonarduk.bookkeeper.web.clearcheckbook.UploadToClearCheckbook;
+import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook;
 import com.leonarduk.web.BaseSeleniumPage;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
@@ -54,7 +54,7 @@ public class ZooplaEstimate extends BaseSeleniumPage {
 		final String valueXpath = "//*[@id=\"account-overviews\"]/div[29]/div[3]";
 		final String memo = "Updated from Zoopla estimate";
 
-		UploadToClearCheckbook.updateEstimate(account, estimate, ccbuserName, ccbpassword,
+		ClearCheckbook.updateEstimate(account, estimate, ccbuserName, ccbpassword,
 		        webDriver, valueXpath, memo);
 
 	}
