@@ -4,17 +4,14 @@
 package com.leonarduk.bookkeeper.web.amex;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook;
-import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook.Setting;
-import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbookConfig;
-import com.leonarduk.web.SeleniumUtils;
-import com.leonarduk.webscraper.core.FileUtils;
-import com.leonarduk.webscraper.core.config.Config;
+import com.leonarduk.bookkeeper.file.QifFileParser;
+import com.leonarduk.bookkeeper.file.TransactionRecord;
 
 /**
  * The Class AmexDownloadTransactions.
@@ -33,68 +30,51 @@ public class AmexDownloadTransactions {
 	/** The base url. */
 	private final String baseUrl;
 
-	/**
-	 * The main method.
-	 *
-	 * @param args
-	 *            the arguments
-	 * @throws Throwable
-	 *             the throwable
-	 */
-	public static void main(final String[] args) throws Throwable {
-		final String userName = "stevel56";
-		final String password = "";
-		final File downloadDir = FileUtils.createTempDir();
-		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(downloadDir);
+	private final AmexConfig config;
 
-		final AmexDownloadTransactions transactions = new AmexDownloadTransactions(webDriver);
-		transactions.downloadTransactions(userName, password);
-
-		final String account = "CC - AMEX";
-		final String fileToUpload = downloadDir.getAbsolutePath() + "/ofx.qif";
-		final ClearCheckbook clearCheckbook = new ClearCheckbook(
-		        new ClearCheckbookConfig(new Config("bookkeeper-sit.properties")));
-
-		final String results = clearCheckbook.uploadToClearCheckbook(account, fileToUpload,
-		        webDriver, Setting.AMEX, false);
-		System.out.println(results);
-		// transactions.finalize();
-
-	}
+	private final File downloadDir;
 
 	/**
 	 * Instantiates a new amex download transactions.
 	 *
 	 * @param webDriver
 	 *            the web driver
+	 * @param config
+	 * @param downloadDir
 	 * @throws Exception
 	 *             the exception
 	 */
-	public AmexDownloadTransactions(final WebDriver webDriver) throws Exception {
+	public AmexDownloadTransactions(final WebDriver webDriver, final AmexConfig config,
+	        final File downloadDir) throws Exception {
 		this.driver = webDriver;
 		this.baseUrl = "https://www.americanexpress.com/";
 		final int fewSeconds = 3;
+		this.config = config;
+		this.downloadDir = downloadDir;
 		this.driver.manage().timeouts().implicitlyWait(fewSeconds, TimeUnit.SECONDS);
+	}
+
+	public final List<TransactionRecord> downloadTransactions() throws Exception {
+		final QifFileParser parser = new QifFileParser();
+		final String fileName = this.downloadTransactionsFile();
+		return parser.parse(fileName);
 	}
 
 	/**
 	 * Download transactions.
 	 *
-	 * @param userName
-	 *            the user name
-	 * @param password
-	 *            the password
+	 * @return
+	 *
 	 * @throws Exception
 	 *             the exception
 	 */
-	public final void downloadTransactions(final String userName, final String password)
-	        throws Exception {
+	public final String downloadTransactionsFile() throws Exception {
 		this.driver.get(this.baseUrl + "/uk/");
 		this.driver.findElement(By.id("LabelUserID")).click();
 		this.driver.findElement(By.id("UserID")).clear();
-		this.driver.findElement(By.id("UserID")).sendKeys(userName);
+		this.driver.findElement(By.id("UserID")).sendKeys(this.config.getUserName());
 		this.driver.findElement(By.id("Password")).clear();
-		this.driver.findElement(By.id("Password")).sendKeys(password);
+		this.driver.findElement(By.id("Password")).sendKeys(this.config.getPassword());
 		this.driver.findElement(By.id("loginButton")).click();
 		this.driver.findElement(By.id("estatement-link")).click();
 		this.driver.findElement(By.cssSelector("#downloads-link > span.copy")).click();
@@ -109,6 +89,7 @@ public class AmexDownloadTransactions {
 		this.driver.findElement(By.id("radioid02")).click();
 		this.driver.findElement(By.id("radioid03")).click();
 		this.driver.findElement(By.linkText("Download Now")).click();
+		return this.downloadDir.getAbsolutePath() + "/ofx.qif";
 	}
 
 }

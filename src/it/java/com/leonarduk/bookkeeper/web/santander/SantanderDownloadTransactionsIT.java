@@ -10,10 +10,10 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.junit.Test;
 
-import com.leonarduk.bookkeeper.file.QifFileParser;
+import com.leonarduk.bookkeeper.file.CSVFormatter;
+import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.webscraper.core.FileUtils;
 
@@ -27,12 +27,10 @@ public class SantanderDownloadTransactionsIT {
 		final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(
 		        santanderLogin);
 		santanderTransactions.get();
-		final String fileName = santanderTransactions.downloadTransactions(tempDir);
-		final File file = new File(fileName);
-		Assert.assertTrue(file.exists());
-		final QifFileParser parser = new QifFileParser();
-		final List<TransactionRecord> records = parser.parse(fileName);
-		final String content = FileUtils.getFileContents(fileName);
-		SantanderDownloadTransactionsIT.LOGGER.info(content);
+		final List<TransactionRecord> records = santanderTransactions.downloadTransactions(tempDir);
+		final FileFormatter formatter = new CSVFormatter();
+		final String outputFileName = "test.qif";
+		formatter.format(records, outputFileName);
+		System.out.println(FileUtils.getFileContents(outputFileName));
 	}
 }

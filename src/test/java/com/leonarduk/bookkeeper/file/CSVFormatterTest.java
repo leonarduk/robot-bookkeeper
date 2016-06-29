@@ -20,7 +20,7 @@ import com.leonarduk.webscraper.core.FileUtils;
  *
  * http://www.freeagent.com/support/kb/banking/file-format-for-bank-upload-csv/
  */
-public class FreeAgentCSVFormatterTest {
+public class CSVFormatterTest {
 
 	/**
 	 * Test format.
@@ -30,7 +30,7 @@ public class FreeAgentCSVFormatterTest {
 	 */
 	@Test
 	public final void testFormat() throws IOException {
-		final FreeAgentCSVFormatter formatter = new FreeAgentCSVFormatter();
+		final CSVFormatter formatter = new CSVFormatter();
 		final List<TransactionRecord> transactionRecords = new ArrayList<>();
 		transactionRecords.add(
 		        new TransactionRecord(-12.23, "Payment", DateUtils.stringToDate("2016/06/23")));

@@ -4,9 +4,13 @@
 package com.leonarduk.bookkeeper.web.santander;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.leonarduk.bookkeeper.file.QifFileParser;
+import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -65,6 +69,13 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 		this.findElementByXpath("//*[@id=\"" + index + "\"]").click();
 	}
 
+	public final List<TransactionRecord> downloadTransactions(final File tempDir)
+	        throws IOException {
+		final QifFileParser parser = new QifFileParser();
+		final String fileName = this.downloadTransactionsFile(tempDir);
+		return parser.parse(fileName);
+	}
+
 	/**
 	 * Download transactions.
 	 *
@@ -72,7 +83,7 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 	 *
 	 * @return
 	 */
-	public final String downloadTransactions(final File tempDir) {
+	public final String downloadTransactionsFile(final File tempDir) {
 		// select transactions
 		final String xpath = "//*[@id=\"submenu\"]/ul/li[2]/a";
 		this.findElementByXpath(xpath).click();
