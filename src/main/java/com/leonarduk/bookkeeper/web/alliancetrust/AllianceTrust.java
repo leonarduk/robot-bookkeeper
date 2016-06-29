@@ -3,60 +3,18 @@
  */
 package com.leonarduk.bookkeeper.web.alliancetrust;
 
-import java.io.IOException;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook;
-import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbookConfig;
 import com.leonarduk.web.BaseSeleniumPage;
-import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class AllianceTrust.
  */
 public class AllianceTrust extends BaseSeleniumPage {
 
-	/**
-	 * The main method.
-	 *
-	 * @param args
-	 *            the arguments
-	 * @throws IOException
-	 */
-	public static void main(final String[] args) throws IOException {
-		final WebDriver webDriver = new FirefoxDriver();
-		final WebDriver freeAgentWebdriver = new FirefoxDriver();
-		final String steveaccount = "155266";
-		final String lucyAccount = "155385";
-
-		final AllianceTrust trust = new AllianceTrust(webDriver);
-		trust.get();
-
-		final String pensionValue = trust.getValue(1, steveaccount);
-		System.out.println("Pension:" + pensionValue);
-
-		final String steveLisaValue = trust.getValue(2, steveaccount);
-		System.out.println("Steve ISA:" + steveLisaValue);
-
-		final ClearCheckbookConfig config = new ClearCheckbookConfig(
-		        new Config("bookkeeper-sit.properties"));
-
-		final ClearCheckbook clearCheckbook = new ClearCheckbook(config);
-		final String lucyIsaValue = trust.getValue(1, lucyAccount);
-		System.out.println("Lucy ISA:" + lucyIsaValue);
-		clearCheckbook.updateEstimate("AT SIPP (StockMarket)", pensionValue, freeAgentWebdriver,
-		        "//*[@id=\"account-overviews\"]/div[3]/div[3]", "Updated from Alliance Trust");
-		clearCheckbook.updateEstimate("AT ISA Steve (StockMarket)", steveLisaValue,
-		        freeAgentWebdriver, "//*[@id=\"account-overviews\"]/div[2]/div[3]",
-		        "Updated from Alliance Trust");
-		clearCheckbook.updateEstimate("AT ISA Lucy (StockMarket)", lucyIsaValue, freeAgentWebdriver,
-		        "//*[@id=\"account-overviews\"]/div[1]/div[3]", "Updated from Alliance Trust");
-
-	}
+	private final AllianceTrustConfig config;
 
 	/**
 	 * Instantiates a new alliance trust.
@@ -64,10 +22,12 @@ public class AllianceTrust extends BaseSeleniumPage {
 	 * @param webDriver
 	 *            the web driver
 	 */
-	public AllianceTrust(final WebDriver webDriver) {
+	public AllianceTrust(final WebDriver webDriver, final AllianceTrustConfig config) {
 		super(webDriver,
 		        // "https://atonline.alliancetrust.co.uk/atonline/index.jsp");
 		        "https://atonline.alliancetrust.co.uk/atonline/secure/CustomerListView.action");
+
+		this.config = config;
 	}
 
 	/**
@@ -84,7 +44,8 @@ public class AllianceTrust extends BaseSeleniumPage {
 
 			final WebElement indexElement = this.getWebDriver()
 			        .findElement(By.xpath(xpathExpression));
-			final int index = Integer.valueOf(indexElement.getText().replaceAll("\\D+", ""));
+			final int index = Integer.valueOf(indexElement.getText().replaceAll("\\D+", ""))
+			        .intValue();
 
 			this.getWebDriver().findElement(By.id("ppd" + (i))).clear();
 			final String character = password.substring(index - 1, index);
@@ -124,13 +85,10 @@ public class AllianceTrust extends BaseSeleniumPage {
 	@Override
 	public final void load() {
 		this.getWebDriver().get("https://atonline.alliancetrust.co.uk/atonline/login.jsp");
-		final String accountNumber = "84871967";
-		final String password = "";
-
 		this.getWebDriver().findElement(By.id("pid")).clear();
-		this.getWebDriver().findElement(By.id("pid")).sendKeys(accountNumber);
+		this.getWebDriver().findElement(By.id("pid")).sendKeys(this.config.getAccountNumber());
 		this.getWebDriver().findElement(By.cssSelector("input[type=\"image\"]")).click();
-		this.enterPassword(password);
+		this.enterPassword(this.config.getPassword());
 		this.waitForPageToLoad();
 
 	}
