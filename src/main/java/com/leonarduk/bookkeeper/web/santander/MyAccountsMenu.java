@@ -1,10 +1,10 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package com.leonarduk.bookkeeper.web;
+package com.leonarduk.bookkeeper.web.santander;
 
 /**
- * The Enum AccountServicesMenu.
+ * The Enum MyAccountsMenu.
  *
  * @author stephen
  * @version $Author: $: Author of last commit
@@ -12,29 +12,33 @@ package com.leonarduk.bookkeeper.web;
  * @version $Date: $: Date of last commit
  * @since 18 Feb 2015
  */
-enum AccountServicesMenu {
+public enum MyAccountsMenu {
 
-	/** The Overview. */
-	Overview(1),
-	/** The Alerts. */
-	Alerts(2),
-	/** The e documents. */
-	eDocuments(3),
-	/** The Requests. */
-	Requests(4),
+	/** The Accounts. */
+	Accounts(1),
+	/** The Transactions. */
+	Transactions(2),
+	/** The Overdraft. */
+	Overdraft(3),
+	/** The Charges. */
+	Charges(4),
+	/** The Savings goals. */
+	SavingsGoals(5),
+	/** The E documents. */
+	EDocuments(6),
 	/** The Mobile payments. */
-	MobilePayments(5);
+	MobilePayments(7);
 
 	/** The index. */
 	private int itemIndex;
 
 	/**
-	 * Instantiates a new account services menu.
+	 * Instantiates a new my accounts menu.
 	 *
 	 * @param index
 	 *            the index
 	 */
-	private AccountServicesMenu(final int index) {
+	private MyAccountsMenu(final int index) {
 		this.itemIndex = index;
 	}
 

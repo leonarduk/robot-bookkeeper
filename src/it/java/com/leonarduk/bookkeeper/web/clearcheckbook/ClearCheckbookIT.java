@@ -4,28 +4,44 @@
 package com.leonarduk.bookkeeper.web.clearcheckbook;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
+import com.leonarduk.bookkeeper.file.DateUtils;
+import com.leonarduk.bookkeeper.file.FileFormatter;
+import com.leonarduk.bookkeeper.file.QifFileFormatter;
+import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook.Setting;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
+import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class UploadToClearCheckbookTest.
  */
 public class ClearCheckbookIT {
 
-	private static boolean internetAvailable;
+	private static boolean	internetAvailable;
+	private ClearCheckbook	clearCheckbook;
 
 	@BeforeClass
 	public static void setupStatic() {
 		ClearCheckbookIT.internetAvailable = SeleniumUtils.isInternetAvailable();
+	}
+
+	@Before
+	public void setup() throws IOException {
+		this.clearCheckbook = new ClearCheckbook(
+		        new ClearCheckbookConfig(new Config("bookkeeper-sit.properties")));
 	}
 
 	/**
@@ -33,7 +49,7 @@ public class ClearCheckbookIT {
 	 */
 	@Test
 	public final void testConvertMoneyString() {
-		final double convertMoneyString = ClearCheckbook.convertMoneyString("£750,055");
+		final double convertMoneyString = this.clearCheckbook.convertMoneyString("£750,055");
 		final int expected = 750055;
 		Assert.assertEquals(expected, convertMoneyString, 0);
 	}
@@ -65,16 +81,22 @@ public class ClearCheckbookIT {
 	}
 
 	@Test
-	public void testUploadToClearCheckbookAmex() throws Exception {
-		final String userName = "stevel56";
-		final String password = "N0bigm0mas!";
-		final String account = "CC - AMEX";
-		final String fileToUpload = "/home/stephen/Downloads/ofx(10).qif";
+	public void testUploadToClearCheckbookCash() throws Exception {
+		final String account = "Cash";
+		final FileFormatter formatter = new QifFileFormatter(QifFileFormatter.CCB_FORMAT);
+		final List<TransactionRecord> transactionRecords = new ArrayList<>();
+		transactionRecords.add(
+		        new TransactionRecord(-12.23, "Payment", DateUtils.stringToDate("2016/06/23")));
+		transactionRecords
+		        .add(new TransactionRecord(2.23, "Receipt", DateUtils.stringToDate("2016/06/26")));
+		final File tempDir = FileUtils.createTempDir();
+		final String outputFileName = tempDir.getAbsolutePath() + "/output.qif";
+		formatter.format(transactionRecords, outputFileName);
 
-		final WebDriver webDriver = SeleniumUtils
-		        .getDownloadCapableBrowser("/home/stephen/Downloads");
-		final String results = ClearCheckbook.uploadToClearCheckbook(userName, password, account,
-		        fileToUpload, webDriver, Setting.AMEX);
+		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
+
+		final String results = this.clearCheckbook.uploadToClearCheckbook(account, outputFileName,
+		        webDriver, Setting.GENERAL, false);
 		System.out.println(results);
 
 	}
@@ -88,15 +110,13 @@ public class ClearCheckbookIT {
 	public void testUploadToClearCheckbookNationwide() throws Exception {
 		try {
 			if (ClearCheckbookIT.internetAvailable) {
-				final String userName = "virtualagent";
-				final String password = "eggsandbacon123";
 				final String account = "ZZZ  - Test Nationwide";
 				final String fileToUpload = "test";
 				final File tempDir = FileUtils.createTempDir();
 				final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
 				final Setting setting = ClearCheckbook.Setting.NATIONWIDE;
-				ClearCheckbook.uploadToClearCheckbook(userName, password, account, fileToUpload,
-				        driver, setting);
+				this.clearCheckbook.uploadToClearCheckbook(account, fileToUpload, driver, setting,
+				        false);
 			}
 		}
 		catch (final Exception e) {

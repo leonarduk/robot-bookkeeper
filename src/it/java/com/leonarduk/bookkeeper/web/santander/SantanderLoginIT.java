@@ -4,7 +4,7 @@
  * @author ${author}
  * @since 27-Jun-2016
  */
-package com.leonarduk.bookkeeper.web;
+package com.leonarduk.bookkeeper.web.santander;
 
 import java.io.File;
 import java.io.IOException;

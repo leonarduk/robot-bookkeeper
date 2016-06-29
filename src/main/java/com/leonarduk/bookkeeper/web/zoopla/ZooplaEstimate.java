@@ -1,7 +1,7 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package com.leonarduk.bookkeeper.web;
+package com.leonarduk.bookkeeper.web.zoopla;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -12,9 +12,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook;
+import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbookConfig;
 import com.leonarduk.web.BaseSeleniumPage;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
+import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class NationwideLogin.
@@ -44,9 +46,6 @@ public class ZooplaEstimate extends BaseSeleniumPage {
 		final String estimate = zooplaEstimate.getEstimate();
 		final String account = "RE - 60 Willoughby Road (Illiquid)";
 
-		final String ccbuserName = "stevel56";
-		final String ccbpassword = "N0bigm0mas!";
-
 		final File tempDir = FileUtils.createTempDir();
 
 		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
@@ -54,8 +53,8 @@ public class ZooplaEstimate extends BaseSeleniumPage {
 		final String valueXpath = "//*[@id=\"account-overviews\"]/div[29]/div[3]";
 		final String memo = "Updated from Zoopla estimate";
 
-		ClearCheckbook.updateEstimate(account, estimate, ccbuserName, ccbpassword,
-		        webDriver, valueXpath, memo);
+		new ClearCheckbook(new ClearCheckbookConfig(new Config("bookkeeper-sit.properties")))
+		        .updateEstimate(account, estimate, webDriver, valueXpath, memo);
 
 	}
 

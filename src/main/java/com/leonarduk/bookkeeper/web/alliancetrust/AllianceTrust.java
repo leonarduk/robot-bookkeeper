@@ -1,7 +1,9 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package com.leonarduk.bookkeeper.web;
+package com.leonarduk.bookkeeper.web.alliancetrust;
+
+import java.io.IOException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +11,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook;
+import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbookConfig;
 import com.leonarduk.web.BaseSeleniumPage;
+import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class AllianceTrust.
@@ -21,12 +25,11 @@ public class AllianceTrust extends BaseSeleniumPage {
 	 *
 	 * @param args
 	 *            the arguments
+	 * @throws IOException
 	 */
-	public static void main(final String[] args) {
+	public static void main(final String[] args) throws IOException {
 		final WebDriver webDriver = new FirefoxDriver();
 		final WebDriver freeAgentWebdriver = new FirefoxDriver();
-		final String ccbuserName = "stevel56";
-		final String ccbpassword = "";
 		final String steveaccount = "155266";
 		final String lucyAccount = "155385";
 
@@ -39,16 +42,18 @@ public class AllianceTrust extends BaseSeleniumPage {
 		final String steveLisaValue = trust.getValue(2, steveaccount);
 		System.out.println("Steve ISA:" + steveLisaValue);
 
+		final ClearCheckbookConfig config = new ClearCheckbookConfig(
+		        new Config("bookkeeper-sit.properties"));
+
+		final ClearCheckbook clearCheckbook = new ClearCheckbook(config);
 		final String lucyIsaValue = trust.getValue(1, lucyAccount);
 		System.out.println("Lucy ISA:" + lucyIsaValue);
-		ClearCheckbook.updateEstimate("AT SIPP (StockMarket)", pensionValue, ccbuserName,
-		        ccbpassword, freeAgentWebdriver, "//*[@id=\"account-overviews\"]/div[3]/div[3]",
+		clearCheckbook.updateEstimate("AT SIPP (StockMarket)", pensionValue, freeAgentWebdriver,
+		        "//*[@id=\"account-overviews\"]/div[3]/div[3]", "Updated from Alliance Trust");
+		clearCheckbook.updateEstimate("AT ISA Steve (StockMarket)", steveLisaValue,
+		        freeAgentWebdriver, "//*[@id=\"account-overviews\"]/div[2]/div[3]",
 		        "Updated from Alliance Trust");
-		ClearCheckbook.updateEstimate("AT ISA Steve (StockMarket)", steveLisaValue,
-		        ccbuserName, ccbpassword, freeAgentWebdriver,
-		        "//*[@id=\"account-overviews\"]/div[2]/div[3]", "Updated from Alliance Trust");
-		ClearCheckbook.updateEstimate("AT ISA Lucy (StockMarket)", lucyIsaValue,
-		        ccbuserName, ccbpassword, freeAgentWebdriver,
+		clearCheckbook.updateEstimate("AT ISA Lucy (StockMarket)", lucyIsaValue, freeAgentWebdriver,
 		        "//*[@id=\"account-overviews\"]/div[1]/div[3]", "Updated from Alliance Trust");
 
 	}

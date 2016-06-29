@@ -1,7 +1,7 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package com.leonarduk.bookkeeper.web;
+package com.leonarduk.bookkeeper.web.amex;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -11,8 +11,10 @@ import org.openqa.selenium.WebDriver;
 
 import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook;
 import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook.Setting;
+import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbookConfig;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
+import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class AmexDownloadTransactions.
@@ -41,20 +43,20 @@ public class AmexDownloadTransactions {
 	 */
 	public static void main(final String[] args) throws Throwable {
 		final String userName = "stevel56";
-		final String password = "N0bigm0m";
+		final String password = "";
 		final File downloadDir = FileUtils.createTempDir();
 		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(downloadDir);
 
 		final AmexDownloadTransactions transactions = new AmexDownloadTransactions(webDriver);
 		transactions.downloadTransactions(userName, password);
 
-		final String ccbuserName = "stevel56";
-		final String ccbpassword = "N0bigm0mas!";
 		final String account = "CC - AMEX";
 		final String fileToUpload = downloadDir.getAbsolutePath() + "/ofx.qif";
+		final ClearCheckbook clearCheckbook = new ClearCheckbook(
+		        new ClearCheckbookConfig(new Config("bookkeeper-sit.properties")));
 
-		final String results = ClearCheckbook.uploadToClearCheckbook(ccbuserName,
-		        ccbpassword, account, fileToUpload, webDriver, Setting.AMEX);
+		final String results = clearCheckbook.uploadToClearCheckbook(account, fileToUpload,
+		        webDriver, Setting.AMEX, false);
 		System.out.println(results);
 		// transactions.finalize();
 

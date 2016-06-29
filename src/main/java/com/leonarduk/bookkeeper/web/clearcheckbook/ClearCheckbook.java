@@ -26,7 +26,12 @@ import com.leonarduk.web.BaseSeleniumPage;
  */
 public class ClearCheckbook {
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = Logger.getLogger(ClearCheckbook.class);
+	private final static Logger			LOGGER	= Logger.getLogger(ClearCheckbook.class);
+	private final ClearCheckbookConfig	config;
+
+	public ClearCheckbook(final ClearCheckbookConfig config) {
+		this.config = config;
+	}
 
 	/**
 	 * Amex settings.
@@ -36,7 +41,7 @@ public class ClearCheckbook {
 	 * @param driver
 	 *            the driver
 	 */
-	private static void amexSettings(final String account, final WebDriver driver) {
+	private void amexSettings(final String account, final WebDriver driver) {
 		try {
 			new Select(driver.findElement(By.id("type_4"))).selectByVisibleText("Payee");
 			new Select(driver.findElement(By.name("dateFormat"))).selectByVisibleText("dd/mm/yyyy");
@@ -57,7 +62,7 @@ public class ClearCheckbook {
 	 * @param driver
 	 *            the driver
 	 */
-	private static void chooseFileToUpload(final String fileToUpload, final WebDriver driver) {
+	private void chooseFileToUpload(final String fileToUpload, final WebDriver driver) {
 		driver.findElement(By.linkText("Tools")).click();
 		driver.findElement(By.linkText("Import Transactions")).click();
 		final String replaceAll = fileToUpload.replaceAll("/", "\\\\");
@@ -73,8 +78,19 @@ public class ClearCheckbook {
 	 *            the amount
 	 * @return the double
 	 */
-	public static double convertMoneyString(final String amount) {
+	public double convertMoneyString(final String amount) {
 		return Double.valueOf(amount.replaceAll("£", "").replaceAll(",", ""));
+	}
+
+	private void generalSettings(final String account, final WebDriver driver) {
+		try {
+			new Select(driver.findElement(By.name("import_to_account")))
+			        .selectByVisibleText(account);
+		}
+		catch (final NoSuchElementException e) {
+			ClearCheckbook.LOGGER.error("Failed to find element in amexSettings", e);
+			throw e;
+		}
 	}
 
 	/**
@@ -82,16 +98,20 @@ public class ClearCheckbook {
 	 *
 	 * @param driver
 	 *            the driver
+	 * @param removeDuplicates
 	 * @return the string
 	 */
-	private static String importTransactions(final WebDriver driver) {
+	private String importTransactions(final WebDriver driver, final boolean removeDuplicates) {
 		driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
 		BaseSeleniumPage.waitForPageToLoad(driver);
 		driver.findElement(By.cssSelector("input.btn.btn-default")).click();
 		BaseSeleniumPage.waitForPageToLoad(driver);
 
-		ClearCheckbook.removeDuplicatesByPage(driver);
+		if (removeDuplicates) {
+			this.removeDuplicatesByPage(driver);
+		}
 		driver.findElement(By.linkText("« Return to Imported Transactions")).click();
+
 		if (driver.findElements(By.id("jive")).size() > 0) {
 			driver.findElement(By.id("jive")).click();
 			final String results = driver.findElement(By.xpath("//*[@id=\"importTransactions\"]"))
@@ -105,15 +125,10 @@ public class ClearCheckbook {
 	/**
 	 * Login.
 	 *
-	 * @param userName
-	 *            the user name
-	 * @param password
-	 *            the password
 	 * @param driver
 	 *            the driver
 	 */
-	private static void login(final String userName, final String password,
-	        final WebDriver driver) {
+	private void login(final WebDriver driver) {
 		final String baseUrl = "https://www.clearcheckbook.com/";
 		final int severalSeconds = 5;
 		driver.manage().timeouts().implicitlyWait(severalSeconds, TimeUnit.SECONDS);
@@ -121,8 +136,8 @@ public class ClearCheckbook {
 
 		final List<WebElement> userNameElement = driver.findElements(By.id("ccb-l-username"));
 		if (userNameElement.size() > 0) {
-			userNameElement.get(0).sendKeys(userName);
-			driver.findElement(By.id("ccb-l-password")).sendKeys(password);
+			userNameElement.get(0).sendKeys(this.config.getUserName());
+			driver.findElement(By.id("ccb-l-password")).sendKeys(this.config.getPassword());
 			driver.findElement(By.xpath("//button[@type='submit']")).click();
 		}
 	}
@@ -135,7 +150,7 @@ public class ClearCheckbook {
 	 * @param driver
 	 *            the driver
 	 */
-	private static void nationwideSettings(final String account, final WebDriver driver) {
+	private void nationwideSettings(final String account, final WebDriver driver) {
 		try {
 			new Select(driver.findElement(By.id("type_5"))).selectByVisibleText("Payee");
 			new Select(driver.findElement(By.id("type_4"))).selectByVisibleText("Description");
@@ -155,7 +170,7 @@ public class ClearCheckbook {
 	 * @param driver
 	 *            the driver
 	 */
-	private static void removeDuplicatesByPage(final WebDriver driver) {
+	private void removeDuplicatesByPage(final WebDriver driver) {
 		final String numberOfDupsXpath = "/html/body/div[2]/h3";
 		Integer duplicates = Integer.valueOf(driver.findElement(By.xpath(numberOfDupsXpath))
 		        .getText().replace(" Duplicates Found", "").replace(" Duplicate Found", ""));
@@ -190,18 +205,17 @@ public class ClearCheckbook {
 	 *            the memo
 	 * @return the string
 	 */
-	public static String updateEstimate(final String account, final String currentValue,
-	        final String userName, final String password, final WebDriver driver,
-	        final String valueXpath, final CharSequence memo) {
-		ClearCheckbook.login(userName, password, driver);
+	public String updateEstimate(final String account, final String currentValue,
+	        final WebDriver driver, final String valueXpath, final CharSequence memo) {
+		this.login(driver);
 
 		final WebElement valueElement = driver.findElement(By.xpath(valueXpath));
 		final String ccbValueString = valueElement.getText();
 
 		// driver.findElement(By.linkText("Enter a Transaction")).click();
 		driver.findElement(By.id("amount")).clear();
-		final double ccbAmount = ClearCheckbook.convertMoneyString(ccbValueString);
-		double amount = ClearCheckbook.convertMoneyString(currentValue) - ccbAmount;
+		final double ccbAmount = this.convertMoneyString(ccbValueString);
+		double amount = this.convertMoneyString(currentValue) - ccbAmount;
 		if (Math.abs(amount) < 1) {
 			ClearCheckbook.LOGGER.info("No change");
 			return "No change";
@@ -249,27 +263,28 @@ public class ClearCheckbook {
 	 *            the driver
 	 * @param setting
 	 *            the setting
+	 * @param removeDuplicates
 	 * @return the string
 	 * @throws Exception
 	 *             the exception
 	 */
-	public static String uploadToClearCheckbook(final String userName, final String password,
-	        final String account, final String fileToUpload, final WebDriver driver,
-	        final Setting setting) throws Exception {
-		ClearCheckbook.login(userName, password, driver);
-		ClearCheckbook.chooseFileToUpload(fileToUpload, driver);
+	public String uploadToClearCheckbook(final String account, final String fileToUpload,
+	        final WebDriver driver, final Setting setting, final boolean removeDuplicates)
+	                throws Exception {
+		this.login(driver);
+		this.chooseFileToUpload(fileToUpload, driver);
 		switch (setting) {
 			case AMEX:
-				ClearCheckbook.amexSettings(account, driver);
+				this.amexSettings(account, driver);
 				break;
 			case NATIONWIDE:
-				ClearCheckbook.nationwideSettings(account, driver);
+				this.nationwideSettings(account, driver);
 				break;
 			default:
-				throw new UnsupportedOperationException("Cant process " + setting.name());
+				this.generalSettings(account, driver);
 		}
 
-		return ClearCheckbook.importTransactions(driver);
+		return this.importTransactions(driver, removeDuplicates);
 
 	}
 
@@ -280,6 +295,6 @@ public class ClearCheckbook {
 
 		/** The amex. */
 		AMEX, /** The nationwide. */
-		NATIONWIDE;
+		NATIONWIDE, GENERAL;
 	}
 }

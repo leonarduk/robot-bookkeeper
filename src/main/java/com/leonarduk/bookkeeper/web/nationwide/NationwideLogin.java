@@ -1,7 +1,7 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package com.leonarduk.bookkeeper.web;
+package com.leonarduk.bookkeeper.web.nationwide;
 
 import java.util.concurrent.TimeUnit;
 
@@ -93,7 +93,7 @@ public class NationwideLogin extends BaseSeleniumPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.openqa.selenium.support.ui.LoadableComponent#load()
 	 */
 	@Override

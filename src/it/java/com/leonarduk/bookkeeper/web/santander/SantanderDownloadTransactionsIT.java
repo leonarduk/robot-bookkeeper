@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
-import com.leonarduk.bookkeeper.web.SantanderLoginIT;
 import com.leonarduk.webscraper.core.FileUtils;
 
 public class SantanderDownloadTransactionsIT {

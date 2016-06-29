@@ -7,7 +7,6 @@ import java.io.File;
 
 import org.apache.log4j.Logger;
 
-import com.leonarduk.bookkeeper.web.MyAccountsMenu;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**

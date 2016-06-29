@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
+import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class UploadToClearCheckbookTest.
@@ -24,7 +25,9 @@ public class UploadToClearCheckbookTest {
 	 */
 	@Test
 	public final void testConvertMoneyString() {
-		final double convertMoneyString = ClearCheckbook.convertMoneyString("£750,055");
+		final ClearCheckbook clearCheckbook = new ClearCheckbook(
+		        new ClearCheckbookConfig(new Config()));
+		final double convertMoneyString = clearCheckbook.convertMoneyString("£750,055");
 		final int expected = 750055;
 		Assert.assertEquals(expected, convertMoneyString, 0);
 	}
