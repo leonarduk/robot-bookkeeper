@@ -1,7 +1,7 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package uk.co.sleonard.accounts.web;
+package com.leonarduk.bookkeeper.web;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

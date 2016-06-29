@@ -1,7 +1,7 @@
 /**
  * All rights reserved. @Leonard UK Ltd.
  */
-package uk.co.sleonard.accounts.web;
+package com.leonarduk.bookkeeper.web;
 
 import java.io.File;
 import java.io.IOException;
