@@ -7,8 +7,11 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
@@ -23,6 +26,8 @@ import com.leonarduk.bookkeeper.file.TransactionRecord;
  * @since 24 Mar 2015
  */
 public class AmexDownloadTransactions {
+
+	private static final Logger LOGGER = Logger.getLogger(AmexDownloadTransactions.class);
 
 	/** The driver. */
 	private final WebDriver driver;
@@ -77,6 +82,16 @@ public class AmexDownloadTransactions {
 		this.driver.findElement(By.id("Password")).clear();
 		this.driver.findElement(By.id("Password")).sendKeys(this.config.getPassword());
 		this.driver.findElement(By.id("loginButton")).click();
+		try {
+			final WebElement popup = this.findElementByXpath("//*[@id=\"sprite-close_btn\"]");
+			if (null != popup) {
+				popup.click();
+			}
+		}
+		catch (final NoSuchElementException e) {
+			AmexDownloadTransactions.LOGGER.info("No pop up screen. Ignore and try next page", e);
+		}
+
 		this.driver.findElement(By.id("estatement-link")).click();
 		this.driver.findElement(By.cssSelector("#downloads-link > span.copy")).click();
 		this.driver
@@ -91,6 +106,15 @@ public class AmexDownloadTransactions {
 		this.driver.findElement(By.id("radioid03")).click();
 		this.driver.findElement(By.linkText("Download Now")).click();
 		return this.downloadDir.getAbsolutePath() + "/ofx.qif";
+	}
+
+	protected final WebElement findElementByXpath(final String xpath) {
+		final WebElement findElement = this.driver.findElement(By.xpath(xpath));
+		if (null == findElement) {
+			throw new NoSuchElementException("Could not find xpath " + xpath);
+		}
+		return findElement;
+
 	}
 
 }

@@ -3,20 +3,13 @@
  */
 package com.leonarduk.bookkeeper.web.zoopla;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbook;
-import com.leonarduk.bookkeeper.web.clearcheckbook.ClearCheckbookConfig;
 import com.leonarduk.web.BaseSeleniumPage;
-import com.leonarduk.web.SeleniumUtils;
-import com.leonarduk.webscraper.core.FileUtils;
-import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class NationwideLogin.
@@ -33,40 +26,13 @@ public class ZooplaEstimate extends BaseSeleniumPage {
 	private static final Logger _logger = Logger.getLogger(ZooplaEstimate.class);
 
 	/**
-	 * The main method.
-	 *
-	 * @param args
-	 *            the arguments
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static void main(final String[] args) throws Exception {
-		final ZooplaEstimate zooplaEstimate = new ZooplaEstimate(new FirefoxDriver());
-		zooplaEstimate.get();
-		final String estimate = zooplaEstimate.getEstimate();
-		final String account = "RE - 60 Willoughby Road (Illiquid)";
-
-		final File tempDir = FileUtils.createTempDir();
-
-		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
-
-		final String valueXpath = "//*[@id=\"account-overviews\"]/div[29]/div[3]";
-		final String memo = "Updated from Zoopla estimate";
-
-		new ClearCheckbook(new ClearCheckbookConfig(new Config("bookkeeper-sit.properties")))
-		        .updateEstimate(account, estimate, webDriver, valueXpath, memo);
-
-	}
-
-	/**
 	 * Instantiates a new nationwide login.
 	 *
 	 * @param webDriver
 	 *            the web driver
 	 */
-	public ZooplaEstimate(final WebDriver webDriver) {
-		super(webDriver,
-		        "http://www.zoopla.co.uk/property/60-willoughby-road/kingston-upon-thames/kt2-6lj/11760869");
+	public ZooplaEstimate(final WebDriver webDriver, ZooplaConfig config) {
+		super(webDriver, config.getUrl());
 	}
 
 	/**

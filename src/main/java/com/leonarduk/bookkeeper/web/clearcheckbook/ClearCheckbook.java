@@ -34,27 +34,6 @@ public class ClearCheckbook {
 	}
 
 	/**
-	 * Amex settings.
-	 *
-	 * @param account
-	 *            the account
-	 * @param driver
-	 *            the driver
-	 */
-	private void amexSettings(final String account, final WebDriver driver) {
-		try {
-			new Select(driver.findElement(By.id("type_4"))).selectByVisibleText("Payee");
-			new Select(driver.findElement(By.name("dateFormat"))).selectByVisibleText("dd/mm/yyyy");
-			new Select(driver.findElement(By.name("import_to_account")))
-			        .selectByVisibleText(account);
-		}
-		catch (final NoSuchElementException e) {
-			ClearCheckbook.LOGGER.error("Failed to find element in amexSettings", e);
-			throw e;
-		}
-	}
-
-	/**
 	 * Choose file to upload.
 	 *
 	 * @param fileToUpload
@@ -79,7 +58,7 @@ public class ClearCheckbook {
 	 * @return the double
 	 */
 	public double convertMoneyString(final String amount) {
-		return Double.valueOf(amount.replaceAll("£", "").replaceAll(",", ""));
+		return Double.valueOf(amount.replaceAll("£", "").replaceAll(",", "")).doubleValue();
 	}
 
 	private void generalSettings(final String account, final WebDriver driver) {
@@ -139,28 +118,6 @@ public class ClearCheckbook {
 			userNameElement.get(0).sendKeys(this.config.getUserName());
 			driver.findElement(By.id("ccb-l-password")).sendKeys(this.config.getPassword());
 			driver.findElement(By.xpath("//button[@type='submit']")).click();
-		}
-	}
-
-	/**
-	 * Nationwide settings.
-	 *
-	 * @param account
-	 *            the account
-	 * @param driver
-	 *            the driver
-	 */
-	private void nationwideSettings(final String account, final WebDriver driver) {
-		try {
-			new Select(driver.findElement(By.id("type_5"))).selectByVisibleText("Payee");
-			new Select(driver.findElement(By.id("type_4"))).selectByVisibleText("Description");
-			new Select(driver.findElement(By.name("dateFormat"))).selectByVisibleText("yyyy-mm-dd");
-			new Select(driver.findElement(By.name("import_to_account")))
-			        .selectByVisibleText(account);
-		}
-		catch (final NoSuchElementException e) {
-			ClearCheckbook.LOGGER.error("Failed to find element in nationwideSettings", e);
-			throw e;
 		}
 	}
 
@@ -266,16 +223,7 @@ public class ClearCheckbook {
 	                throws Exception {
 		this.login(driver);
 		this.chooseFileToUpload(fileToUpload, driver);
-		switch (setting) {
-			case AMEX:
-				this.amexSettings(account, driver);
-				break;
-			case NATIONWIDE:
-				this.nationwideSettings(account, driver);
-				break;
-			default:
-				this.generalSettings(account, driver);
-		}
+		this.generalSettings(account, driver);
 
 		return this.importTransactions(driver, removeDuplicates);
 

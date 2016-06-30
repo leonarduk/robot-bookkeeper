@@ -3,20 +3,15 @@
  */
 package com.leonarduk.bookkeeper.web.nationwide;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.leonarduk.web.BaseSeleniumPage;
-import com.leonarduk.webscraper.core.FileUtils;
 
 /**
  * The Class NationwideAccount.
@@ -29,39 +24,18 @@ import com.leonarduk.webscraper.core.FileUtils;
  */
 public class NationwideAccount extends BaseSeleniumPage {
 
+	private static final String OFX_FORMAT = "2";
+
 	/** The Constant _logger. */
 	private static final Logger _logger = Logger.getLogger(NationwideAccount.class);
+
+	private static final String CSV_FORMAT = "1";
 
 	/** The login. */
 	private final NationwideLogin login;
 
 	/** The file type. */
 	private final FileType fileType;
-
-	/**
-	 * The main method.
-	 *
-	 * @param args
-	 *            the arguments
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	public static void main(final String[] args) throws IOException {
-		final String downloadDir = "/home/stephen/Downloads/";
-		final File tempDir = FileUtils.createTempDir();
-		final WebDriver downloadCapableBrowser = new ChromeDriver();
-		// SeleniumUtils.getDownloadCapableBrowser(tempDir);
-		final FileType type = FileType.OFX;
-		final NationwideAccount nationwideAccount = (NationwideAccount) new NationwideAccount(
-		        new NationwideLogin(downloadCapableBrowser, "2901722608", "olympia", "971659"), 1,
-		        type).get();
-		final File[] files = tempDir.listFiles();
-		if (files.length > 0) {
-			files[0].renameTo(new File(downloadDir + nationwideAccount.createFileName() + "."
-			        + type.name().toLowerCase()));
-		}
-
-	}
 
 	/**
 	 * Instantiates a new nationwide account.
@@ -125,8 +99,8 @@ public class NationwideAccount extends BaseSeleniumPage {
 
 		downloadLinks.get(0).click();
 		this.getWebDriver()
-		        .findElement(
-		                By.xpath("(//form[@action='/Transactions/FullStatement/DownloadFS'])[2]"))
+		        .findElement(By.xpath("(//form[@action='/Transactions/FullStatement/DownloadFS'])["
+		                + NationwideAccount.CSV_FORMAT + "]"))
 		        .click();
 		this.getWebDriver().findElement(By.cssSelector("b.reveal-info-down")).click();
 		try {

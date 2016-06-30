@@ -24,11 +24,10 @@ public class QifFileParserTest {
 		Assert.assertEquals(-55.69, record.get(0).getAmount(), 0);
 		Assert.assertEquals(-53.03, record.get(1).getAmount(), 0);
 
-		Assert.assertEquals("DIRECT DEBIT PAYMENT TO MOBILE, 55.69",
-		        record.get(0).getDescription());
+		Assert.assertEquals("DIRECT DEBIT PAYMENT TO MOBILE, 55.69", record.get(0).getPayee());
 		Assert.assertEquals(
 		        "DIRECT DEBIT PAYMENT TO PAYPAL PAYMENT REF 4M522222XVZ5N, MANDATE NO 0002                 , 53.03",
-		        record.get(1).getDescription());
+		        record.get(1).getPayee());
 
 		final Calendar cal1 = Calendar.getInstance();
 		cal1.set(2016, Calendar.JUNE, 28, 0, 0, 0);

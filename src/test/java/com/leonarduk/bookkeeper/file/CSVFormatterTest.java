@@ -30,12 +30,12 @@ public class CSVFormatterTest {
 	 */
 	@Test
 	public final void testFormat() throws IOException {
-		final CSVFormatter formatter = new CSVFormatter();
+		final CsvFormatter formatter = new CsvFormatter();
 		final List<TransactionRecord> transactionRecords = new ArrayList<>();
-		transactionRecords.add(
-		        new TransactionRecord(-12.23, "Payment", DateUtils.stringToDate("2016/06/23")));
-		transactionRecords
-		        .add(new TransactionRecord(2.23, "Receipt", DateUtils.stringToDate("2016/06/26")));
+		transactionRecords.add(new TransactionRecord(-12.23, "Payment",
+		        DateUtils.stringToDate("2016/06/23"), "1", "Payee"));
+		transactionRecords.add(new TransactionRecord(2.23, "Receipt",
+		        DateUtils.stringToDate("2016/06/26"), "2", "Payee2"));
 		final String outputFileName = "output.csv";
 		formatter.format(transactionRecords, outputFileName);
 

@@ -101,10 +101,10 @@ public class ClearCheckbookIT {
 	public void uploadToClearcheckBook(final String account) throws IOException, Exception {
 		final FileFormatter formatter = new QifFileFormatter(QifFileFormatter.CCB_FORMAT);
 		final List<TransactionRecord> transactionRecords = new ArrayList<>();
-		transactionRecords.add(
-		        new TransactionRecord(-12.23, "Payment", DateUtils.stringToDate("2016/06/23")));
-		transactionRecords
-		        .add(new TransactionRecord(2.23, "Receipt", DateUtils.stringToDate("2016/06/26")));
+		transactionRecords.add(new TransactionRecord(-12.23, "Payment",
+		        DateUtils.stringToDate("2016/06/23"), "1", "Payee"));
+		transactionRecords.add(new TransactionRecord(2.23, "Receipt",
+		        DateUtils.stringToDate("2016/06/26"), "2", "Payee2"));
 		final File tempDir = FileUtils.createTempDir();
 		final String outputFileName = tempDir.getAbsolutePath() + "/output.qif";
 		formatter.format(transactionRecords, outputFileName);
@@ -114,6 +114,7 @@ public class ClearCheckbookIT {
 		final String results = this.clearCheckbook.uploadToClearCheckbook(account, outputFileName,
 		        webDriver, Setting.GENERAL, false);
 		System.out.println(results);
+		webDriver.close();
 	}
 
 }

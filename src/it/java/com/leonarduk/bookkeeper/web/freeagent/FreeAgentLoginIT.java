@@ -47,6 +47,7 @@ public class FreeAgentLoginIT {
 
 		final String profits = this.login.getProfits();
 		System.out.println(profits);
+		this.login.getWebDriver().close();
 	}
 
 }

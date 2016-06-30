@@ -35,7 +35,9 @@ public class QifFileFormatter implements FileFormatter {
 				final Date date = transactionRecord.getDate();
 				writer.println("D" + formatter.format(date));
 				writer.println("T" + transactionRecord.getAmount());
-				writer.println("P" + transactionRecord.getDescription());
+				writer.println("M" + transactionRecord.getDescription());
+				writer.println("P" + transactionRecord.getPayee());
+				writer.println("N" + transactionRecord.getCheckNumber());
 				writer.println("^");
 			}
 		}

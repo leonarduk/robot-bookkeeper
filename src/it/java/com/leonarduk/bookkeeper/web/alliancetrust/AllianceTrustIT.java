@@ -34,6 +34,7 @@ public class AllianceTrustIT {
 
 		final String lucyIsaValue = trust.getValue(1, lucyAccount);
 		System.out.println("Lucy ISA:" + lucyIsaValue);
+		webDriver.close();
 	}
 
 }

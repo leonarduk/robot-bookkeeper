@@ -9,7 +9,6 @@ package com.leonarduk.bookkeeper.web.santander;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -82,10 +81,6 @@ public class SantanderConfig {
 		this.config = config2;
 	}
 
-	public SantanderConfig(final Properties properties) {
-		this.config = new Config(properties);
-	}
-
 	public SantanderConfig(final String string) throws IOException {
 		this.config = new Config(string);
 	}
@@ -125,16 +120,6 @@ public class SantanderConfig {
 
 	public String getSecurityNumber() {
 		return this.config.getProperty("bookkeeper.web.santander.securitynumber");
-	}
-
-	public SantanderConfig setSantanderAccountsUrl(final String url) {
-		this.config.setProperty(SantanderConfig.BOOKKEEPER_WEB_SANTANDER_URL_ACCOUNTS, url);
-		return this;
-	}
-
-	public SantanderConfig setSantanderId(final String id) {
-		this.config.setProperty(SantanderConfig.BOOKKEEPER_WEB_SANTANDER_ID, id);
-		return this;
 	}
 
 	public SantanderConfig setSantanderStartUrl(final String url) {

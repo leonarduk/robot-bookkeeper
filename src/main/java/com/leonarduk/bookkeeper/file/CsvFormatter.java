@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class CSVFormatter implements FileFormatter {
+public class CsvFormatter implements FileFormatter {
 
 	@Override
 	public File format(final List<TransactionRecord> transactionRecords,

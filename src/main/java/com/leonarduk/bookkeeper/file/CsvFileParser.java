@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * The Class QifFileParser.
  */
-public class QifFileParser implements FileParser {
+public class CsvFileParser implements FileParser {
 
 	/**
 	 * https://en.wikipedia.org/wiki/Quicken_Interchange_Format
@@ -40,8 +40,18 @@ public class QifFileParser implements FileParser {
 			String strLine;
 
 			/*
-			 * !Type:CCard D20/06/2016 N10626908 T-9.70 PTFL TRAVEL CHARGE TFL.GOV.UK/CP M Process
-			 * Date 20/06/2016 ^
+			 * "Account Name:","Joint_Current_Acct ****48557"
+			 * 
+			 * "Account Balance:","£3929.24"
+			 * 
+			 * "Available Balance: ","£3929.24"
+			 * 
+			 * "Date","Transaction type","Description","Paid out","Paid in","Balance"
+			 * 
+			 * "30 May 2016","Contactless Payment","TFL.GOV.UK/CP TFL TRAVEL CH GB"
+			 * ,"£1.50","","£2616.89"
+			 * 
+			 * "31 May 2016","Direct debit SKY DIGITAL","SKY DIGITAL","£31.96","","£2584.93"
 			 *
 			 */
 			// Read File Line By Line

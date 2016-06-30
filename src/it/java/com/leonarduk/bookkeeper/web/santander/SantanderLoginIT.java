@@ -13,8 +13,6 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
-import com.leonarduk.bookkeeper.web.santander.SantanderConfig;
-import com.leonarduk.bookkeeper.web.santander.SantanderLogin;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
 
@@ -38,6 +36,7 @@ public class SantanderLoginIT {
 		        .getSantanderLogin(FileUtils.createTempDir());
 		santanderLogin.get();
 		SantanderLoginIT.LOGGER.info("Complete");
+		santanderLogin.getWebDriver().close();
 	}
 
 }

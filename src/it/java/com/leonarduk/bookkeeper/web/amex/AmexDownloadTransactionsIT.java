@@ -12,7 +12,7 @@ import java.util.List;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
-import com.leonarduk.bookkeeper.file.CSVFormatter;
+import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.web.SeleniumUtils;
@@ -29,13 +29,13 @@ public class AmexDownloadTransactionsIT {
 		final AmexConfig config = new AmexConfig(new Config("bookkeeper-sit.properties"));
 		final AmexDownloadTransactions transactions = new AmexDownloadTransactions(webDriver,
 		        config, downloadDir);
-		transactions.downloadTransactions();
 
 		final List<TransactionRecord> records = transactions.downloadTransactions();
-		final FileFormatter formatter = new CSVFormatter();
+		final FileFormatter formatter = new CsvFormatter();
 		final String outputFileName = "test.qif";
 		formatter.format(records, outputFileName);
 		System.out.println(FileUtils.getFileContents(outputFileName));
+		webDriver.close();
 	}
 
 }

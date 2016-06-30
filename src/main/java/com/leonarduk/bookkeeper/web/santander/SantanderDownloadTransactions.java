@@ -5,6 +5,7 @@ package com.leonarduk.bookkeeper.web.santander;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -56,6 +57,7 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 		this.clickEDocuments();
 		this.waitForPageToLoad();
 		this.downloadStatement(0);
+		this.waitForPageToLoad();
 	}
 
 	/**
@@ -73,6 +75,9 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 	        throws IOException {
 		final QifFileParser parser = new QifFileParser();
 		final String fileName = this.downloadTransactionsFile(tempDir);
+		if (fileName == null) {
+			return new ArrayList<>();
+		}
 		return parser.parse(fileName);
 	}
 

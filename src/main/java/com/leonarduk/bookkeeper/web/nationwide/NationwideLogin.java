@@ -35,24 +35,12 @@ public class NationwideLogin extends BaseSeleniumPage {
 	/** The memorable word. */
 	private final String memorableWord;
 
-	/**
-	 * Instantiates a new nationwide login.
-	 *
-	 * @param webDriver
-	 *            the web driver
-	 * @param aCustomerNumber
-	 *            the customer number
-	 * @param aMemorableword
-	 *            the memorableword
-	 * @param aPassword
-	 *            the password
-	 */
-	public NationwideLogin(final WebDriver webDriver, final String aCustomerNumber,
-	        final String aMemorableword, final String aPassword) {
-		super(webDriver, "https://onlinebanking.nationwide.co.uk/AccountList");
-		this.customerNumber = aCustomerNumber;
-		this.password = aPassword;
-		this.memorableWord = aMemorableword;
+	public NationwideLogin(final WebDriver downloadCapableBrowser,
+	        final NationwideConfig nationwideConfig) {
+		super(downloadCapableBrowser, "https://onlinebanking.nationwide.co.uk/AccountList");
+		this.customerNumber = nationwideConfig.getCustomerNumber();
+		this.password = nationwideConfig.getPassword();
+		this.memorableWord = nationwideConfig.getMemorableWord();
 	}
 
 	/**

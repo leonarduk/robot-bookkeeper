@@ -31,17 +31,17 @@ public class FreeAgentUploadTransactionsIT {
 
 	@After
 	public void tearDown() throws Exception {
-		// this.transactions.getWebDriver().close();
+		this.transactions.getWebDriver().close();
 	}
 
 	@Test
 	public final void testUploadTransactions() throws IOException {
 		final FileFormatter formatter = new QifFileFormatter(QifFileFormatter.FREEAGENT_FORMAT);
 		final List<TransactionRecord> transactionRecords = new ArrayList<>();
-		transactionRecords.add(
-		        new TransactionRecord(-12.23, "Payment", DateUtils.stringToDate("2016/06/23")));
-		transactionRecords
-		        .add(new TransactionRecord(2.23, "Receipt", DateUtils.stringToDate("2016/06/26")));
+		transactionRecords.add(new TransactionRecord(-12.23, "Payment",
+		        DateUtils.stringToDate("2016/06/23"), "1", "Payee"));
+		transactionRecords.add(new TransactionRecord(2.23, "Receipt",
+		        DateUtils.stringToDate("2016/06/26"), "2", "Payee2"));
 		final String outputFileName = "output.csv";
 		formatter.format(transactionRecords, outputFileName);
 

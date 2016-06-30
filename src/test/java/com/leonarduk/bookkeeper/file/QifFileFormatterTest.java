@@ -32,16 +32,17 @@ public class QifFileFormatterTest {
 	public final void testFormat() throws IOException {
 		final QifFileFormatter formatter = new QifFileFormatter(QifFileFormatter.FREEAGENT_FORMAT);
 		final List<TransactionRecord> transactionRecords = new ArrayList<>();
-		transactionRecords.add(
-		        new TransactionRecord(-12.23, "Payment", DateUtils.stringToDate("2016/06/23")));
-		transactionRecords
-		        .add(new TransactionRecord(2.23, "Receipt", DateUtils.stringToDate("2016/06/26")));
+		transactionRecords.add(new TransactionRecord(-12.23, "Payment",
+		        DateUtils.stringToDate("2016/06/23"), "1", "Payee"));
+		transactionRecords.add(new TransactionRecord(2.23, "Receipt",
+		        DateUtils.stringToDate("2016/06/26"), "2", "Payee2"));
 		final String outputFileName = "output.csv";
 		formatter.format(transactionRecords, outputFileName);
 
 		final String actual = FileUtils.getFileContents(outputFileName);
-		final String expected = "!Type:Oth L\n" + "D2016/06/23\n" + "T-12.23\n" + "PPayment\n"
-		        + "^\n" + "D2016/06/26\n" + "T2.23\n" + "PReceipt\n" + "^";
+		final String expected = "!Type:Oth L\n" + "D2016/06/23\n" + "T-12.23\n" + "MPayment\n"
+		        + "PPayee\n" + "N1\n" + "^\n" + "D2016/06/26\n" + "T2.23\n" + "MReceipt\n"
+		        + "PPayee2\n" + "N2\n" + "^";
 		Assert.assertEquals(expected, actual);
 	}
 
