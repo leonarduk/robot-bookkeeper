@@ -193,10 +193,6 @@ public class ClearCheckbook {
 	 *            the account
 	 * @param currentValue
 	 *            the current value
-	 * @param userName
-	 *            the user name
-	 * @param password
-	 *            the password
 	 * @param driver
 	 *            the driver
 	 * @param valueXpath
@@ -251,10 +247,6 @@ public class ClearCheckbook {
 	/**
 	 * Upload to clear checkbook.
 	 *
-	 * @param userName
-	 *            the user name
-	 * @param password
-	 *            the password
 	 * @param account
 	 *            the account
 	 * @param fileToUpload
@@ -264,6 +256,7 @@ public class ClearCheckbook {
 	 * @param setting
 	 *            the setting
 	 * @param removeDuplicates
+	 *            the remove duplicates
 	 * @return the string
 	 * @throws Exception
 	 *             the exception

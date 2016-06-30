@@ -21,6 +21,8 @@ public class AllianceTrust extends BaseSeleniumPage {
 	 *
 	 * @param webDriver
 	 *            the web driver
+	 * @param config
+	 *            the config
 	 */
 	public AllianceTrust(final WebDriver webDriver, final AllianceTrustConfig config) {
 		super(webDriver,

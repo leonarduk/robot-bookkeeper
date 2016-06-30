@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.leonarduk.web.BaseSeleniumPage;
 
@@ -35,22 +34,6 @@ public class NationwideLogin extends BaseSeleniumPage {
 
 	/** The memorable word. */
 	private final String memorableWord;
-
-	/**
-	 * The main method.
-	 *
-	 * @param args
-	 *            the arguments
-	 */
-	public static void main(final String[] args) {
-		// Steve
-		final String customerNumber2 = "2901722608";
-		final String memorableword2 = "olympia";
-		final String password2 = "971659";
-
-		new NationwideLogin(new ChromeDriver(), customerNumber2, memorableword2, password2).get();
-
-	}
 
 	/**
 	 * Instantiates a new nationwide login.

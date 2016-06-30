@@ -39,7 +39,8 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 	 *
 	 * @param webDriver
 	 *            the web driver
-	 * @param freeagentUrl
+	 * @param config
+	 *            the config
 	 */
 	public FreeAgentLogin(final WebDriver webDriver, final FreeAgentConfig config) {
 		super(webDriver, config.getFreeagentUrl() + "/overview");

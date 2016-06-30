@@ -40,7 +40,9 @@ public class AmexDownloadTransactions {
 	 * @param webDriver
 	 *            the web driver
 	 * @param config
+	 *            the config
 	 * @param downloadDir
+	 *            the download dir
 	 * @throws Exception
 	 *             the exception
 	 */
@@ -63,8 +65,7 @@ public class AmexDownloadTransactions {
 	/**
 	 * Download transactions.
 	 *
-	 * @return
-	 *
+	 * @return the string
 	 * @throws Exception
 	 *             the exception
 	 */

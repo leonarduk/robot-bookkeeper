@@ -15,15 +15,20 @@ import java.util.Date;
 
 import org.apache.http.ParseException;
 
+/**
+ * The Class DateUtils.
+ */
 public class DateUtils {
 	static final String[] DATE_SEPARATORS = { "/", "-", ".", "," };
 
 	/**
 	 * Convert the String with date to Date Object.
 	 *
-	 * @author Elton <elton_12_nunes@hotmail.com>
-	 * @since 11/06/2016
+	 * @author Elton - elton_12_nunes@hotmail.com
+	 * @param text
+	 *            the text
 	 * @return Return the date.
+	 * @since 11/06/2016
 	 */
 	public static Date stringToDate(final String text) {
 		StringBuilder pattern = null;

@@ -83,6 +83,22 @@ public class ClearCheckbookIT {
 	@Test
 	public void testUploadToClearCheckbookCash() throws Exception {
 		final String account = "Cash";
+		this.uploadToClearcheckBook(account);
+
+	}
+
+	/**
+	 * Test upload to clear checkbook.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testUploadToClearCheckbookChecking() throws Exception {
+		final String account = "Checking";
+		this.uploadToClearcheckBook(account);
+	}
+
+	public void uploadToClearcheckBook(final String account) throws IOException, Exception {
 		final FileFormatter formatter = new QifFileFormatter(QifFileFormatter.CCB_FORMAT);
 		final List<TransactionRecord> transactionRecords = new ArrayList<>();
 		transactionRecords.add(
@@ -98,30 +114,6 @@ public class ClearCheckbookIT {
 		final String results = this.clearCheckbook.uploadToClearCheckbook(account, outputFileName,
 		        webDriver, Setting.GENERAL, false);
 		System.out.println(results);
-
-	}
-
-	/**
-	 * Test upload to clear checkbook.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testUploadToClearCheckbookNationwide() throws Exception {
-		try {
-			if (ClearCheckbookIT.internetAvailable) {
-				final String account = "ZZZ  - Test Nationwide";
-				final String fileToUpload = "test";
-				final File tempDir = FileUtils.createTempDir();
-				final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
-				final Setting setting = ClearCheckbook.Setting.NATIONWIDE;
-				this.clearCheckbook.uploadToClearCheckbook(account, fileToUpload, driver, setting,
-				        false);
-			}
-		}
-		catch (final Exception e) {
-			Assert.fail("Exception caught");
-		}
 	}
 
 }

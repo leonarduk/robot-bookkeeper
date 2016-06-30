@@ -80,8 +80,8 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 	 * Download transactions.
 	 *
 	 * @param tempDir
-	 *
-	 * @return
+	 *            the temp dir
+	 * @return the string
 	 */
 	public final String downloadTransactionsFile(final File tempDir) {
 		// select transactions
