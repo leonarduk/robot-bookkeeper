@@ -3,7 +3,6 @@
  */
 package com.leonarduk.bookkeeper.web.amex;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,8 +41,7 @@ public class AmexDownloadTransactions {
 	 * @throws Exception
 	 *             the exception
 	 */
-	public AmexDownloadTransactions(final AmexConfig config, final File downloadDir)
-	        throws Exception {
+	public AmexDownloadTransactions(final AmexConfig config) throws Exception {
 		final int fewSeconds = 3;
 		this.config = config;
 		this.config.getWebDriver().manage().timeouts().implicitlyWait(fewSeconds, TimeUnit.SECONDS);

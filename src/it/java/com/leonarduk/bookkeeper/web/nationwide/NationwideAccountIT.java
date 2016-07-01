@@ -13,38 +13,32 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 
 import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.nationwide.NationwideAccount.FileType;
-import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
 import com.leonarduk.webscraper.core.config.Config;
 
 public class NationwideAccountIT {
 
 	private NationwideAccount	nationwideAccount;
-	private File				tempDir;
-	private WebDriver			downloadCapableBrowser;
+	private NationwideConfig	nationwideConfig;
 
 	@Before
 	public void setUp() throws IOException {
-		this.tempDir = FileUtils.createTempDir();
-		this.downloadCapableBrowser = SeleniumUtils.getDownloadCapableBrowser(this.tempDir);
 		final FileType type = FileType.OFX;
+		this.nationwideConfig = new NationwideConfig(new Config("bookkeeper-sit.properties"));
 		this.nationwideAccount = (NationwideAccount) new NationwideAccount(
-		        new NationwideLogin(this.downloadCapableBrowser,
-		                new NationwideConfig(new Config("bookkeeper-sit.properties"))),
-		        1, type).get();
+		        new NationwideLogin(this.nationwideConfig), 1, type).get();
 
 	}
 
 	@After
 	public void tearDown() {
-		this.downloadCapableBrowser.close();
+		this.nationwideConfig.getWebDriver().close();
 	}
 
 	@Test
@@ -55,7 +49,7 @@ public class NationwideAccountIT {
 	@Test
 	public final void testDownload() throws IOException {
 		this.nationwideAccount.downloadTransactionsFile();
-		final File[] files = this.tempDir.listFiles();
+		final File[] files = this.nationwideConfig.getDownloadDir().listFiles();
 		if (files.length > 0) {
 			final QifFileParser parser = new QifFileParser();
 			final List<TransactionRecord> records = parser.parse(files[0].getAbsolutePath());
