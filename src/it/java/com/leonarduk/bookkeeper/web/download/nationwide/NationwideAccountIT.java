@@ -18,10 +18,7 @@ import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
-import com.leonarduk.bookkeeper.web.download.nationwide.NationwideAccount;
 import com.leonarduk.bookkeeper.web.download.nationwide.NationwideAccount.FileType;
-import com.leonarduk.bookkeeper.web.download.nationwide.NationwideConfig;
-import com.leonarduk.bookkeeper.web.download.nationwide.NationwideLogin;
 import com.leonarduk.webscraper.core.FileUtils;
 import com.leonarduk.webscraper.core.config.Config;
 
@@ -29,13 +26,15 @@ public class NationwideAccountIT {
 
 	private NationwideAccount	nationwideAccount;
 	private NationwideConfig	nationwideConfig;
+	private NationwideLogin		aLogin;
 
 	@Before
 	public void setUp() throws IOException {
 		final FileType type = FileType.OFX;
 		this.nationwideConfig = new NationwideConfig(new Config("bookkeeper-sit.properties"));
-		this.nationwideAccount = (NationwideAccount) new NationwideAccount(
-		        new NationwideLogin(this.nationwideConfig), 1, type).get();
+		this.aLogin = new NationwideLogin(this.nationwideConfig);
+		this.nationwideAccount = (NationwideAccount) new NationwideAccount(this.aLogin, 1, type)
+		        .get();
 
 	}
 
@@ -70,6 +69,11 @@ public class NationwideAccountIT {
 			formatter.format(records, outputFileName);
 			System.out.println(FileUtils.getFileContents(outputFileName));
 		}
+	}
+
+	@Test
+	public void testLogin() throws Exception {
+		this.aLogin.get();
 	}
 
 }

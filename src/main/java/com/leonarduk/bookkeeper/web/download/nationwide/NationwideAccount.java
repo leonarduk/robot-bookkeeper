@@ -55,7 +55,7 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	 */
 	public NationwideAccount(final NationwideLogin aLogin, final int aAccountId,
 	        final FileType aFileType) {
-		super(aLogin.getWebDriver(), aLogin.getConfig().getFullStatementUrl(aAccountId));
+		super(aLogin.getWebDriver(), aLogin.getConfig().getAccountListUrl()); // getFullStatementUrl(aAccountId));
 		this.login = aLogin;
 		this.fileType = aFileType;
 	}
@@ -86,7 +86,7 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.leonarduk.bookkeeper.web.download.TransactionsDownloader#downloadTransactions()
 	 */
 	@Override
