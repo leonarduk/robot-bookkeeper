@@ -6,18 +6,12 @@
  */
 package com.leonarduk.bookkeeper.web.upload.freeagent;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 
-import com.leonarduk.bookkeeper.web.upload.freeagent.FreeAgentConfig;
-import com.leonarduk.bookkeeper.web.upload.freeagent.FreeAgentLogin;
-import com.leonarduk.web.SeleniumUtils;
-import com.leonarduk.webscraper.core.FileUtils;
 import com.leonarduk.webscraper.core.config.Config;
 
 public class FreeAgentLoginIT {
@@ -25,11 +19,9 @@ public class FreeAgentLoginIT {
 	private FreeAgentLogin login;
 
 	public static FreeAgentLogin getFreeAgentLogin() throws IOException {
-		final File tempDir = FileUtils.createTempDir();
-		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
 		final Config config = new Config("bookkeeper-sit.properties");
 		final FreeAgentConfig freeagentconfig = new FreeAgentConfig(config);
-		final FreeAgentLogin freeAgentLogin = new FreeAgentLogin(webDriver, freeagentconfig);
+		final FreeAgentLogin freeAgentLogin = new FreeAgentLogin(freeagentconfig);
 		return freeAgentLogin;
 	}
 
