@@ -30,11 +30,13 @@ import com.leonarduk.web.BaseSeleniumPage;
  */
 public class NationwideAccount extends BaseSeleniumPage implements TransactionsDownloader {
 
+	/** The Constant OFX_FORMAT. */
 	private static final String OFX_FORMAT = "2";
 
 	/** The Constant _logger. */
 	private static final Logger _logger = Logger.getLogger(NationwideAccount.class);
 
+	/** The Constant CSV_FORMAT. */
 	private static final String CSV_FORMAT = "1";
 
 	/** The login. */
@@ -43,15 +45,18 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	/** The file type. */
 	private final FileType fileType;
 
+	/** The account id. */
 	private final int accountId;
 
 	/**
 	 * Instantiates a new nationwide account.
 	 *
 	 * @param aLogin
-	 *            the login
-	 * @param accountId
-	 *            the account id the a account id
+	 *            the a login
+	 * @param aFileType
+	 *            the a file type
+	 * @param aAccountId
+	 *            the a account id
 	 */
 	public NationwideAccount(final NationwideLogin aLogin, final FileType aFileType,
 	        final int aAccountId) {
