@@ -27,14 +27,14 @@ public class HtmlRecordFormatter extends HtmlFormatter {
 	}
 
 	public String endHtml() {
-		return "</html></body>";
+		return "</body></html>";
 	}
 
 	public String format(final List<TransactionRecord> records) {
 		final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
 
 		final StringBuilder builder = new StringBuilder();
-		builder.append("<tr>");
+		builder.append("<table><tr>");
 		builder.append(this.addHeader("Date"));
 		builder.append(this.addHeader("Amount"));
 		builder.append(this.addHeader("Description"));
@@ -51,6 +51,7 @@ public class HtmlRecordFormatter extends HtmlFormatter {
 			builder.append(this.addValue(transactionRecord.getCheckNumber()));
 			builder.append("</tr>");
 		}
+		builder.append("</table>");
 		return builder.toString();
 	}
 
