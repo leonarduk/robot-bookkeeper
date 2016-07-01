@@ -50,10 +50,18 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	 *
 	 * @param aLogin
 	 *            the login
+<<<<<<< HEAD
+=======
+	 * @param accountId
+	 *            the account id
+>>>>>>> branch 'feature/##22-add-integration-tests' of https://github.com/leonarduk/robot-bookkeeper.git
 	 * @param aFileType
 	 *            the file type
 	 * @param aAccountId
+<<<<<<< HEAD
 	 *            the a account id
+=======
+>>>>>>> branch 'feature/##22-add-integration-tests' of https://github.com/leonarduk/robot-bookkeeper.git
 	 */
 	public NationwideAccount(final NationwideLogin aLogin, final FileType aFileType,
 	        final int aAccountId) {
