@@ -9,12 +9,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.openqa.selenium.WebDriver;
-
-import com.leonarduk.bookkeeper.web.upload.freeagent.FreeAgentConfig;
-import com.leonarduk.bookkeeper.web.upload.freeagent.FreeAgentLogin;
-import com.leonarduk.bookkeeper.web.upload.freeagent.FreeAgentUploadTransactions;
-import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class FreeagentLoginTest.
@@ -38,11 +32,8 @@ public class FreeagentLoginTest {
 	 */
 	@Before
 	public final void setUp() throws Exception {
-		final WebDriver webDriver = Mockito.mock(WebDriver.class);
-
-		final Config config1 = new Config();
-		final FreeAgentConfig config = new FreeAgentConfig(config1);
-		this.login = new FreeAgentUploadTransactions(new FreeAgentLogin(webDriver, config));
+		final FreeAgentConfig config = Mockito.mock(FreeAgentConfig.class);
+		this.login = new FreeAgentUploadTransactions(new FreeAgentLogin(config));
 	}
 
 	/**

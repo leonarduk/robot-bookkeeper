@@ -6,7 +6,6 @@ package com.leonarduk.bookkeeper.web.upload.freeagent;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.leonarduk.web.BaseSeleniumPage;
@@ -29,13 +28,11 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 	/**
 	 * Instantiates a new free agent login.
 	 *
-	 * @param webDriver
-	 *            the web driver
 	 * @param config
 	 *            the config
 	 */
-	public FreeAgentLogin(final WebDriver webDriver, final FreeAgentConfig config) {
-		super(webDriver, config.getFreeagentUrl() + "/overview");
+	public FreeAgentLogin(final FreeAgentConfig config) {
+		super(config.getWebDriver(), config.getFreeagentUrl() + "/overview");
 		this.config = config;
 	}
 
@@ -68,6 +65,17 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 		catch (final NoSuchElementException e) {
 			FreeAgentLogin.LOGGER.info("No filter screen. Ignore and try next page", e);
 		}
+		try {
+			final WebElement popup = this
+			        .findElementByXpath("/html/body/div[2]/div[1]/button/span[2]");
+			if (null != popup) {
+				popup.click();
+			}
+		}
+		catch (final NoSuchElementException e) {
+			FreeAgentLogin.LOGGER.info("No pop up screen. Ignore and try next page", e);
+		}
+
 		this.waitForPageToLoad();
 	}
 
