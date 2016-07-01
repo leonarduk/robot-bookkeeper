@@ -88,8 +88,6 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage
 	/**
 	 * Download transactions.
 	 *
-	 * @param tempDir
-	 *            the temp dir
 	 * @return the string
 	 */
 	@Override

@@ -84,6 +84,11 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 		return buf.toString();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.leonarduk.bookkeeper.web.download.TransactionsDownloader#downloadTransactions()
+	 */
 	@Override
 	public List<TransactionRecord> downloadTransactions() throws IOException {
 		final File[] files = this.login.getConfig().getDownloadDir().listFiles();
@@ -97,7 +102,7 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	/**
 	 * Download for account.
 	 *
-	 * @return
+	 * @return the string
 	 */
 	@Override
 	public String downloadTransactionsFile() {

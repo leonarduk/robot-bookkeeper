@@ -6,7 +6,6 @@ package com.leonarduk.bookkeeper.web.download.zoopla;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.leonarduk.web.BaseSeleniumPage;
@@ -25,14 +24,8 @@ public class ZooplaEstimate extends BaseSeleniumPage {
 	/** The Constant _logger. */
 	private static final Logger _logger = Logger.getLogger(ZooplaEstimate.class);
 
-	/**
-	 * Instantiates a new nationwide login.
-	 *
-	 * @param webDriver
-	 *            the web driver
-	 */
-	public ZooplaEstimate(final WebDriver webDriver, ZooplaConfig config) {
-		super(webDriver, config.getUrl());
+	public ZooplaEstimate(final ZooplaConfig config) {
+		super(config.getWebDriver(), config.getUrl());
 	}
 
 	/**

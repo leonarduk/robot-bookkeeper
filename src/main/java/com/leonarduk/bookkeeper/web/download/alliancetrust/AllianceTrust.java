@@ -18,8 +18,6 @@ public class AllianceTrust extends BaseSeleniumPage {
 	/**
 	 * Instantiates a new alliance trust.
 	 *
-	 * @param webDriver
-	 *            the web driver
 	 * @param config
 	 *            the config
 	 */

@@ -35,12 +35,8 @@ public class AmexDownloadTransactions implements TransactionsDownloader, Stateme
 	/**
 	 * Instantiates a new amex download transactions.
 	 *
-	 * @param webDriver
-	 *            the web driver
 	 * @param config
 	 *            the config
-	 * @param downloadDir
-	 *            the download dir
 	 * @throws Exception
 	 *             the exception
 	 */
@@ -66,8 +62,6 @@ public class AmexDownloadTransactions implements TransactionsDownloader, Stateme
 	 * Download transactions.
 	 *
 	 * @return the string
-	 * @throws Exception
-	 *             the exception
 	 */
 	@Override
 	public String downloadTransactionsFile() {

@@ -82,8 +82,6 @@ public class SantanderLogin extends BaseSeleniumPage {
 	/**
 	 * Instantiates a new santander login.
 	 *
-	 * @param webDriver
-	 *            the web driver
 	 * @param config
 	 *            the config
 	 */
