@@ -50,10 +50,8 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	 *
 	 * @param aLogin
 	 *            the login
-	 * @param aFileType
-	 *            the file type
-	 * @param aAccountId
-	 *            the a account id
+	 * @param accountId
+	 *            the account id the a account id
 	 */
 	public NationwideAccount(final NationwideLogin aLogin, final FileType aFileType,
 	        final int aAccountId) {
