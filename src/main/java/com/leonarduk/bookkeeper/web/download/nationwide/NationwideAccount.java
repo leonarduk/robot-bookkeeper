@@ -43,21 +43,24 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	/** The file type. */
 	private final FileType fileType;
 
+	private final int accountId;
+
 	/**
 	 * Instantiates a new nationwide account.
 	 *
 	 * @param aLogin
 	 *            the login
-	 * @param aAccountId
-	 *            the account id
 	 * @param aFileType
 	 *            the file type
+	 * @param aAccountId
+	 *            the a account id
 	 */
-	public NationwideAccount(final NationwideLogin aLogin, final int aAccountId,
-	        final FileType aFileType) {
+	public NationwideAccount(final NationwideLogin aLogin, final FileType aFileType,
+	        final int aAccountId) {
 		super(aLogin.getWebDriver(), aLogin.getConfig().getAccountListUrl()); // getFullStatementUrl(aAccountId));
 		this.login = aLogin;
 		this.fileType = aFileType;
+		this.accountId = aAccountId;
 	}
 
 	/**
@@ -66,7 +69,7 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	 * @return the string
 	 */
 	public final String accountName() {
-		this.get();
+		this.getWebDriver().get(this.login.getConfig().getFullStatementUrl(this.accountId));
 		return this.getWebDriver().findElement(By.xpath("//*[@id=\"stageInner\"]/div[3]/h2"))
 		        .getText();
 	}
@@ -91,6 +94,7 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	 */
 	@Override
 	public List<TransactionRecord> downloadTransactions() throws IOException {
+		this.downloadTransactionsFile();
 		final File[] files = this.login.getConfig().getDownloadDir().listFiles();
 		if (files.length > 0) {
 			final QifFileParser parser = new QifFileParser();
@@ -106,7 +110,7 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	 */
 	@Override
 	public String downloadTransactionsFile() {
-		this.getWebDriver().get(this.getExpectedUrl());
+		this.getWebDriver().get(this.login.getConfig().getFullStatementUrl(this.accountId));
 		try {
 			this.getWebDriver().switchTo().alert().accept();
 		}

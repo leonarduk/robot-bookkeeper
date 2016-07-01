@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class NationwideAccountIT {
 		final FileType type = FileType.OFX;
 		this.nationwideConfig = new NationwideConfig(new Config("bookkeeper-sit.properties"));
 		this.aLogin = new NationwideLogin(this.nationwideConfig);
-		this.nationwideAccount = (NationwideAccount) new NationwideAccount(this.aLogin, 1, type)
+		this.nationwideAccount = (NationwideAccount) new NationwideAccount(this.aLogin, type, 1)
 		        .get();
 
 	}
@@ -51,6 +52,7 @@ public class NationwideAccountIT {
 	@Test
 	public final void testDownloadTransactions() throws IOException {
 		final List<TransactionRecord> records = this.nationwideAccount.downloadTransactions();
+		Assert.assertFalse(records.isEmpty());
 		final FileFormatter formatter = new CsvFormatter();
 		final String outputFileName = "test.csv";
 		formatter.format(records, outputFileName);
@@ -61,6 +63,9 @@ public class NationwideAccountIT {
 	public final void testDownloadTransactionsFile() throws IOException {
 		this.nationwideAccount.downloadTransactionsFile();
 		final File[] files = this.nationwideConfig.getDownloadDir().listFiles();
+		Assert.assertNotNull(files);
+		Assert.assertTrue(files.length > 0);
+
 		if (files.length > 0) {
 			final QifFileParser parser = new QifFileParser();
 			final List<TransactionRecord> records = parser.parse(files[0].getAbsolutePath());
