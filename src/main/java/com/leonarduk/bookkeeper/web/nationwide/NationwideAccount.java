@@ -3,6 +3,8 @@
  */
 package com.leonarduk.bookkeeper.web.nationwide;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,6 +13,8 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
+import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.web.TransactionsDownloader;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -22,7 +26,7 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @version $Date: $: Date of last commit
  * @since 28 Mar 2015
  */
-public class NationwideAccount extends BaseSeleniumPage {
+public class NationwideAccount extends BaseSeleniumPage implements TransactionsDownloader {
 
 	private static final String OFX_FORMAT = "2";
 
@@ -80,10 +84,16 @@ public class NationwideAccount extends BaseSeleniumPage {
 		return buf.toString();
 	}
 
+	@Override
+	public List<TransactionRecord> downloadTransactions(final File tempDir) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Download for account.
 	 */
-	private void downloadForAccount() {
+	public void downloadTransactionsFile() {
 		this.getWebDriver().get(this.getExpectedUrl());
 		try {
 			this.getWebDriver().switchTo().alert().accept();
@@ -113,6 +123,12 @@ public class NationwideAccount extends BaseSeleniumPage {
 		}
 	}
 
+	@Override
+	public String downloadTransactionsFile(final File tempDir) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Gets the dates.
 	 *
@@ -133,7 +149,6 @@ public class NationwideAccount extends BaseSeleniumPage {
 		if (this.getWebDriver().findElements(By.id("logoutForm")).size() == 0) {
 			this.login.get();
 		}
-		this.downloadForAccount();
 	}
 
 	/**

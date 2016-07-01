@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
@@ -24,16 +26,36 @@ import com.leonarduk.webscraper.core.config.Config;
 
 public class NationwideAccountIT {
 
-	@Test
-	public final void testAccountName() throws IOException {
-		final File tempDir = FileUtils.createTempDir();
-		final WebDriver downloadCapableBrowser = SeleniumUtils.getDownloadCapableBrowser(tempDir);
+	private NationwideAccount	nationwideAccount;
+	private File				tempDir;
+	private WebDriver			downloadCapableBrowser;
+
+	@Before
+	public void setUp() throws IOException {
+		this.tempDir = FileUtils.createTempDir();
+		this.downloadCapableBrowser = SeleniumUtils.getDownloadCapableBrowser(this.tempDir);
 		final FileType type = FileType.OFX;
-		final NationwideAccount nationwideAccount = (NationwideAccount) new NationwideAccount(
-		        new NationwideLogin(downloadCapableBrowser,
+		this.nationwideAccount = (NationwideAccount) new NationwideAccount(
+		        new NationwideLogin(this.downloadCapableBrowser,
 		                new NationwideConfig(new Config("bookkeeper-sit.properties"))),
 		        1, type).get();
-		final File[] files = tempDir.listFiles();
+
+	}
+
+	@After
+	public void tearDown() {
+		this.downloadCapableBrowser.close();
+	}
+
+	@Test
+	public final void testAccountName() {
+		this.nationwideAccount.accountName();
+	}
+
+	@Test
+	public final void testDownload() throws IOException {
+		this.nationwideAccount.downloadTransactionsFile();
+		final File[] files = this.tempDir.listFiles();
 		if (files.length > 0) {
 			final QifFileParser parser = new QifFileParser();
 			final List<TransactionRecord> records = parser.parse(files[0].getAbsolutePath());
@@ -42,7 +64,6 @@ public class NationwideAccountIT {
 			formatter.format(records, outputFileName);
 			System.out.println(FileUtils.getFileContents(outputFileName));
 		}
-		downloadCapableBrowser.close();
 	}
 
 }

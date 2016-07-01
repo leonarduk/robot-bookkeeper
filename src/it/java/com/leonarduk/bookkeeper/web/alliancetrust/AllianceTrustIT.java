@@ -22,7 +22,7 @@ public class AllianceTrustIT {
 		final String steveaccount = "155266";
 		final String lucyAccount = "155385";
 
-		final AllianceTrust trust = new AllianceTrust(webDriver,
+		final AllianceTrust trust = new AllianceTrust(
 		        new AllianceTrustConfig(new Config("bookkeeper-sit.properties")));
 		trust.get();
 

@@ -6,20 +6,25 @@
  */
 package com.leonarduk.bookkeeper.web.amex;
 
+import java.io.IOException;
+
+import com.leonarduk.bookkeeper.web.AbstractWebConfig;
 import com.leonarduk.webscraper.core.config.Config;
 
-public class AmexConfig {
-	private final Config config;
+public class AmexConfig extends AbstractWebConfig {
+	public AmexConfig(final Config config) throws IOException {
+		super(config);
+	}
 
-	public AmexConfig(final Config config) {
-		this.config = config;
+	public String getBaseUrl() {
+		return this.getConfig().getProperty("bookkeeper.web.amex.baseurl");
 	}
 
 	public String getPassword() {
-		return this.config.getProperty("bookkeeper.web.amex.password");
+		return this.getConfig().getProperty("bookkeeper.web.amex.password");
 	}
 
 	public String getUserName() {
-		return this.config.getProperty("bookkeeper.web.amex.username");
+		return this.getConfig().getProperty("bookkeeper.web.amex.username");
 	}
 }

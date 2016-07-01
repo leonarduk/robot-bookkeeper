@@ -6,16 +6,18 @@
  */
 package com.leonarduk.bookkeeper.web.zoopla;
 
+import java.io.IOException;
+
+import com.leonarduk.bookkeeper.web.AbstractWebConfig;
 import com.leonarduk.webscraper.core.config.Config;
 
-public class ZooplaConfig {
-	private final Config config;
+public class ZooplaConfig extends AbstractWebConfig {
 
-	public ZooplaConfig(final Config config) {
-		this.config = config;
+	public ZooplaConfig(final Config config) throws IOException {
+		super(config);
 	}
 
 	public String getUrl() {
-		return this.config.getProperty("bookkeeper.web.zoopla.url");
+		return this.getConfig().getProperty("bookkeeper.web.zoopla.url");
 	}
 }

@@ -14,6 +14,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.leonarduk.webscraper.core.config.Config;
+
 /**
  * The Class SantanderLoginTest.
  *
@@ -44,11 +46,9 @@ public class SantanderLoginTest {
 	public final void setUp() throws Exception {
 		this.webDriver = Mockito.mock(WebDriver.class);
 		final String file = "";
-		// SantanderLoginTest.class.getClassLoader()
-		// .getResource("bookkeeper.properties").getFile();
-		this.config = new SantanderConfig(file);
+		this.config = new SantanderConfig(new Config(file));
 
-		this.login = new SantanderLogin(this.webDriver, this.config);
+		this.login = new SantanderLogin(this.config);
 	}
 
 	/**

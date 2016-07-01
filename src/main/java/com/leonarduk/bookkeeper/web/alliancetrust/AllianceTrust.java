@@ -4,7 +4,6 @@
 package com.leonarduk.bookkeeper.web.alliancetrust;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.leonarduk.web.BaseSeleniumPage;
@@ -24,11 +23,8 @@ public class AllianceTrust extends BaseSeleniumPage {
 	 * @param config
 	 *            the config
 	 */
-	public AllianceTrust(final WebDriver webDriver, final AllianceTrustConfig config) {
-		super(webDriver,
-		        // "https://atonline.alliancetrust.co.uk/atonline/index.jsp");
-		        "https://atonline.alliancetrust.co.uk/atonline/secure/CustomerListView.action");
-
+	public AllianceTrust(final AllianceTrustConfig config) {
+		super(config.getWebDriver(), config.getCustomerListViewUrl());
 		this.config = config;
 	}
 

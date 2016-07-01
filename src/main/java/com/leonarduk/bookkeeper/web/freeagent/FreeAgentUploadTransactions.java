@@ -25,8 +25,7 @@ public class FreeAgentUploadTransactions extends BaseSeleniumPage {
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = Logger.getLogger(FreeAgentUploadTransactions.class);
 
-	/** The login. */
-	private final BaseSeleniumPage loginPage;
+	private final FreeAgentLogin loginPage;
 
 	/**
 	 * Instantiates a new santander download transactions.

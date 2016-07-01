@@ -4,6 +4,7 @@
 package com.leonarduk.bookkeeper.web.clearcheckbook;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import org.junit.Assert;
@@ -22,9 +23,11 @@ public class UploadToClearCheckbookTest {
 
 	/**
 	 * Test convert money string.
+	 * 
+	 * @throws IOException
 	 */
 	@Test
-	public final void testConvertMoneyString() {
+	public final void testConvertMoneyString() throws IOException {
 		final ClearCheckbook clearCheckbook = new ClearCheckbook(
 		        new ClearCheckbookConfig(new Config()));
 		final double convertMoneyString = clearCheckbook.convertMoneyString("£750,055");

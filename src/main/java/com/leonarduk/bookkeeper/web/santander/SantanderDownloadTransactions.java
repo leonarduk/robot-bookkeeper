@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.web.StatementDownloader;
+import com.leonarduk.bookkeeper.web.TransactionsDownloader;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -23,7 +25,8 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @version $Date: $: Date of last commit
  * @since 6 Feb 2015
  */
-public class SantanderDownloadTransactions extends BaseSeleniumPage {
+public class SantanderDownloadTransactions extends BaseSeleniumPage
+        implements TransactionsDownloader, StatementDownloader {
 
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = Logger.getLogger(SantanderDownloadTransactions.class);
@@ -52,6 +55,7 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 	/**
 	 * Download latest statement.
 	 */
+	@Override
 	public final void downloadLatestStatement() {
 		this.isLoaded();
 		this.clickEDocuments();
@@ -71,6 +75,7 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 		this.findElementByXpath("//*[@id=\"" + index + "\"]").click();
 	}
 
+	@Override
 	public final List<TransactionRecord> downloadTransactions(final File tempDir)
 	        throws IOException {
 		final QifFileParser parser = new QifFileParser();
@@ -88,6 +93,7 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage {
 	 *            the temp dir
 	 * @return the string
 	 */
+	@Override
 	public final String downloadTransactionsFile(final File tempDir) {
 		// select transactions
 		final String xpath = "//*[@id=\"submenu\"]/ul/li[2]/a";

@@ -17,20 +17,21 @@ import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.webscraper.core.FileUtils;
+import com.leonarduk.webscraper.core.config.Config;
 
 public class SantanderDownloadTransactionsIT {
 	static final Logger LOGGER = Logger.getLogger(SantanderDownloadTransactionsIT.class);
 
 	@Test
 	public void testDownloadLatestStatement() throws Exception {
-		final File tempDir = FileUtils.createTempDir();
-		System.out.println("Save to " + tempDir.getAbsolutePath());
-		final SantanderLogin santanderLogin = SantanderLoginIT.getSantanderLogin(tempDir);
+		final SantanderConfig config = new SantanderConfig(new Config("bookkeeper-sit.properties"));
+
+		final SantanderLogin santanderLogin = new SantanderLogin(config);
 		final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(
 		        santanderLogin);
 		santanderTransactions.get();
 		santanderTransactions.downloadLatestStatement();
-		final File[] listFiles = tempDir.listFiles();
+		final File[] listFiles = config.getDownloadDir().listFiles();
 		final File file = listFiles[0];
 		Assert.assertTrue(file.exists());
 		santanderLogin.getWebDriver().close();
@@ -39,7 +40,9 @@ public class SantanderDownloadTransactionsIT {
 	@Test
 	public void testDownloadTransactions() throws Exception {
 		final File tempDir = FileUtils.createTempDir();
-		final SantanderLogin santanderLogin = SantanderLoginIT.getSantanderLogin(tempDir);
+		final SantanderConfig config = new SantanderConfig(new Config("bookkeeper-sit.properties"));
+
+		final SantanderLogin santanderLogin = new SantanderLogin(config);
 		final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(
 		        santanderLogin);
 		santanderTransactions.get();

@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.leonarduk.bookkeeper.file.QifFileParser;
@@ -29,15 +28,7 @@ public class AmexDownloadTransactions {
 
 	private static final Logger LOGGER = Logger.getLogger(AmexDownloadTransactions.class);
 
-	/** The driver. */
-	private final WebDriver driver;
-
-	/** The base url. */
-	private final String baseUrl;
-
 	private final AmexConfig config;
-
-	private final File downloadDir;
 
 	/**
 	 * Instantiates a new amex download transactions.
@@ -51,14 +42,11 @@ public class AmexDownloadTransactions {
 	 * @throws Exception
 	 *             the exception
 	 */
-	public AmexDownloadTransactions(final WebDriver webDriver, final AmexConfig config,
-	        final File downloadDir) throws Exception {
-		this.driver = webDriver;
-		this.baseUrl = "https://www.americanexpress.com/";
+	public AmexDownloadTransactions(final AmexConfig config, final File downloadDir)
+	        throws Exception {
 		final int fewSeconds = 3;
 		this.config = config;
-		this.downloadDir = downloadDir;
-		this.driver.manage().timeouts().implicitlyWait(fewSeconds, TimeUnit.SECONDS);
+		this.config.getWebDriver().manage().timeouts().implicitlyWait(fewSeconds, TimeUnit.SECONDS);
 	}
 
 	public final List<TransactionRecord> downloadTransactions() throws Exception {
@@ -75,13 +63,14 @@ public class AmexDownloadTransactions {
 	 *             the exception
 	 */
 	public final String downloadTransactionsFile() throws Exception {
-		this.driver.get(this.baseUrl + "/uk/");
-		this.driver.findElement(By.id("LabelUserID")).click();
-		this.driver.findElement(By.id("UserID")).clear();
-		this.driver.findElement(By.id("UserID")).sendKeys(this.config.getUserName());
-		this.driver.findElement(By.id("Password")).clear();
-		this.driver.findElement(By.id("Password")).sendKeys(this.config.getPassword());
-		this.driver.findElement(By.id("loginButton")).click();
+		this.config.getWebDriver().get(this.config.getBaseUrl() + "/uk/");
+		this.config.getWebDriver().findElement(By.id("LabelUserID")).click();
+		this.config.getWebDriver().findElement(By.id("UserID")).clear();
+		this.config.getWebDriver().findElement(By.id("UserID")).sendKeys(this.config.getUserName());
+		this.config.getWebDriver().findElement(By.id("Password")).clear();
+		this.config.getWebDriver().findElement(By.id("Password"))
+		        .sendKeys(this.config.getPassword());
+		this.config.getWebDriver().findElement(By.id("loginButton")).click();
 		try {
 			final WebElement popup = this.findElementByXpath("//*[@id=\"sprite-close_btn\"]");
 			if (null != popup) {
@@ -92,24 +81,25 @@ public class AmexDownloadTransactions {
 			AmexDownloadTransactions.LOGGER.info("No pop up screen. Ignore and try next page", e);
 		}
 
-		this.driver.findElement(By.id("estatement-link")).click();
-		this.driver.findElement(By.cssSelector("#downloads-link > span.copy")).click();
-		this.driver
+		this.config.getWebDriver().findElement(By.id("estatement-link")).click();
+		this.config.getWebDriver().findElement(By.cssSelector("#downloads-link > span.copy"))
+		        .click();
+		this.config.getWebDriver()
 		        .findElement(By.cssSelector(
 		                "a[title=\"Export your statement data into a variety of file formats\"]"))
 		        .click();
-		this.driver.findElement(By.id("QIF")).click();
-		this.driver.findElement(By.id("selectCard10")).click();
-		this.driver.findElement(By.id("radioid00")).click();
-		this.driver.findElement(By.id("radioid01")).click();
-		this.driver.findElement(By.id("radioid02")).click();
-		this.driver.findElement(By.id("radioid03")).click();
-		this.driver.findElement(By.linkText("Download Now")).click();
-		return this.downloadDir.getAbsolutePath() + "/ofx.qif";
+		this.config.getWebDriver().findElement(By.id("QIF")).click();
+		this.config.getWebDriver().findElement(By.id("selectCard10")).click();
+		this.config.getWebDriver().findElement(By.id("radioid00")).click();
+		this.config.getWebDriver().findElement(By.id("radioid01")).click();
+		this.config.getWebDriver().findElement(By.id("radioid02")).click();
+		this.config.getWebDriver().findElement(By.id("radioid03")).click();
+		this.config.getWebDriver().findElement(By.linkText("Download Now")).click();
+		return this.config.getDownloadDir().getAbsolutePath() + "/ofx.qif";
 	}
 
 	protected final WebElement findElementByXpath(final String xpath) {
-		final WebElement findElement = this.driver.findElement(By.xpath(xpath));
+		final WebElement findElement = this.config.getWebDriver().findElement(By.xpath(xpath));
 		if (null == findElement) {
 			throw new NoSuchElementException("Could not find xpath " + xpath);
 		}

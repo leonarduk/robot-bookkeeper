@@ -12,9 +12,10 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.leonarduk.bookkeeper.web.AbstractWebConfig;
 import com.leonarduk.webscraper.core.config.Config;
 
-public class SantanderConfig {
+public class SantanderConfig extends AbstractWebConfig {
 	private static final String BOOKKEEPER_WEB_SANTANDER_ID = "bookkeeper.web.santander.id";
 
 	private static final String BOOKKEEPER_WEB_SANTANDER_URL_START = "bookkeeper.web.santander.url.start";
@@ -75,14 +76,8 @@ public class SantanderConfig {
 	        new Question("born", SantanderConfig.IN_WHAT_CITY_OR_TOWN_WERE_YOU_BORN),
 	        new Question("citymarried", SantanderConfig.IN_WHAT_CITY_OR_TOWN_WERE_YOU_MARRIED) };
 
-	private final Config config;
-
-	public SantanderConfig(final Config config2) {
-		this.config = config2;
-	}
-
-	public SantanderConfig(final String string) throws IOException {
-		this.config = new Config(string);
+	public SantanderConfig(final Config config2) throws IOException {
+		super(config2);
 	}
 
 	public Question[] getFilterQuestions() {
@@ -90,7 +85,7 @@ public class SantanderConfig {
 	}
 
 	public String getPassword() {
-		return this.config.getProperty("bookkeeper.web.santander.password");
+		return this.getConfig().getProperty("bookkeeper.web.santander.password");
 	}
 
 	public Map<String, String> getQuestions() {
@@ -98,7 +93,7 @@ public class SantanderConfig {
 		final String questionPrefix = "bookkeeper.web.santander.question.";
 		for (final Question question : this.getFilterQuestions()) {
 			questions2.put(question.getConfigKeyString(),
-			        this.config.getProperty(questionPrefix + question.getConfigKeyString()));
+			        this.getConfig().getProperty(questionPrefix + question.getConfigKeyString()));
 			SantanderConfig.LOGGER.info("Q: " + question.getConfigKeyString() + " - "
 			        + questions2.get(question.getConfigKeyString()));
 
@@ -107,23 +102,23 @@ public class SantanderConfig {
 	}
 
 	public String getSantanderAccountsUrl() {
-		return this.config.getProperty(SantanderConfig.BOOKKEEPER_WEB_SANTANDER_URL_ACCOUNTS);
+		return this.getConfig().getProperty(SantanderConfig.BOOKKEEPER_WEB_SANTANDER_URL_ACCOUNTS);
 	}
 
 	public String getSantanderId() {
-		return this.config.getProperty(SantanderConfig.BOOKKEEPER_WEB_SANTANDER_ID);
+		return this.getConfig().getProperty(SantanderConfig.BOOKKEEPER_WEB_SANTANDER_ID);
 	}
 
 	public String getSantanderStartUrl() {
-		return this.config.getProperty(SantanderConfig.BOOKKEEPER_WEB_SANTANDER_URL_START);
+		return this.getConfig().getProperty(SantanderConfig.BOOKKEEPER_WEB_SANTANDER_URL_START);
 	}
 
 	public String getSecurityNumber() {
-		return this.config.getProperty("bookkeeper.web.santander.securitynumber");
+		return this.getConfig().getProperty("bookkeeper.web.santander.securitynumber");
 	}
 
 	public SantanderConfig setSantanderStartUrl(final String url) {
-		this.config.setProperty(SantanderConfig.BOOKKEEPER_WEB_SANTANDER_URL_START, url);
+		this.getConfig().setProperty(SantanderConfig.BOOKKEEPER_WEB_SANTANDER_URL_START, url);
 		return this;
 	}
 

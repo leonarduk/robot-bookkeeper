@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.leonarduk.web.BaseSeleniumPage;
@@ -88,8 +87,8 @@ public class SantanderLogin extends BaseSeleniumPage {
 	 * @param config
 	 *            the config
 	 */
-	public SantanderLogin(final WebDriver webDriver, final SantanderConfig config) {
-		super(webDriver, config.getSantanderAccountsUrl());
+	public SantanderLogin(final SantanderConfig config) {
+		super(config.getWebDriver(), config.getSantanderAccountsUrl());
 		this.config = config;
 		this.loginUrl = this.config.getSantanderStartUrl();
 		this.customerId = this.config.getSantanderId();

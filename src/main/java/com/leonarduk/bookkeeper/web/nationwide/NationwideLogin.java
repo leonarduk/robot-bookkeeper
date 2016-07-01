@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.leonarduk.web.BaseSeleniumPage;
@@ -24,23 +23,12 @@ import com.leonarduk.web.BaseSeleniumPage;
 public class NationwideLogin extends BaseSeleniumPage {
 
 	/** The Constant _logger. */
-	private static final Logger _logger = Logger.getLogger(NationwideLogin.class);
+	private static final Logger		_logger	= Logger.getLogger(NationwideLogin.class);
+	private final NationwideConfig	config;
 
-	/** The customer number. */
-	private final String customerNumber;
-
-	/** The password. */
-	private final String password;
-
-	/** The memorable word. */
-	private final String memorableWord;
-
-	public NationwideLogin(final WebDriver downloadCapableBrowser,
-	        final NationwideConfig nationwideConfig) {
-		super(downloadCapableBrowser, "https://onlinebanking.nationwide.co.uk/AccountList");
-		this.customerNumber = nationwideConfig.getCustomerNumber();
-		this.password = nationwideConfig.getPassword();
-		this.memorableWord = nationwideConfig.getMemorableWord();
+	public NationwideLogin(final NationwideConfig nationwideConfig) {
+		super(nationwideConfig.getWebDriver(), nationwideConfig.getAccountListUrl());
+		this.config = nationwideConfig;
 	}
 
 	/**
@@ -55,8 +43,8 @@ public class NationwideLogin extends BaseSeleniumPage {
 		        .findElement(By.xpath("//*[@id=\"memDataForm\"]/div[2]/div[" + index + "]/label"));
 
 		final String text = element.getText();
-		final int value = Integer.valueOf(text.substring(0, 1));
-		final String character = this.password.substring(value - 1, value);
+		final int value = Integer.valueOf(text.substring(0, 1)).intValue();
+		final String character = this.config.getPassword().substring(value - 1, value);
 		NationwideLogin._logger.info(text + " " + value + " " + character);
 
 		return character;
@@ -76,20 +64,21 @@ public class NationwideLogin extends BaseSeleniumPage {
 			return;
 		}
 
-		this.getWebDriver().get("https://onlinebanking.nationwide.co.uk/AccessManagement/Login");
+		this.getWebDriver().get(this.config.getLoginUrl());
 		try {
 			final int halfSecond = 500;
 			Thread.sleep(halfSecond);
 		}
 		catch (final InterruptedException e) {
 		}
-		this.getWebDriver().findElement(By.id("CustomerNumber")).sendKeys(this.customerNumber);
+		this.getWebDriver().findElement(By.id("CustomerNumber"))
+		        .sendKeys(this.config.getCustomerNumber());
 		this.getWebDriver().findElement(By.id("Continue")).click();
 
 		this.getWebDriver().findElement(By.xpath("//*[@id=\"logInWithMemDataLink\"]/div/b"))
 		        .click();
 		this.getWebDriver().findElement(By.id("SubmittedMemorableInformation"))
-		        .sendKeys(this.memorableWord);
+		        .sendKeys(this.config.getMemorableWord());
 
 		this.getWebDriver().findElement(By.id("firstSelect"))
 		        .sendKeys(this.getRequiredCharacter(1));

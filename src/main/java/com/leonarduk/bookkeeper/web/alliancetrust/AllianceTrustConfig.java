@@ -6,20 +6,26 @@
  */
 package com.leonarduk.bookkeeper.web.alliancetrust;
 
+import java.io.IOException;
+
+import com.leonarduk.bookkeeper.web.AbstractWebConfig;
 import com.leonarduk.webscraper.core.config.Config;
 
-public class AllianceTrustConfig {
-	private final Config config;
+public class AllianceTrustConfig extends AbstractWebConfig {
 
-	public AllianceTrustConfig(final Config config) {
-		this.config = config;
+	public AllianceTrustConfig(final Config config) throws IOException {
+		super(config);
 	}
 
 	public String getAccountNumber() {
-		return this.config.getProperty("bookkeeper.web.alliancetrust.username");
+		return this.getConfig().getProperty("bookkeeper.web.alliancetrust.username");
+	}
+
+	public String getCustomerListViewUrl() {
+		return this.getConfig().getProperty("bookkeeper.web.alliancetrust.customerListView.url");
 	}
 
 	public String getPassword() {
-		return this.config.getProperty("bookkeeper.web.alliancetrust.password");
+		return this.getConfig().getProperty("bookkeeper.web.alliancetrust.password");
 	}
 }

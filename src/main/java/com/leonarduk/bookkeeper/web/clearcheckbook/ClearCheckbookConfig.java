@@ -6,20 +6,21 @@
  */
 package com.leonarduk.bookkeeper.web.clearcheckbook;
 
+import java.io.IOException;
+
+import com.leonarduk.bookkeeper.web.AbstractWebConfig;
 import com.leonarduk.webscraper.core.config.Config;
 
-public class ClearCheckbookConfig {
-	private final Config config;
-
-	public ClearCheckbookConfig(final Config config) {
-		this.config = config;
+public class ClearCheckbookConfig extends AbstractWebConfig {
+	public ClearCheckbookConfig(final Config config) throws IOException {
+		super(config);
 	}
 
 	public CharSequence getPassword() {
-		return this.config.getProperty("bookkeeper.web.clearcheckbook.password");
+		return this.getConfig().getProperty("bookkeeper.web.clearcheckbook.password");
 	}
 
 	public String getUserName() {
-		return this.config.getProperty("bookkeeper.web.clearcheckbook.username");
+		return this.getConfig().getProperty("bookkeeper.web.clearcheckbook.username");
 	}
 }
