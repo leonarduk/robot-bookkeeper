@@ -28,7 +28,7 @@ public class UploadToClearCheckbookTest {
 	 */
 	@Test
 	public final void testConvertMoneyString() throws IOException {
-		final ClearCheckbook clearCheckbook = new ClearCheckbook(
+		final ClearCheckbookTransactionUploader clearCheckbook = new ClearCheckbookTransactionUploader(
 		        Mockito.mock(ClearCheckbookConfig.class));
 		final double convertMoneyString = clearCheckbook.convertMoneyString("£750,055");
 		final int expected = 750055;
@@ -50,7 +50,7 @@ public class UploadToClearCheckbookTest {
 			final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
 
 			final String name = "clearcheckbook/";
-			final URL url = ClearCheckbook.class.getClass().getResource(name);
+			final URL url = ClearCheckbookTransactionUploader.class.getClass().getResource(name);
 			driver.get(url.getPath());
 			// UploadToClearCheckbook.updateEstimate(account, currentValue,
 			// userName,

@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 
-public interface TransactionsDownloader {
+public interface TransactionDownloader {
 
 	List<TransactionRecord> downloadTransactions() throws IOException;
 

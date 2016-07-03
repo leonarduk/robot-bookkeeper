@@ -19,7 +19,6 @@ import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
-import com.leonarduk.bookkeeper.web.download.nationwide.NationwideAccount.FileType;
 import com.leonarduk.webscraper.core.FileUtils;
 import com.leonarduk.webscraper.core.config.Config;
 
@@ -29,19 +28,18 @@ public class NationwideAccountIT {
 	private NationwideConfig	nationwideConfig;
 	private NationwideLogin		aLogin;
 
+	@SuppressWarnings("resource")
 	@Before
 	public void setUp() throws IOException {
-		final FileType type = FileType.OFX;
 		this.nationwideConfig = new NationwideConfig(new Config("bookkeeper-sit.properties"));
 		this.aLogin = new NationwideLogin(this.nationwideConfig);
-		this.nationwideAccount = (NationwideAccount) new NationwideAccount(this.aLogin, type, 1)
-		        .get();
+		this.nationwideAccount = (NationwideAccount) new NationwideAccount(this.aLogin, 1).get();
 
 	}
 
 	@After
-	public void tearDown() {
-		this.nationwideConfig.getWebDriver().close();
+	public void tearDown() throws Exception {
+		this.nationwideAccount.close();
 	}
 
 	@Test

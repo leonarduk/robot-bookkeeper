@@ -20,9 +20,6 @@ import com.leonarduk.bookkeeper.file.DateUtils;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
-import com.leonarduk.bookkeeper.web.upload.clearcheckbook.ClearCheckbook;
-import com.leonarduk.bookkeeper.web.upload.clearcheckbook.ClearCheckbookConfig;
-import com.leonarduk.bookkeeper.web.upload.clearcheckbook.ClearCheckbook.Setting;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
 import com.leonarduk.webscraper.core.config.Config;
@@ -32,8 +29,8 @@ import com.leonarduk.webscraper.core.config.Config;
  */
 public class ClearCheckbookIT {
 
-	private static boolean	internetAvailable;
-	private ClearCheckbook	clearCheckbook;
+	private static boolean						internetAvailable;
+	private ClearCheckbookTransactionUploader	clearCheckbook;
 
 	@BeforeClass
 	public static void setupStatic() {
@@ -42,7 +39,7 @@ public class ClearCheckbookIT {
 
 	@Before
 	public void setup() throws IOException {
-		this.clearCheckbook = new ClearCheckbook(
+		this.clearCheckbook = new ClearCheckbookTransactionUploader(
 		        new ClearCheckbookConfig(new Config("bookkeeper-sit.properties")));
 	}
 
@@ -71,7 +68,7 @@ public class ClearCheckbookIT {
 			final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
 
 			final String name = "clearcheckbook/";
-			final URL url = ClearCheckbook.class.getClass().getResource(name);
+			final URL url = ClearCheckbookTransactionUploader.class.getClass().getResource(name);
 			driver.get(url.getPath());
 		}
 		catch (final Exception e) {
@@ -84,8 +81,8 @@ public class ClearCheckbookIT {
 
 	@Test
 	public void testUploadToClearCheckbookCash() throws Exception {
-		final String account = "Cash";
-		this.uploadToClearcheckBook(account);
+		this.clearCheckbook.setAccount("Cash");
+		this.uploadToClearcheckBook();
 
 	}
 
@@ -96,11 +93,11 @@ public class ClearCheckbookIT {
 	 */
 	@Test
 	public void testUploadToClearCheckbookChecking() throws Exception {
-		final String account = "Checking";
-		this.uploadToClearcheckBook(account);
+		this.clearCheckbook.setAccount("Checking");
+		this.uploadToClearcheckBook();
 	}
 
-	public void uploadToClearcheckBook(final String account) throws IOException, Exception {
+	public void uploadToClearcheckBook() throws IOException, Exception {
 		final FileFormatter formatter = new QifFileFormatter(QifFileFormatter.CCB_FORMAT);
 		final List<TransactionRecord> transactionRecords = new ArrayList<>();
 		transactionRecords.add(new TransactionRecord(-12.23, "Payment",
@@ -113,8 +110,7 @@ public class ClearCheckbookIT {
 
 		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
 
-		final String results = this.clearCheckbook.uploadToClearCheckbook(account, outputFileName,
-		        webDriver, Setting.GENERAL, false);
+		final String results = this.clearCheckbook.uploadToClearCheckbook(outputFileName);
 		System.out.println(results);
 		webDriver.close();
 	}

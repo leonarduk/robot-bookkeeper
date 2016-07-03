@@ -15,7 +15,7 @@ import org.openqa.selenium.WebElement;
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.StatementDownloader;
-import com.leonarduk.bookkeeper.web.download.TransactionsDownloader;
+import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 
 /**
  * The Class AmexDownloadTransactions.
@@ -26,7 +26,8 @@ import com.leonarduk.bookkeeper.web.download.TransactionsDownloader;
  * @version $Date: $: Date of last commit
  * @since 24 Mar 2015
  */
-public class AmexDownloadTransactions implements TransactionsDownloader, StatementDownloader {
+public class AmexDownloadTransactions
+        implements TransactionDownloader, StatementDownloader, AutoCloseable {
 
 	private static final Logger LOGGER = Logger.getLogger(AmexDownloadTransactions.class);
 
@@ -37,13 +38,16 @@ public class AmexDownloadTransactions implements TransactionsDownloader, Stateme
 	 *
 	 * @param config
 	 *            the config
-	 * @throws Exception
-	 *             the exception
 	 */
-	public AmexDownloadTransactions(final AmexConfig config) throws Exception {
+	public AmexDownloadTransactions(final AmexConfig config) {
 		final int fewSeconds = 3;
 		this.config = config;
 		this.config.getWebDriver().manage().timeouts().implicitlyWait(fewSeconds, TimeUnit.SECONDS);
+	}
+
+	@Override
+	public void close() throws Exception {
+		this.config.getWebDriver().close();
 	}
 
 	@Override

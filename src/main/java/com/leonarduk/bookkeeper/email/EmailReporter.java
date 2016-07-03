@@ -6,8 +6,11 @@
  */
 package com.leonarduk.bookkeeper.email;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
+import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.webscraper.core.email.EmailException;
 import com.leonarduk.webscraper.core.email.EmailSender;
 import com.leonarduk.webscraper.core.email.EmailSession;
@@ -19,12 +22,30 @@ public class EmailReporter {
 
 	private final EmailConfig config;
 
-	public EmailReporter(final EmailConfig config) {
+	private final StringBuilder changes;
+
+	private final EmailFormatter emailFormatter;
+
+	public EmailReporter(final EmailConfig config, final EmailFormatter emailFormatter) {
 		this.config = config;
+		this.changes = new StringBuilder();
+		this.emailFormatter = emailFormatter;
+		this.startEmailBody();
+
 	}
 
-	public void emailNotification(final StringBuilder changes, final String subject)
-	        throws EmailException {
+	public void addTransactions(final String accountName,
+	        final List<TransactionRecord> transactions) {
+		this.append(this.emailFormatter.formatSubHeader(accountName));
+		this.append(this.emailFormatter.format(transactions));
+
+	}
+
+	public void append(final String text) {
+		this.changes.append(text);
+	}
+
+	public void emailNotification(final String subject) throws EmailException {
 		EmailReporter.LOGGER.debug("emailNotification");
 		final String[] toEmail = this.config.getEmailTo();
 		final String user = this.config.getEmailUser();
@@ -37,8 +58,19 @@ public class EmailReporter {
 
 		final EmailSession session = new EmailSessionImpl(user, password, server, port);
 
+		this.endEmailBody();
 		emailSender.sendMessage(this.config.getFromEmail(), this.config.getFromEmailName(), subject,
-		        changes.toString(), useHtml, session, toEmail);
+		        this.changes.toString(), useHtml, session, toEmail);
+	}
+
+	public void endEmailBody() {
+		this.append(this.emailFormatter.endMessageBody());
+	}
+
+	public void startEmailBody() {
+		this.append(this.emailFormatter.startMessageBody());
+		this.append(this.emailFormatter.formatHeader("Todays Transactions"));
+
 	}
 
 }

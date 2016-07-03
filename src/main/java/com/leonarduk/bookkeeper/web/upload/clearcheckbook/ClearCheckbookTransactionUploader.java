@@ -3,6 +3,8 @@
  */
 package com.leonarduk.bookkeeper.web.upload.clearcheckbook;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -13,7 +15,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import com.leonarduk.bookkeeper.file.QifFileFormatter;
+import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.web.upload.TransactionUploader;
 import com.leonarduk.web.BaseSeleniumPage;
+import com.leonarduk.webscraper.core.FileUtils;
 
 /**
  * The Class UploadToClearCheckbook.
@@ -24,12 +30,14 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @version $Date: $: Date of last commit
  * @since 28 Mar 2015
  */
-public class ClearCheckbook {
+public class ClearCheckbookTransactionUploader implements AutoCloseable, TransactionUploader {
 	/** The Constant LOGGER. */
-	private final static Logger			LOGGER	= Logger.getLogger(ClearCheckbook.class);
+	private final static Logger			LOGGER	= Logger
+	        .getLogger(ClearCheckbookTransactionUploader.class);
 	private final ClearCheckbookConfig	config;
+	private String						account;
 
-	public ClearCheckbook(final ClearCheckbookConfig config) {
+	public ClearCheckbookTransactionUploader(final ClearCheckbookConfig config) {
 		this.config = config;
 	}
 
@@ -38,16 +46,20 @@ public class ClearCheckbook {
 	 *
 	 * @param fileToUpload
 	 *            the file to upload
-	 * @param driver
-	 *            the driver
 	 */
-	private void chooseFileToUpload(final String fileToUpload, final WebDriver driver) {
+	private void chooseFileToUpload(final String fileToUpload) {
+		final WebDriver driver = this.config.getWebDriver();
 		driver.findElement(By.linkText("Tools")).click();
 		driver.findElement(By.linkText("Import Transactions")).click();
 		final String replaceAll = fileToUpload.replaceAll("/", "\\\\");
 		driver.findElement(By.id("import")).sendKeys(replaceAll);
 		// *[@id="import"]
 		driver.findElement(By.xpath("//*[@id=\"uploadForm\"]/button")).click();
+	}
+
+	@Override
+	public void close() throws Exception {
+		this.config.getWebDriver().close();
 	}
 
 	/**
@@ -61,26 +73,30 @@ public class ClearCheckbook {
 		return Double.valueOf(amount.replaceAll("£", "").replaceAll(",", "")).doubleValue();
 	}
 
-	private void generalSettings(final String account, final WebDriver driver) {
+	private void generalSettings() {
 		try {
-			new Select(driver.findElement(By.name("import_to_account")))
-			        .selectByVisibleText(account);
+			new Select(this.config.getWebDriver().findElement(By.name("import_to_account")))
+			        .selectByVisibleText(this.account);
 		}
 		catch (final NoSuchElementException e) {
-			ClearCheckbook.LOGGER.error("Failed to find element in amexSettings", e);
+			ClearCheckbookTransactionUploader.LOGGER.error("Failed to find element in amexSettings",
+			        e);
 			throw e;
 		}
+	}
+
+	public QifFileFormatter getQifFileFormatter() {
+		return new QifFileFormatter(QifFileFormatter.CCB_FORMAT);
 	}
 
 	/**
 	 * Import transactions.
 	 *
-	 * @param driver
-	 *            the driver
 	 * @param removeDuplicates
 	 * @return the string
 	 */
-	private String importTransactions(final WebDriver driver, final boolean removeDuplicates) {
+	private String importTransactions(final boolean removeDuplicates) {
+		final WebDriver driver = this.config.getWebDriver();
 		driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
 		BaseSeleniumPage.waitForPageToLoad(driver);
 		driver.findElement(By.cssSelector("input.btn.btn-default")).click();
@@ -103,11 +119,9 @@ public class ClearCheckbook {
 
 	/**
 	 * Login.
-	 *
-	 * @param driver
-	 *            the driver
 	 */
-	private void login(final WebDriver driver) {
+	private void login() {
+		final WebDriver driver = this.config.getWebDriver();
 		final String baseUrl = "https://www.clearcheckbook.com/";
 		final int severalSeconds = 5;
 		driver.manage().timeouts().implicitlyWait(severalSeconds, TimeUnit.SECONDS);
@@ -132,7 +146,7 @@ public class ClearCheckbook {
 		Integer duplicates = Integer.valueOf(driver.findElement(By.xpath(numberOfDupsXpath))
 		        .getText().replace(" Duplicates Found", "").replace(" Duplicate Found", ""));
 
-		while (duplicates > 0) {
+		while (duplicates.intValue() > 0) {
 			driver.findElement(By.id("selectAllCheckbox")).click();
 			driver.findElement(By.cssSelector("input.btn.btn-primary")).click();
 			final String updateFilterXpath = "/html/body/div[2]/div[6]/form/input";
@@ -143,25 +157,26 @@ public class ClearCheckbook {
 		}
 	}
 
+	public void setAccount(final String account2) {
+		this.account = account2;
+	}
+
 	/**
 	 * Update estimate.
 	 *
-	 * @param account
-	 *            the account
 	 * @param currentValue
 	 *            the current value
-	 * @param driver
-	 *            the driver
 	 * @param valueXpath
 	 *            the value xpath
 	 * @param memo
 	 *            the memo
 	 * @return the string
 	 */
-	public String updateEstimate(final String account, final String currentValue,
-	        final WebDriver driver, final String valueXpath, final CharSequence memo) {
-		this.login(driver);
+	public String updateEstimate(final String currentValue, final String valueXpath,
+	        final CharSequence memo) {
+		this.login();
 
+		final WebDriver driver = this.config.getWebDriver();
 		final WebElement valueElement = driver.findElement(By.xpath(valueXpath));
 		final String ccbValueString = valueElement.getText();
 
@@ -170,16 +185,17 @@ public class ClearCheckbook {
 		final double ccbAmount = this.convertMoneyString(ccbValueString);
 		double amount = this.convertMoneyString(currentValue) - ccbAmount;
 		if (Math.abs(amount) < 1) {
-			ClearCheckbook.LOGGER.info("No change");
+			ClearCheckbookTransactionUploader.LOGGER.info("No change");
 			return "No change";
 		}
 		final int veryLargeChange = 100000;
 		if (Math.abs(amount) > veryLargeChange) {
-			ClearCheckbook.LOGGER
+			ClearCheckbookTransactionUploader.LOGGER
 			        .warn("Suspected error, ignoring move from " + ccbAmount + " to " + amount);
 			return "No change";
 		}
-		ClearCheckbook.LOGGER.info("Updating value from " + ccbAmount + " to " + amount);
+		ClearCheckbookTransactionUploader.LOGGER
+		        .info("Updating value from " + ccbAmount + " to " + amount);
 
 		driver.findElement(By.id("amount")).sendKeys(String.valueOf(amount));
 		driver.findElement(By.id("memo")).sendKeys(memo);
@@ -192,7 +208,7 @@ public class ClearCheckbook {
 
 		new Select(driver.findElement(By.id("transaction_type")))
 		        .selectByVisibleText(transactionType);
-		new Select(driver.findElement(By.id("account_id"))).selectByVisibleText(account);
+		new Select(driver.findElement(By.id("account_id"))).selectByVisibleText(this.account);
 		new Select(driver.findElement(By.id("category_id"))).selectByVisibleText("Miscellaneous");
 		driver.findElement(By.id("at_jive")).click();
 		driver.findElement(By.id("addEntryButton")).click();
@@ -204,38 +220,27 @@ public class ClearCheckbook {
 	/**
 	 * Upload to clear checkbook.
 	 *
-	 * @param account
-	 *            the account
 	 * @param fileToUpload
 	 *            the file to upload
-	 * @param driver
-	 *            the driver
-	 * @param setting
-	 *            the setting
-	 * @param removeDuplicates
-	 *            the remove duplicates
 	 * @return the string
-	 * @throws Exception
-	 *             the exception
 	 */
-	public String uploadToClearCheckbook(final String account, final String fileToUpload,
-	        final WebDriver driver, final Setting setting, final boolean removeDuplicates)
-	                throws Exception {
-		this.login(driver);
-		this.chooseFileToUpload(fileToUpload, driver);
-		this.generalSettings(account, driver);
-
-		return this.importTransactions(driver, removeDuplicates);
+	public String uploadToClearCheckbook(final String fileToUpload) {
+		this.login();
+		this.chooseFileToUpload(fileToUpload);
+		this.generalSettings();
+		return this.importTransactions(this.config.isRemoveDuplicatesEnabled());
 
 	}
 
-	/**
-	 * The Enum Setting.
-	 */
-	public enum Setting {
+	@Override
+	public void uploadTransactions(final List<TransactionRecord> transactions) throws IOException {
+		final File folder = FileUtils.createTempDir();
+		folder.deleteOnExit();
+		final String outputFileName = folder.getAbsolutePath() + File.separator + "freeagent.csv";
 
-		/** The amex. */
-		AMEX, /** The nationwide. */
-		NATIONWIDE, GENERAL;
+		this.getQifFileFormatter().format(transactions, outputFileName);
+
+		this.uploadToClearCheckbook(outputFileName);
 	}
+
 }
