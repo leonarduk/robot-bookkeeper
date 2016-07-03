@@ -32,13 +32,11 @@ public final class EmailParser {
 	 *            the config
 	 */
 	public static void processEmails(final Config config) {
-		// final String[] toEmail =
-		// config.getArrayProperty("bookkeeper.email.to");
+		EmailParser.LOGGER.debug("processEmails");
 		final String userName = config.getProperty("bookkeeper.email.user");
 		final String server = config.getProperty("bookkeeper.email.server");
 		final String serverTypeName = config.getProperty("bookkeeper.email.server.type");
 		final String password = config.getProperty("bookkeeper.email.password");
-		// final String port = config.getProperty("bookkeeper.email.port");
 
 		final ServerType serverType = ServerType.valueOf(serverTypeName);
 		final EmailReader reader = new EmailReaderImpl();
@@ -48,14 +46,6 @@ public final class EmailParser {
 		processor.addProcessor(new BFCAInvoiceProcessor());
 
 		reader.processMail(server, userName, password, serverType, attachmentsFolder, processor);
-		// final EmailSender emailSender = new EmailSender();
-
-		// final EmailSession session = new EmailSession(userName, password,
-		// server, port);
-		// emailSender.sendMessage(config.getProperty("bookkeeper.email.from.email"),
-		// config.getProperty("bookkeeper.email.from.name"),
-		// "Matching bookkeeper items found", emailBody.toString(), true,
-		// session, toEmail);
 	}
 
 	/**

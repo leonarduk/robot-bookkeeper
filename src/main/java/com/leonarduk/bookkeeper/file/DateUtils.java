@@ -30,6 +30,7 @@ public class DateUtils {
 	 * @return Return the date.
 	 * @since 11/06/2016
 	 */
+	@SuppressWarnings("unused")
 	public static Date stringToDate(final String text) {
 		StringBuilder pattern = null;
 
@@ -87,6 +88,7 @@ public class DateUtils {
 						        .from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 					}
 					catch (final DateTimeParseException e) {
+						// ignore
 					}
 					try {
 						// Ex.1994/12/05
@@ -99,6 +101,7 @@ public class DateUtils {
 						        .from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 					}
 					catch (final DateTimeParseException e) {
+						// ignore
 					}
 					try {
 						// Ex.12/1994/05
@@ -111,6 +114,7 @@ public class DateUtils {
 						        .from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 					}
 					catch (final DateTimeParseException e) {
+						// ignore
 					}
 				}
 			}
