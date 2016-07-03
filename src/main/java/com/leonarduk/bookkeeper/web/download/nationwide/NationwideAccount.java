@@ -16,7 +16,7 @@ import org.openqa.selenium.WebElement;
 
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
-import com.leonarduk.bookkeeper.web.download.TransactionsDownloader;
+import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -28,22 +28,13 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @version $Date: $: Date of last commit
  * @since 28 Mar 2015
  */
-public class NationwideAccount extends BaseSeleniumPage implements TransactionsDownloader {
-
-	/** The Constant OFX_FORMAT. */
-	private static final String OFX_FORMAT = "2";
+public class NationwideAccount extends BaseSeleniumPage implements TransactionDownloader {
 
 	/** The Constant _logger. */
 	private static final Logger _logger = Logger.getLogger(NationwideAccount.class);
 
-	/** The Constant CSV_FORMAT. */
-	private static final String CSV_FORMAT = "1";
-
 	/** The login. */
 	private final NationwideLogin login;
-
-	/** The file type. */
-	private final FileType fileType;
 
 	/** The account id. */
 	private final int accountId;
@@ -53,16 +44,12 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	 *
 	 * @param aLogin
 	 *            the a login
-	 * @param aFileType
-	 *            the a file type
 	 * @param aAccountId
 	 *            the a account id
 	 */
-	public NationwideAccount(final NationwideLogin aLogin, final FileType aFileType,
-	        final int aAccountId) {
+	public NationwideAccount(final NationwideLogin aLogin, final int aAccountId) {
 		super(aLogin.getWebDriver(), aLogin.getConfig().getAccountListUrl()); // getFullStatementUrl(aAccountId));
 		this.login = aLogin;
-		this.fileType = aFileType;
 		this.accountId = aAccountId;
 	}
 
@@ -126,14 +113,15 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 			return null;
 		}
 
+		final FileType fileType = NationwideAccount.FileType.CSV;
 		downloadLinks.get(0).click();
 		this.getWebDriver()
 		        .findElement(By.xpath("(//form[@action='/Transactions/FullStatement/DownloadFS'])["
-		                + NationwideAccount.CSV_FORMAT + "]"))
+		                + FileType.CSV.getIndex() + "]"))
 		        .click();
 		this.getWebDriver().findElement(By.cssSelector("b.reveal-info-down")).click();
 		try {
-			this.getWebDriver().findElement(By.linkText("Download " + this.fileType + " file"))
+			this.getWebDriver().findElement(By.linkText("Download " + fileType.name() + " file"))
 			        .click();
 		}
 		catch (final NoSuchElementException e) {
@@ -171,8 +159,18 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionsD
 	public enum FileType {
 
 		/** The csv. */
-		CSV, /** The ofx. */
-		OFX;
+		CSV(1), /** The ofx. */
+		OFX(2);
+
+		private int index;
+
+		FileType(final int index) {
+			this.index = index;
+		}
+
+		public int getIndex() {
+			return this.index;
+		};
 
 	}
 }

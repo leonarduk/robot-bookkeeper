@@ -4,13 +4,18 @@
 package com.leonarduk.bookkeeper.web.upload.freeagent;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import com.leonarduk.bookkeeper.file.QifFileFormatter;
+import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.upload.TransactionUploader;
 import com.leonarduk.web.BaseSeleniumPage;
+import com.leonarduk.webscraper.core.FileUtils;
 
 /**
  * The Class SantanderDownloadTransactions.
@@ -27,6 +32,11 @@ public class FreeAgentUploadTransactions extends BaseSeleniumPage implements Tra
 	private static final Logger LOGGER = Logger.getLogger(FreeAgentUploadTransactions.class);
 
 	private final FreeAgentLogin loginPage;
+
+	public static QifFileFormatter getQifFileFormatter() {
+		return new QifFileFormatter(QifFileFormatter.FREEAGENT_FORMAT);
+
+	}
 
 	/**
 	 * Instantiates a new santander download transactions.
@@ -55,6 +65,16 @@ public class FreeAgentUploadTransactions extends BaseSeleniumPage implements Tra
 		}
 	}
 
+	@Override
+	public final void uploadTransactions(final List<TransactionRecord> transactions)
+	        throws IOException {
+		final File folder = FileUtils.createTempDir();
+		folder.deleteOnExit();
+		final String outputFileName = folder.getAbsolutePath() + File.separator + "freeagent.csv";
+		FreeAgentUploadTransactions.getQifFileFormatter().format(transactions, outputFileName);
+		this.uploadTransactions(outputFileName);
+	}
+
 	/**
 	 * Upload transactions.
 	 *
@@ -75,5 +95,4 @@ public class FreeAgentUploadTransactions extends BaseSeleniumPage implements Tra
 		this.waitForPageToLoad();
 		this.getWebDriver().findElement(By.name("commit")).click();
 	}
-
 }

@@ -18,21 +18,23 @@ import com.leonarduk.bookkeeper.file.DateUtils;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
-import com.leonarduk.bookkeeper.web.upload.freeagent.FreeAgentUploadTransactions;
+import com.leonarduk.webscraper.core.config.Config;
 
 public class FreeAgentUploadTransactionsIT {
 
 	private FreeAgentUploadTransactions transactions;
 
+	@SuppressWarnings("resource")
 	@Before
 	public void setUp() throws Exception {
-		this.transactions = new FreeAgentUploadTransactions(FreeAgentLoginIT.getFreeAgentLogin());
+		this.transactions = new FreeAgentUploadTransactions(
+		        new FreeAgentLogin(new FreeAgentConfig(new Config("bookkeeper-sit.properties"))));
 		this.transactions.get();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		this.transactions.getWebDriver().close();
+		this.transactions.close();
 	}
 
 	@Test

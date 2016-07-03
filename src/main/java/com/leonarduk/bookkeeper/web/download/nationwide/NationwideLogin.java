@@ -3,6 +3,7 @@
  */
 package com.leonarduk.bookkeeper.web.download.nationwide;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -27,7 +28,7 @@ public class NationwideLogin extends BaseSeleniumPage {
 
 	private final NationwideConfig config;
 
-	public NationwideLogin(final NationwideConfig nationwideConfig) {
+	public NationwideLogin(final NationwideConfig nationwideConfig) throws IOException {
 		super(nationwideConfig.getWebDriver(), nationwideConfig.getAccountListUrl());
 		this.config = nationwideConfig;
 	}

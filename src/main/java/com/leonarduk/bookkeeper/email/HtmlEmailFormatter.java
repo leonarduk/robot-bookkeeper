@@ -12,7 +12,7 @@ import java.util.List;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.webscraper.core.format.HtmlFormatter;
 
-public class HtmlRecordFormatter extends HtmlFormatter {
+public class HtmlEmailFormatter extends HtmlFormatter implements EmailFormatter {
 
 	private String addHeader(final String value) {
 		return this.addNode(value, "th");
@@ -26,7 +26,7 @@ public class HtmlRecordFormatter extends HtmlFormatter {
 		return this.addNode(value, "td");
 	}
 
-	public String endHtml() {
+	public String endMessageBody() {
 		return "</body></html>";
 	}
 
@@ -55,7 +55,7 @@ public class HtmlRecordFormatter extends HtmlFormatter {
 		return builder.toString();
 	}
 
-	public String startHtml() {
+	public String startMessageBody() {
 		return "<html><body>";
 	}
 }

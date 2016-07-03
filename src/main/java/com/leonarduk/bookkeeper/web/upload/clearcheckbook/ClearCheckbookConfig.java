@@ -23,4 +23,9 @@ public class ClearCheckbookConfig extends AbstractWebConfig {
 	public String getUserName() {
 		return this.getConfig().getProperty("bookkeeper.web.clearcheckbook.username");
 	}
+
+	public boolean isRemoveDuplicatesEnabled() {
+		return this.getConfig()
+		        .getBooleanProperty("bookkeeper.web.clearcheckbook.removeduplicates");
+	}
 }

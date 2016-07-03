@@ -3,6 +3,7 @@
  */
 package com.leonarduk.bookkeeper.web.download.santander;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -84,8 +85,9 @@ public class SantanderLogin extends BaseSeleniumPage {
 	 *
 	 * @param config
 	 *            the config
+	 * @throws IOException
 	 */
-	public SantanderLogin(final SantanderConfig config) {
+	public SantanderLogin(final SantanderConfig config) throws IOException {
 		super(config.getWebDriver(), config.getSantanderAccountsUrl());
 		this.config = config;
 		this.loginUrl = this.config.getSantanderStartUrl();

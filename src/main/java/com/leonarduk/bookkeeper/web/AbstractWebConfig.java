@@ -18,13 +18,11 @@ import com.leonarduk.webscraper.core.config.Config;
 public class AbstractWebConfig {
 	private final Config	config;
 	private final File		tempDir;
-	private final WebDriver	downloadCapableBrowser;
+	private WebDriver		downloadCapableBrowser;
 
 	public AbstractWebConfig(final Config config2) throws IOException {
 		this.config = config2;
 		this.tempDir = FileUtils.createTempDir();
-		this.downloadCapableBrowser = SeleniumUtils.getDownloadCapableBrowser(this.tempDir);
-
 	}
 
 	protected Config getConfig() {
@@ -35,7 +33,10 @@ public class AbstractWebConfig {
 		return this.tempDir;
 	}
 
-	public WebDriver getWebDriver() {
+	public WebDriver getWebDriver() throws IOException {
+		if (null == this.downloadCapableBrowser) {
+			this.downloadCapableBrowser = SeleniumUtils.getDownloadCapableBrowser(this.tempDir);
+		}
 		return this.downloadCapableBrowser;
 	}
 

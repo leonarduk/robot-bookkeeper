@@ -3,6 +3,8 @@
  */
 package com.leonarduk.bookkeeper.web.download.alliancetrust;
 
+import java.io.IOException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -20,8 +22,9 @@ public class AllianceTrust extends BaseSeleniumPage {
 	 *
 	 * @param config
 	 *            the config
+	 * @throws IOException
 	 */
-	public AllianceTrust(final AllianceTrustConfig config) {
+	public AllianceTrust(final AllianceTrustConfig config) throws IOException {
 		super(config.getWebDriver(), config.getCustomerListViewUrl());
 		this.config = config;
 	}

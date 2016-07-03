@@ -15,7 +15,7 @@ import org.openqa.selenium.WebElement;
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.StatementDownloader;
-import com.leonarduk.bookkeeper.web.download.TransactionsDownloader;
+import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 
 /**
  * The Class AmexDownloadTransactions.
@@ -26,7 +26,8 @@ import com.leonarduk.bookkeeper.web.download.TransactionsDownloader;
  * @version $Date: $: Date of last commit
  * @since 24 Mar 2015
  */
-public class AmexDownloadTransactions implements TransactionsDownloader, StatementDownloader {
+public class AmexDownloadTransactions
+        implements TransactionDownloader, StatementDownloader, AutoCloseable {
 
 	private static final Logger LOGGER = Logger.getLogger(AmexDownloadTransactions.class);
 
@@ -37,13 +38,17 @@ public class AmexDownloadTransactions implements TransactionsDownloader, Stateme
 	 *
 	 * @param config
 	 *            the config
-	 * @throws Exception
-	 *             the exception
+	 * @throws IOException
 	 */
-	public AmexDownloadTransactions(final AmexConfig config) throws Exception {
+	public AmexDownloadTransactions(final AmexConfig config) throws IOException {
 		final int fewSeconds = 3;
 		this.config = config;
 		this.config.getWebDriver().manage().timeouts().implicitlyWait(fewSeconds, TimeUnit.SECONDS);
+	}
+
+	@Override
+	public void close() throws Exception {
+		this.config.getWebDriver().close();
 	}
 
 	@Override
@@ -62,9 +67,10 @@ public class AmexDownloadTransactions implements TransactionsDownloader, Stateme
 	 * Download transactions.
 	 *
 	 * @return the string
+	 * @throws IOException
 	 */
 	@Override
-	public String downloadTransactionsFile() {
+	public String downloadTransactionsFile() throws IOException {
 		this.config.getWebDriver().get(this.config.getBaseUrl() + "/uk/");
 		this.config.getWebDriver().findElement(By.id("LabelUserID")).click();
 		this.config.getWebDriver().findElement(By.id("UserID")).clear();
@@ -100,7 +106,7 @@ public class AmexDownloadTransactions implements TransactionsDownloader, Stateme
 		return this.config.getDownloadDir().getAbsolutePath() + "/ofx.qif";
 	}
 
-	protected final WebElement findElementByXpath(final String xpath) {
+	protected final WebElement findElementByXpath(final String xpath) throws IOException {
 		final WebElement findElement = this.config.getWebDriver().findElement(By.xpath(xpath));
 		if (null == findElement) {
 			throw new NoSuchElementException("Could not find xpath " + xpath);

@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.StatementDownloader;
-import com.leonarduk.bookkeeper.web.download.TransactionsDownloader;
+import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -26,7 +26,7 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @since 6 Feb 2015
  */
 public class SantanderDownloadTransactions extends BaseSeleniumPage
-        implements TransactionsDownloader, StatementDownloader {
+        implements TransactionDownloader, StatementDownloader {
 
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = Logger.getLogger(SantanderDownloadTransactions.class);
