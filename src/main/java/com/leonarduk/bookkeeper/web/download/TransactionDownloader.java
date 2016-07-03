@@ -15,6 +15,6 @@ public interface TransactionDownloader {
 
 	List<TransactionRecord> downloadTransactions() throws IOException;
 
-	String downloadTransactionsFile();
+	String downloadTransactionsFile() throws IOException;
 
 }

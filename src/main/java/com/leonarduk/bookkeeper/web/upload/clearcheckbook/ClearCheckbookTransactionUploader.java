@@ -46,8 +46,9 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	 *
 	 * @param fileToUpload
 	 *            the file to upload
+	 * @throws IOException
 	 */
-	private void chooseFileToUpload(final String fileToUpload) {
+	private void chooseFileToUpload(final String fileToUpload) throws IOException {
 		final WebDriver driver = this.config.getWebDriver();
 		driver.findElement(By.linkText("Tools")).click();
 		driver.findElement(By.linkText("Import Transactions")).click();
@@ -73,7 +74,7 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 		return Double.valueOf(amount.replaceAll("£", "").replaceAll(",", "")).doubleValue();
 	}
 
-	private void generalSettings() {
+	private void generalSettings() throws IOException {
 		try {
 			new Select(this.config.getWebDriver().findElement(By.name("import_to_account")))
 			        .selectByVisibleText(this.account);
@@ -94,8 +95,9 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	 *
 	 * @param removeDuplicates
 	 * @return the string
+	 * @throws IOException
 	 */
-	private String importTransactions(final boolean removeDuplicates) {
+	private String importTransactions(final boolean removeDuplicates) throws IOException {
 		final WebDriver driver = this.config.getWebDriver();
 		driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
 		BaseSeleniumPage.waitForPageToLoad(driver);
@@ -119,8 +121,10 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 
 	/**
 	 * Login.
+	 *
+	 * @throws IOException
 	 */
-	private void login() {
+	private void login() throws IOException {
 		final WebDriver driver = this.config.getWebDriver();
 		final String baseUrl = "https://www.clearcheckbook.com/";
 		final int severalSeconds = 5;
@@ -171,9 +175,10 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	 * @param memo
 	 *            the memo
 	 * @return the string
+	 * @throws IOException
 	 */
 	public String updateEstimate(final String currentValue, final String valueXpath,
-	        final CharSequence memo) {
+	        final CharSequence memo) throws IOException {
 		this.login();
 
 		final WebDriver driver = this.config.getWebDriver();
@@ -223,8 +228,9 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	 * @param fileToUpload
 	 *            the file to upload
 	 * @return the string
+	 * @throws IOException
 	 */
-	public String uploadToClearCheckbook(final String fileToUpload) {
+	public String uploadToClearCheckbook(final String fileToUpload) throws IOException {
 		this.login();
 		this.chooseFileToUpload(fileToUpload);
 		this.generalSettings();

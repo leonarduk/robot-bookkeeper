@@ -38,8 +38,9 @@ public class AmexDownloadTransactions
 	 *
 	 * @param config
 	 *            the config
+	 * @throws IOException
 	 */
-	public AmexDownloadTransactions(final AmexConfig config) {
+	public AmexDownloadTransactions(final AmexConfig config) throws IOException {
 		final int fewSeconds = 3;
 		this.config = config;
 		this.config.getWebDriver().manage().timeouts().implicitlyWait(fewSeconds, TimeUnit.SECONDS);
@@ -66,9 +67,10 @@ public class AmexDownloadTransactions
 	 * Download transactions.
 	 *
 	 * @return the string
+	 * @throws IOException
 	 */
 	@Override
-	public String downloadTransactionsFile() {
+	public String downloadTransactionsFile() throws IOException {
 		this.config.getWebDriver().get(this.config.getBaseUrl() + "/uk/");
 		this.config.getWebDriver().findElement(By.id("LabelUserID")).click();
 		this.config.getWebDriver().findElement(By.id("UserID")).clear();
@@ -104,7 +106,7 @@ public class AmexDownloadTransactions
 		return this.config.getDownloadDir().getAbsolutePath() + "/ofx.qif";
 	}
 
-	protected final WebElement findElementByXpath(final String xpath) {
+	protected final WebElement findElementByXpath(final String xpath) throws IOException {
 		final WebElement findElement = this.config.getWebDriver().findElement(By.xpath(xpath));
 		if (null == findElement) {
 			throw new NoSuchElementException("Could not find xpath " + xpath);

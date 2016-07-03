@@ -3,6 +3,8 @@
  */
 package com.leonarduk.bookkeeper.web.upload.freeagent;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -30,8 +32,9 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 	 *
 	 * @param config
 	 *            the config
+	 * @throws IOException
 	 */
-	public FreeAgentLogin(final FreeAgentConfig config) {
+	public FreeAgentLogin(final FreeAgentConfig config) throws IOException {
 		super(config.getWebDriver(), config.getFreeagentUrl() + "/overview");
 		this.config = config;
 	}

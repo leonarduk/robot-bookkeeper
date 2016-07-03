@@ -32,6 +32,7 @@ public class BookkeeperUtils {
 		        new ClearCheckbookConfig(config));
 		        final AmexDownloadTransactions amexTransactions = new AmexDownloadTransactions(
 		                new AmexConfig(config));) {
+			clearCheckBook.setAccount(config.getProperty("bookkeeper.web.clearcheckbook.amex"));
 			return BookkeeperUtils.uploadTransactionsFromSource(amexTransactions, clearCheckBook);
 		}
 	}

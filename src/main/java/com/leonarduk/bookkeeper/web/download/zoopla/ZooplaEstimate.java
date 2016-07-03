@@ -3,6 +3,7 @@
  */
 package com.leonarduk.bookkeeper.web.download.zoopla;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -24,7 +25,7 @@ public class ZooplaEstimate extends BaseSeleniumPage {
 	/** The Constant _logger. */
 	private static final Logger _logger = Logger.getLogger(ZooplaEstimate.class);
 
-	public ZooplaEstimate(final ZooplaConfig config) {
+	public ZooplaEstimate(final ZooplaConfig config) throws IOException {
 		super(config.getWebDriver(), config.getUrl());
 	}
 
