@@ -4,11 +4,15 @@
 package com.leonarduk.bookkeeper.web.download.zoopla;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 
+import com.leonarduk.bookkeeper.ValueSnapshotProvider;
+import com.leonarduk.bookkeeper.file.StringUtils;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -20,13 +24,24 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @version $Date: $: Date of last commit
  * @since 28 Mar 2015
  */
-public class ZooplaEstimate extends BaseSeleniumPage {
+public class ZooplaEstimate extends BaseSeleniumPage implements ValueSnapshotProvider {
 
 	/** The Constant _logger. */
 	private static final Logger _logger = Logger.getLogger(ZooplaEstimate.class);
 
 	public ZooplaEstimate(final ZooplaConfig config) throws IOException {
 		super(config.getWebDriver(), config.getUrl());
+	}
+
+	@Override
+	public double getCurrentValue() {
+		return StringUtils.convertMoneyString(this.getEstimate());
+	}
+
+	@Override
+	public String getDescription() {
+		final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		return "From Zoopla Website " + format.format(new Date());
 	}
 
 	/**
@@ -43,11 +58,6 @@ public class ZooplaEstimate extends BaseSeleniumPage {
 		return value;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.openqa.selenium.support.ui.LoadableComponent#load()
-	 */
 	@Override
 	protected final void load() {
 		final int fewSeconds = 3;

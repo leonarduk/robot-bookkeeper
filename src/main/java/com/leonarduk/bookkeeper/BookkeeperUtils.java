@@ -13,9 +13,12 @@ import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 import com.leonarduk.bookkeeper.web.download.amex.AmexConfig;
 import com.leonarduk.bookkeeper.web.download.amex.AmexDownloadTransactions;
+import com.leonarduk.bookkeeper.web.download.clearcheckbook.ClearCheckBookValueUpdater;
 import com.leonarduk.bookkeeper.web.download.santander.SantanderConfig;
 import com.leonarduk.bookkeeper.web.download.santander.SantanderDownloadTransactions;
 import com.leonarduk.bookkeeper.web.download.santander.SantanderLogin;
+import com.leonarduk.bookkeeper.web.download.zoopla.ZooplaConfig;
+import com.leonarduk.bookkeeper.web.download.zoopla.ZooplaEstimate;
 import com.leonarduk.bookkeeper.web.upload.TransactionUploader;
 import com.leonarduk.bookkeeper.web.upload.clearcheckbook.ClearCheckbookConfig;
 import com.leonarduk.bookkeeper.web.upload.clearcheckbook.ClearCheckbookTransactionUploader;
@@ -26,6 +29,19 @@ import com.leonarduk.web.BaseSeleniumPage;
 import com.leonarduk.webscraper.core.config.Config;
 
 public class BookkeeperUtils {
+	public static List<TransactionRecord> updateZooplaValueInClearcheckbook(final Config config,
+	        final String ccbAccountName) throws Exception {
+		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
+		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(
+		        config2);
+		        final ZooplaEstimate zooplaEstimate = new ZooplaEstimate(new ZooplaConfig(config));
+		        ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(zooplaEstimate,
+		                config2, ccbAccountName);) {
+			clearCheckBook.setAccount(config.getProperty("bookkeeper.web.clearcheckbook.amex"));
+			return BookkeeperUtils.uploadTransactionsFromSource(updater, clearCheckBook);
+		}
+	}
+
 	public static List<TransactionRecord> uploadAmexTransactionsToClearCheckBook(
 	        final Config config) throws Exception {
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(
