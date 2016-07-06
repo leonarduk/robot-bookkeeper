@@ -62,7 +62,11 @@ public class AllianceTrust extends BaseSeleniumPage {
 	 *            the account
 	 * @return the value
 	 */
-	public final String getValue(final int row, final String account) {
+	public final String getValue(final int accountIndex) {
+		final String account = this.config.getAccountNumber(accountIndex);
+		// TODO get from config
+		final int row = 1;
+
 		this.waitForPageToLoad(By.linkText(account)).click();
 
 		final String xpath = "//*[@id=\"hor-minimalist-b\"]/tbody/tr[" + (row + 1) + "]/td[5]";

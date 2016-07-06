@@ -3,7 +3,6 @@
  */
 package com.leonarduk.bookkeeper.web.download.santander;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -14,8 +13,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.leonarduk.bookkeeper.web.download.santander.SantanderConfig;
-import com.leonarduk.bookkeeper.web.download.santander.SantanderLogin;
 import com.leonarduk.webscraper.core.config.Config;
 
 /**
@@ -51,17 +48,6 @@ public class SantanderLoginTest {
 		this.config = new SantanderConfig(new Config(file));
 
 		this.login = new SantanderLogin(this.config);
-	}
-
-	/**
-	 * Tear down.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-		// this.login.getWebDriver().close();
 	}
 
 	/**
