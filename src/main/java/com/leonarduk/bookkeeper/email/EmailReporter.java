@@ -14,7 +14,6 @@ import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.webscraper.core.email.EmailException;
 import com.leonarduk.webscraper.core.email.EmailSender;
 import com.leonarduk.webscraper.core.email.EmailSession;
-import com.leonarduk.webscraper.core.email.impl.EmailSenderImpl;
 import com.leonarduk.webscraper.core.email.impl.EmailSessionImpl;
 
 public class EmailReporter {
@@ -26,12 +25,15 @@ public class EmailReporter {
 
 	private final EmailFormatter emailFormatter;
 
-	public EmailReporter(final EmailConfig config, final EmailFormatter emailFormatter) {
+	private final EmailSender emailSender;
+
+	public EmailReporter(final EmailConfig config, final EmailFormatter emailFormatter,
+	        final EmailSender sender) {
 		this.config = config;
 		this.changes = new StringBuilder();
 		this.emailFormatter = emailFormatter;
 		this.startEmailBody();
-
+		this.emailSender = sender;
 	}
 
 	public void addTransactions(final String accountName,
@@ -54,17 +56,19 @@ public class EmailReporter {
 		final String port = this.config.getEmailPort();
 		final boolean useHtml = this.config.getUseHtml();
 
-		final EmailSender emailSender = new EmailSenderImpl();
-
 		final EmailSession session = new EmailSessionImpl(user, password, server, port);
 
 		this.endEmailBody();
-		emailSender.sendMessage(this.config.getFromEmail(), this.config.getFromEmailName(), subject,
-		        this.changes.toString(), useHtml, session, toEmail);
+		this.emailSender.sendMessage(this.config.getFromEmail(), this.config.getFromEmailName(),
+		        subject, this.changes.toString(), useHtml, session, toEmail);
 	}
 
 	public void endEmailBody() {
 		this.append(this.emailFormatter.endMessageBody());
+	}
+
+	StringBuilder getChanges() {
+		return this.changes;
 	}
 
 	public void startEmailBody() {

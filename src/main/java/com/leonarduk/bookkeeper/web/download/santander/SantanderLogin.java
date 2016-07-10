@@ -78,6 +78,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 	/** The security number. */
 	private final String securityNumber;
 
+	/** The config. */
 	private final SantanderConfig config;
 
 	/**
@@ -86,6 +87,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 	 * @param config
 	 *            the config
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public SantanderLogin(final SantanderConfig config) throws IOException {
 		super(config.getWebDriver(), config.getSantanderAccountsUrl());
@@ -209,6 +211,11 @@ public class SantanderLogin extends BaseSeleniumPage {
 
 	}
 
+	/**
+	 * Gets the config.
+	 *
+	 * @return the config
+	 */
 	public SantanderConfig getConfig() {
 		return this.config;
 	}

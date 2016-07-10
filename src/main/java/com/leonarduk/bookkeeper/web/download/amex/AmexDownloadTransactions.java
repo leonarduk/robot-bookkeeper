@@ -40,6 +40,7 @@ public class AmexDownloadTransactions
 	 * @param config
 	 *            the config
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public AmexDownloadTransactions(final AmexConfig config) throws IOException {
 		final int fewSeconds = 3;
@@ -70,6 +71,7 @@ public class AmexDownloadTransactions
 	 *
 	 * @return the string
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public String downloadTransactionsFile() throws IOException {

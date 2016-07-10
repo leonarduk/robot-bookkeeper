@@ -5,16 +5,12 @@ package com.leonarduk.bookkeeper.web.upload.clearcheckbook;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 
 import com.leonarduk.bookkeeper.file.DateUtils;
 import com.leonarduk.bookkeeper.file.FileFormatter;
@@ -27,56 +23,20 @@ import com.leonarduk.webscraper.core.config.Config;
 /**
  * The Class UploadToClearCheckbookTest.
  */
-public class ClearCheckbookIT {
+public class ClearCheckbookTransactionUploaderIT {
 
 	private static boolean						internetAvailable;
 	private ClearCheckbookTransactionUploader	clearCheckbook;
 
 	@BeforeClass
 	public static void setupStatic() {
-		ClearCheckbookIT.internetAvailable = SeleniumUtils.isInternetAvailable();
+		ClearCheckbookTransactionUploaderIT.internetAvailable = SeleniumUtils.isInternetAvailable();
 	}
 
 	@Before
 	public void setup() throws IOException {
 		this.clearCheckbook = new ClearCheckbookTransactionUploader(
 		        new ClearCheckbookConfig(new Config("bookkeeper-sit.properties")));
-	}
-
-	/**
-	 * Test convert money string.
-	 */
-	@Test
-	public final void testConvertMoneyString() {
-		final double convertMoneyString = this.clearCheckbook.convertMoneyString("£750,055");
-		final int expected = 750055;
-		Assert.assertEquals(expected, convertMoneyString, 0);
-	}
-
-	/**
-	 * Test update estimate.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	@Ignore
-	public void testUpdateEstimate() throws Exception {
-		try {
-			final File tempDir = FileUtils.createTempDir();
-
-			final WebDriver driver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
-
-			final String name = "clearcheckbook/";
-			final URL url = ClearCheckbookTransactionUploader.class.getClass().getResource(name);
-			driver.get(url.getPath());
-		}
-		catch (final Exception e) {
-			Assert.fail("Exception caught");
-		}
-		// UploadToClearCheckbook.updateEstimate(account, currentValue,
-		// userName,
-		// password, driver, valueXpath, memo);
 	}
 
 	@Test
@@ -107,12 +67,8 @@ public class ClearCheckbookIT {
 		final File tempDir = FileUtils.createTempDir();
 		final String outputFileName = tempDir.getAbsolutePath() + "/output.qif";
 		formatter.format(transactionRecords, outputFileName);
-
-		final WebDriver webDriver = SeleniumUtils.getDownloadCapableBrowser(tempDir);
-
 		final String results = this.clearCheckbook.uploadToClearCheckbook(outputFileName);
 		System.out.println(results);
-		webDriver.close();
 	}
 
 }
