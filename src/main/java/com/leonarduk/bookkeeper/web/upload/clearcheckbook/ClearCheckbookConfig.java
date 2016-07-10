@@ -16,7 +16,7 @@ public class ClearCheckbookConfig extends AbstractWebConfig {
 		super(config);
 	}
 
-	public CharSequence getPassword() {
+	public String getPassword() {
 		return this.getConfig().getProperty("bookkeeper.web.clearcheckbook.password");
 	}
 

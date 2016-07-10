@@ -33,6 +33,7 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 	 * @param config
 	 *            the config
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public FreeAgentLogin(final FreeAgentConfig config) throws IOException {
 		super(config.getWebDriver(), config.getFreeagentUrl() + "/overview");
