@@ -50,6 +50,7 @@ public class ZooplaEstimate extends BaseSeleniumPage implements ValueSnapshotPro
 	 * @return the estimate
 	 */
 	public String getEstimate() {
+		this.get();
 		final WebElement estimateNode = this
 		        .findElementByXpath("//*[@id=\"estimate-property\"]/ul[1]/li[1]/p/span/strong");
 

@@ -3,7 +3,6 @@
  */
 package com.leonarduk.bookkeeper.web.upload.clearcheckbook;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,9 +14,10 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.leonarduk.bookkeeper.file.QifFileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.web.download.clearcheckbook.ClearCheckBookApiClient;
 import com.leonarduk.bookkeeper.web.upload.TransactionUploader;
+import com.leonarduk.clearcheckbook.ClearcheckbookException;
 import com.leonarduk.web.BaseSeleniumPage;
-import com.leonarduk.webscraper.core.FileUtils;
 
 /**
  * The Class UploadToClearCheckbook.
@@ -88,7 +88,7 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.AutoCloseable#close()
 	 */
 	@Override
@@ -206,19 +206,25 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.leonarduk.bookkeeper.web.upload.TransactionUploader#uploadTransactions(java.util.List)
 	 */
 	@Override
 	public void uploadTransactions(final List<TransactionRecord> transactions) throws IOException {
-		final File folder = FileUtils.createTempDir();
-		folder.deleteOnExit();
-		final String outputFileName = folder.getAbsolutePath() + File.separator + "freeagent.csv";
+		this.uploadViaApi(transactions);
+	}
 
-		this.getQifFileFormatter().format(transactions, outputFileName);
-
-		this.uploadToClearCheckbook(outputFileName);
+	public void uploadViaApi(final List<TransactionRecord> transactions) throws IOException {
+		final ClearCheckBookApiClient apiClient = new ClearCheckBookApiClient(this.config);
+		for (final TransactionRecord transactionRecord : transactions) {
+			try {
+				apiClient.insertRecord(transactionRecord, this.account);
+			}
+			catch (final ClearcheckbookException e) {
+				throw new IOException("Failed to save transactions", e);
+			}
+		}
 	}
 
 }

@@ -32,12 +32,13 @@ public class BookkeeperUtils {
 	public static List<TransactionRecord> updateZooplaValueInClearcheckbook(final Config config,
 	        final String ccbAccountName) throws Exception {
 		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
+		ZooplaConfig zooplaConfig = new ZooplaConfig(config);
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(
 		        config2);
-		        final ZooplaEstimate zooplaEstimate = new ZooplaEstimate(new ZooplaConfig(config));
+		        final ZooplaEstimate zooplaEstimate = new ZooplaEstimate(zooplaConfig);
 		        ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(zooplaEstimate,
 		                config2, ccbAccountName);) {
-			clearCheckBook.setAccount(config.getProperty("bookkeeper.web.clearcheckbook.amex"));
+			clearCheckBook.setAccount(config.getProperty("bookkeeper.web.clearcheckbook.zoopla"));
 			return BookkeeperUtils.uploadTransactionsFromSource(updater, clearCheckBook);
 		}
 	}
