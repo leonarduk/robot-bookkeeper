@@ -21,6 +21,11 @@ public class AllianceTrustConfig extends AbstractWebConfig {
 		return this.getConfig().getProperty("bookkeeper.web.alliancetrust.username");
 	}
 
+	public String getAccountNumber(final int accountIndex) {
+		return this.getConfig()
+		        .getProperty("bookkeeper.web.alliancetrust.accountnumber." + accountIndex);
+	}
+
 	public String getCustomerListViewUrl() {
 		return this.getConfig().getProperty("bookkeeper.web.alliancetrust.customerListView.url");
 	}
