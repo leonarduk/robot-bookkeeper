@@ -6,6 +6,7 @@
  */
 package com.leonarduk.bookkeeper.web.download.clearcheckbook;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class ClearCheckBookValueUpdaterIT {
 
 			@Override
 			public double getCurrentValue() {
-				return new Date().getTime();
+				final SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd.HH");
+				return Double.parseDouble(format.format(new Date()));
 			}
 
 			@Override

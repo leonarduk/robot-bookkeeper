@@ -27,6 +27,7 @@ public class ClearCheckBookLogin {
 	 * Login.
 	 *
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public void login() throws IOException {
 		final WebDriver driver = this.config.getWebDriver();

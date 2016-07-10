@@ -23,6 +23,7 @@ public class AllianceTrust extends BaseSeleniumPage {
 	 * @param config
 	 *            the config
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public AllianceTrust(final AllianceTrustConfig config) throws IOException {
 		super(config.getWebDriver(), config.getCustomerListViewUrl());
@@ -56,10 +57,8 @@ public class AllianceTrust extends BaseSeleniumPage {
 	/**
 	 * Gets the value.
 	 *
-	 * @param row
-	 *            the row
-	 * @param account
-	 *            the account
+	 * @param accountIndex
+	 *            the account index
 	 * @return the value
 	 */
 	public final String getValue(final int accountIndex) {
