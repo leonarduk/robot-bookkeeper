@@ -13,21 +13,18 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
-import com.leonarduk.bookkeeper.web.download.santander.SantanderConfig;
-import com.leonarduk.bookkeeper.web.download.santander.SantanderDownloadTransactions;
-import com.leonarduk.bookkeeper.web.download.santander.SantanderLogin;
 import com.leonarduk.webscraper.core.FileUtils;
-import com.leonarduk.webscraper.core.config.Config;
 
 public class SantanderDownloadTransactionsIT {
 	static final Logger LOGGER = Logger.getLogger(SantanderDownloadTransactionsIT.class);
 
 	@Test
 	public void testDownloadLatestStatement() throws Exception {
-		final SantanderConfig config = new SantanderConfig(new Config("bookkeeper-sit.properties"));
+		final SantanderConfig config = new SantanderConfig(SitConfig.getSitConfig());
 
 		final SantanderLogin santanderLogin = new SantanderLogin(config);
 		final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(
@@ -42,7 +39,7 @@ public class SantanderDownloadTransactionsIT {
 
 	@Test
 	public void testDownloadTransactions() throws Exception {
-		final SantanderConfig config = new SantanderConfig(new Config("bookkeeper-sit.properties"));
+		final SantanderConfig config = new SantanderConfig(SitConfig.getSitConfig());
 
 		final SantanderLogin santanderLogin = new SantanderLogin(config);
 		final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(

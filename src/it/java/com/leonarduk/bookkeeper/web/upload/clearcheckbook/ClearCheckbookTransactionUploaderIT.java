@@ -12,13 +12,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.bookkeeper.file.DateUtils;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
-import com.leonarduk.webscraper.core.config.Config;
 
 /**
  * The Class UploadToClearCheckbookTest.
@@ -36,7 +36,7 @@ public class ClearCheckbookTransactionUploaderIT {
 	@Before
 	public void setup() throws IOException {
 		this.clearCheckbook = new ClearCheckbookTransactionUploader(
-		        new ClearCheckbookConfig(new Config("bookkeeper-sit.properties")));
+		        new ClearCheckbookConfig(SitConfig.getSitConfig()));
 	}
 
 	@Test

@@ -13,9 +13,9 @@ import java.util.List;
 import org.junit.Test;
 
 import com.leonarduk.bookkeeper.ValueSnapshotProvider;
+import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.upload.clearcheckbook.ClearCheckbookConfig;
-import com.leonarduk.webscraper.core.config.Config;
 
 public class ClearCheckBookValueUpdaterIT {
 
@@ -46,8 +46,8 @@ public class ClearCheckBookValueUpdaterIT {
 	public void testUpdateEstimate() throws Exception {
 		final ValueSnapshotProvider valueSnapshotProvider = this.getValueUpdater();
 		try (final ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(
-		        valueSnapshotProvider,
-		        new ClearCheckbookConfig(new Config("bookkeeper-sit.properties")), "zoopla");) {
+		        valueSnapshotProvider, new ClearCheckbookConfig(SitConfig.getSitConfig()),
+		        "zoopla");) {
 			final List<TransactionRecord> transactions = updater.downloadTransactions();
 			System.out.println(transactions.toString());
 		}

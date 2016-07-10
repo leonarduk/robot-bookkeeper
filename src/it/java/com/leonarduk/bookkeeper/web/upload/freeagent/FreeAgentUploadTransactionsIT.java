@@ -14,11 +14,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.bookkeeper.file.DateUtils;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
-import com.leonarduk.webscraper.core.config.Config;
 
 public class FreeAgentUploadTransactionsIT {
 
@@ -28,7 +28,7 @@ public class FreeAgentUploadTransactionsIT {
 	@Before
 	public void setUp() throws Exception {
 		this.transactions = new FreeAgentUploadTransactions(
-		        new FreeAgentLogin(new FreeAgentConfig(new Config("bookkeeper-sit.properties"))));
+		        new FreeAgentLogin(new FreeAgentConfig(SitConfig.getSitConfig())));
 		this.transactions.get();
 	}
 

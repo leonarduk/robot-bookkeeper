@@ -32,7 +32,7 @@ public class BookkeeperUtils {
 	public static List<TransactionRecord> updateZooplaValueInClearcheckbook(final Config config,
 	        final String ccbAccountName) throws Exception {
 		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
-		ZooplaConfig zooplaConfig = new ZooplaConfig(config);
+		final ZooplaConfig zooplaConfig = new ZooplaConfig(config);
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(
 		        config2);
 		        final ZooplaEstimate zooplaEstimate = new ZooplaEstimate(zooplaConfig);

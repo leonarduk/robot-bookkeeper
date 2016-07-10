@@ -4,6 +4,7 @@
 package com.leonarduk.bookkeeper.web.upload.clearcheckbook;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -212,13 +213,19 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	 */
 	@Override
 	public void uploadTransactions(final List<TransactionRecord> transactions) throws IOException {
-		this.uploadViaApi(transactions);
+		try {
+			this.uploadViaApi(transactions);
+		}
+		catch (final ParseException e) {
+			throw new IOException(e);
+		}
 	}
 
-	public void uploadViaApi(final List<TransactionRecord> transactions) throws IOException {
+	public void uploadViaApi(final List<TransactionRecord> transactions)
+	        throws IOException, ParseException {
 		final ClearCheckBookApiClient apiClient = new ClearCheckBookApiClient(this.config);
 		try {
-			apiClient.insertRecords(transactions, this.account);
+			apiClient.insertRecords(transactions, this.account, 500);
 		}
 		catch (final ClearcheckbookException e) {
 			throw new IOException("Failed to save transactions", e);

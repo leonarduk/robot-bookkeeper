@@ -15,12 +15,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.webscraper.core.FileUtils;
-import com.leonarduk.webscraper.core.config.Config;
 
 public class NationwideAccountIT {
 
@@ -31,7 +31,7 @@ public class NationwideAccountIT {
 	@SuppressWarnings("resource")
 	@Before
 	public void setUp() throws IOException {
-		this.nationwideConfig = new NationwideConfig(new Config("bookkeeper-sit.properties"));
+		this.nationwideConfig = new NationwideConfig(SitConfig.getSitConfig());
 		this.aLogin = new NationwideLogin(this.nationwideConfig);
 		this.nationwideAccount = (NationwideAccount) new NationwideAccount(this.aLogin, 1).get();
 

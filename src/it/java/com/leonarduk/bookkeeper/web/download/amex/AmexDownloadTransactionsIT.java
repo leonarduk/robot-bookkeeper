@@ -10,19 +10,17 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
-import com.leonarduk.bookkeeper.web.download.amex.AmexConfig;
-import com.leonarduk.bookkeeper.web.download.amex.AmexDownloadTransactions;
 import com.leonarduk.webscraper.core.FileUtils;
-import com.leonarduk.webscraper.core.config.Config;
 
 public class AmexDownloadTransactionsIT {
 
 	@Test
 	public final void testDownloadTransactions() throws Exception {
-		final AmexConfig config = new AmexConfig(new Config("bookkeeper-sit.properties"));
+		final AmexConfig config = new AmexConfig(SitConfig.getSitConfig());
 		final AmexDownloadTransactions transactions = new AmexDownloadTransactions(config);
 
 		final List<TransactionRecord> records = transactions.downloadTransactions();
