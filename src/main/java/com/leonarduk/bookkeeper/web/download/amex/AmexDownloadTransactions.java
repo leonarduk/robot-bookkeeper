@@ -16,6 +16,7 @@ import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.StatementDownloader;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
+import com.leonarduk.web.BaseSeleniumPage;
 
 /**
  * The Class AmexDownloadTransactions.
@@ -60,6 +61,7 @@ public class AmexDownloadTransactions
 	public List<TransactionRecord> downloadTransactions() throws IOException {
 		final QifFileParser parser = new QifFileParser();
 		final String fileName = this.downloadTransactionsFile();
+		BaseSeleniumPage.waitForPageToLoad(this.config.getWebDriver());
 		return parser.parse(fileName);
 	}
 
