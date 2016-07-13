@@ -63,9 +63,9 @@ public class ClearCheckBookApiClient {
 		if (transactionType.equals(TransactionDataType.Type.WITHDRAWAL)) {
 			amount *= -1;
 		}
-		return new TransactionRecord(amount.doubleValue(), record.getDescription().trim(),
-		        this.dateFormatter.parse(record.getDate()), record.getCheckNum().trim(),
-		        record.getPayee().trim());
+		return new TransactionRecord(amount.doubleValue(), this.trim(record.getDescription()),
+		        this.dateFormatter.parse(record.getDate()), this.trim(record.getCheckNum()),
+		        this.trim(record.getPayee()));
 	}
 
 	public void createAccount(final String accountName, final Type accountType,
@@ -132,6 +132,13 @@ public class ClearCheckBookApiClient {
 			}
 		}
 		return added;
+	}
+
+	public String trim(final String text) {
+		if (null == text) {
+			return "";
+		}
+		return text.trim();
 	}
 
 }
