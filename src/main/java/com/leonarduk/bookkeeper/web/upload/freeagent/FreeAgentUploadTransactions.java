@@ -66,13 +66,14 @@ public class FreeAgentUploadTransactions extends BaseSeleniumPage implements Tra
 	}
 
 	@Override
-	public final void uploadTransactions(final List<TransactionRecord> transactions)
-	        throws IOException {
+	public final List<TransactionRecord> uploadTransactions(
+	        final List<TransactionRecord> transactions) throws IOException {
 		final File folder = FileUtils.createTempDir();
 		folder.deleteOnExit();
 		final String outputFileName = folder.getAbsolutePath() + File.separator + "freeagent.csv";
 		FreeAgentUploadTransactions.getQifFileFormatter().format(transactions, outputFileName);
 		this.uploadTransactions(outputFileName);
+		return transactions;
 	}
 
 	/**

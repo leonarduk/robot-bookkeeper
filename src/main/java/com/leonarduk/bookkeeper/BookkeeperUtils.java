@@ -32,7 +32,7 @@ public class BookkeeperUtils {
 	public static List<TransactionRecord> updateZooplaValueInClearcheckbook(final Config config,
 	        final String ccbAccountName) throws Exception {
 		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
-		ZooplaConfig zooplaConfig = new ZooplaConfig(config);
+		final ZooplaConfig zooplaConfig = new ZooplaConfig(config);
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(
 		        config2);
 		        final ZooplaEstimate zooplaEstimate = new ZooplaEstimate(zooplaConfig);
@@ -70,7 +70,7 @@ public class BookkeeperUtils {
 		if (downloader instanceof BaseSeleniumPage) {
 			((BaseSeleniumPage) downloader).get();
 		}
-		final List<TransactionRecord> transactions = downloader.downloadTransactions();
+		List<TransactionRecord> transactions = downloader.downloadTransactions();
 		if (null == transactions) {
 			return new ArrayList<>();
 		}
@@ -79,7 +79,7 @@ public class BookkeeperUtils {
 			if (uploader instanceof BaseSeleniumPage) {
 				((BaseSeleniumPage) uploader).get();
 			}
-			uploader.uploadTransactions(transactions);
+			transactions = uploader.uploadTransactions(transactions);
 		}
 		return transactions;
 	}

@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.webscraper.core.config.Config;
 
 public class FreeAgentLoginIT {
@@ -19,7 +20,7 @@ public class FreeAgentLoginIT {
 	private FreeAgentLogin login;
 
 	public static FreeAgentLogin getFreeAgentLogin() throws IOException {
-		final Config config = new Config("bookkeeper-sit.properties");
+		final Config config = SitConfig.getSitConfig();
 		final FreeAgentConfig freeagentconfig = new FreeAgentConfig(config);
 		final FreeAgentLogin freeAgentLogin = new FreeAgentLogin(freeagentconfig);
 		return freeAgentLogin;

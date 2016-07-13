@@ -30,10 +30,10 @@ public class QifFileParserTest {
 		        record.get(1).getPayee());
 
 		final Calendar cal1 = Calendar.getInstance();
-		cal1.set(2016, Calendar.JUNE, 28, 0, 0, 0);
+		cal1.set(2016, Calendar.JUNE, 28, 12, 0, 0);
 		cal1.set(Calendar.MILLISECOND, 0);
 		final Calendar cal2 = Calendar.getInstance();
-		cal2.set(2016, Calendar.JUNE, 22, 0, 0, 0);
+		cal2.set(2016, Calendar.JUNE, 22, 12, 0, 0);
 		cal2.set(Calendar.MILLISECOND, 0);
 		Assert.assertEquals(cal1.getTime(), record.get(0).getDate());
 		Assert.assertEquals(cal2.getTime(), record.get(1).getDate());

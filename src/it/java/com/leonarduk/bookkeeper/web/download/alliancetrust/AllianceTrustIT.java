@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.leonarduk.webscraper.core.config.Config;
+import com.leonarduk.bookkeeper.email.SitConfig;
 
 public class AllianceTrustIT {
 
@@ -21,8 +21,7 @@ public class AllianceTrustIT {
 	public final void testGetValue() throws IOException {
 		final WebDriver webDriver = new FirefoxDriver();
 
-		final AllianceTrustConfig config = new AllianceTrustConfig(
-		        new Config("bookkeeper-sit.properties"));
+		final AllianceTrustConfig config = new AllianceTrustConfig(SitConfig.getSitConfig());
 		final AllianceTrust trust = new AllianceTrust(config);
 		trust.get();
 

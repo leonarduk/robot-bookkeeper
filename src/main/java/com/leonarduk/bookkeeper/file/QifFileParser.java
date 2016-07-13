@@ -68,13 +68,13 @@ public class QifFileParser implements FileParser {
 						amount = Double.valueOf(value).doubleValue();
 						break;
 					case 'N': // Description
-						checkNumber = value;
+						checkNumber = value.trim();
 						break;
 					case 'M': // Description
-						description = value;
+						description = value.trim();
 						break;
 					case 'P': // Description
-						payee = value;
+						payee = value.trim();
 						break;
 					case '^': // End of record
 						records.add(new TransactionRecord(amount, description, date, checkNumber,
