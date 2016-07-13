@@ -70,7 +70,7 @@ public class BookkeeperUtils {
 		if (downloader instanceof BaseSeleniumPage) {
 			((BaseSeleniumPage) downloader).get();
 		}
-		final List<TransactionRecord> transactions = downloader.downloadTransactions();
+		List<TransactionRecord> transactions = downloader.downloadTransactions();
 		if (null == transactions) {
 			return new ArrayList<>();
 		}
@@ -79,7 +79,7 @@ public class BookkeeperUtils {
 			if (uploader instanceof BaseSeleniumPage) {
 				((BaseSeleniumPage) uploader).get();
 			}
-			uploader.uploadTransactions(transactions);
+			transactions = uploader.uploadTransactions(transactions);
 		}
 		return transactions;
 	}

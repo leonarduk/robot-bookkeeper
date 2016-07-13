@@ -63,9 +63,9 @@ public class ClearCheckBookApiClient {
 		if (transactionType.equals(TransactionDataType.Type.WITHDRAWAL)) {
 			amount *= -1;
 		}
-		return new TransactionRecord(amount.doubleValue(), record.getDescription(),
-		        this.dateFormatter.parse(record.getDate()), record.getCheckNum(),
-		        record.getPayee());
+		return new TransactionRecord(amount.doubleValue(), record.getDescription().trim(),
+		        this.dateFormatter.parse(record.getDate()), record.getCheckNum().trim(),
+		        record.getPayee().trim());
 	}
 
 	public void createAccount(final String accountName, final Type accountType,
@@ -112,22 +112,26 @@ public class ClearCheckBookApiClient {
 		        .insert(this.convertToTransactionDataType(record, this.getAccount(accountName)));
 	}
 
-	public List<String> insertRecords(final List<TransactionRecord> records,
+	public List<TransactionRecord> insertRecords(final List<TransactionRecord> records,
 	        final String accountName, final int numberOfExistingTransactionsToCheck)
 	                throws ClearcheckbookException, ParseException {
 		final AccountDataType accountId = this.getAccount(accountName);
 		final List<TransactionRecord> existingRecords = this
 		        .getTransactionRecordsForAccount(accountId, numberOfExistingTransactionsToCheck);
-		final List<String> ids = new ArrayList<>();
+		final List<TransactionRecord> added = new ArrayList<>();
 		for (final TransactionRecord transactionRecord : records) {
 			if (!existingRecords.contains(transactionRecord)) {
 				final TransactionDataType convertToTransactionDataType = this
 				        .convertToTransactionDataType(transactionRecord, accountId);
-				ids.add(this.transactionCall.insert(convertToTransactionDataType));
+				this.transactionCall.insert(convertToTransactionDataType);
+				added.add(transactionRecord);
 				existingRecords.add(transactionRecord);
 			}
+			else {
+				ClearCheckBookApiClient._logger.info("Skip duplicate: " + transactionRecord);
+			}
 		}
-		return ids;
+		return added;
 	}
 
 }

@@ -12,6 +12,7 @@ import com.leonarduk.bookkeeper.file.TransactionRecord;
 
 public interface TransactionUploader {
 
-	void uploadTransactions(List<TransactionRecord> transactions) throws Exception;
+	List<TransactionRecord> uploadTransactions(List<TransactionRecord> transactions)
+	        throws Exception;
 
 }

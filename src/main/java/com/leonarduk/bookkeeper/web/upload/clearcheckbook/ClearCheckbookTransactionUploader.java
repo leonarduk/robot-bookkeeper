@@ -212,20 +212,21 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	 * com.leonarduk.bookkeeper.web.upload.TransactionUploader#uploadTransactions(java.util.List)
 	 */
 	@Override
-	public void uploadTransactions(final List<TransactionRecord> transactions) throws IOException {
+	public List<TransactionRecord> uploadTransactions(final List<TransactionRecord> transactions)
+	        throws IOException {
 		try {
-			this.uploadViaApi(transactions);
+			return this.uploadViaApi(transactions);
 		}
 		catch (final ParseException e) {
 			throw new IOException(e);
 		}
 	}
 
-	public void uploadViaApi(final List<TransactionRecord> transactions)
+	public List<TransactionRecord> uploadViaApi(final List<TransactionRecord> transactions)
 	        throws IOException, ParseException {
 		final ClearCheckBookApiClient apiClient = new ClearCheckBookApiClient(this.config);
 		try {
-			apiClient.insertRecords(transactions, this.account, 500);
+			return apiClient.insertRecords(transactions, this.account, 500);
 		}
 		catch (final ClearcheckbookException e) {
 			throw new IOException("Failed to save transactions", e);

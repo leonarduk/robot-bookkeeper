@@ -115,11 +115,13 @@ public class ClearCheckBookApiClientIT {
 		records.add(record);
 		records.add(record);
 
-		final List<String> ids = this.client.insertRecords(records, this.accountName, 100);
+		final List<TransactionRecord> ids = this.client.insertRecords(records, this.accountName,
+		        100);
 		Assert.assertEquals(1, ids.size());
 		System.out.println(this.client
 		        .getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 10));
-		final List<String> ids2 = this.client.insertRecords(records, this.accountName, 100);
+		final List<TransactionRecord> ids2 = this.client.insertRecords(records, this.accountName,
+		        100);
 		System.out.println(this.client
 		        .getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 10));
 		System.out.println(record);
@@ -135,7 +137,8 @@ public class ClearCheckBookApiClientIT {
 		records.add(new TransactionRecord(-12.34, "test payment", new Date(),
 		        String.valueOf(Math.round(Math.random() * 100000000)), "test payee"));
 
-		final List<String> ids = this.client.insertRecords(records, this.accountName, 100);
+		final List<TransactionRecord> ids = this.client.insertRecords(records, this.accountName,
+		        100);
 		Assert.assertEquals(records.size(), ids.size());
 
 	}
