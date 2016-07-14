@@ -6,9 +6,11 @@
  */
 package com.leonarduk.bookkeeper;
 
+import java.io.IOException;
+
 public interface ValueSnapshotProvider {
 
-	double getCurrentValue();
+	double getCurrentValue() throws IOException;
 
 	String getDescription();
 

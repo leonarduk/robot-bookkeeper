@@ -10,9 +10,12 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.leonarduk.bookkeeper.ValueSnapshotProvider;
 import com.leonarduk.bookkeeper.file.QifFileParser;
+import com.leonarduk.bookkeeper.file.StringUtils;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.StatementDownloader;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
@@ -27,8 +30,8 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @version $Date: $: Date of last commit
  * @since 24 Mar 2015
  */
-public class AmexDownloadTransactions
-        implements TransactionDownloader, StatementDownloader, AutoCloseable {
+public class AmexDownloadTransactions implements TransactionDownloader, StatementDownloader,
+        AutoCloseable, ValueSnapshotProvider {
 
 	private static final Logger LOGGER = Logger.getLogger(AmexDownloadTransactions.class);
 
@@ -75,14 +78,7 @@ public class AmexDownloadTransactions
 	 */
 	@Override
 	public String downloadTransactionsFile() throws IOException {
-		this.config.getWebDriver().get(this.config.getBaseUrl() + "/uk/");
-		this.config.getWebDriver().findElement(By.id("LabelUserID")).click();
-		this.config.getWebDriver().findElement(By.id("UserID")).clear();
-		this.config.getWebDriver().findElement(By.id("UserID")).sendKeys(this.config.getUserName());
-		this.config.getWebDriver().findElement(By.id("Password")).clear();
-		this.config.getWebDriver().findElement(By.id("Password"))
-		        .sendKeys(this.config.getPassword());
-		this.config.getWebDriver().findElement(By.id("loginButton")).click();
+		this.login();
 		try {
 			final WebElement popup = this.findElementByXpath("//*[@id=\"sprite-close_btn\"]");
 			if (null != popup) {
@@ -117,6 +113,44 @@ public class AmexDownloadTransactions
 		}
 		return findElement;
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see com.leonarduk.bookkeeper.ValueSnapshotProvider#getCurrentValue()
+	 */
+	@Override
+	public double getCurrentValue() throws IOException {
+		final String xpathToBalance = "//*[@id=\"card-balance\"]/h3/span[2]";
+		final String overviewUrl = this.config.getAccountSummaryUrl();
+		AmexDownloadTransactions.LOGGER.info("Get current balance from " + overviewUrl);
+		final WebDriver webDriver = this.config.getWebDriver();
+		webDriver.get(overviewUrl);
+		final WebElement amountNode = webDriver.findElement(By.xpath(xpathToBalance));
+		final String amountString = amountNode.getText();
+		return StringUtils.convertMoneyString(amountString);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see com.leonarduk.bookkeeper.ValueSnapshotProvider#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		return "Account adjustment to reconcile with Amex site";
+	}
+
+	public void login() throws IOException {
+		this.config.getWebDriver().get(this.config.getBaseUrl() + "/uk/");
+		this.config.getWebDriver().findElement(By.id("LabelUserID")).click();
+		this.config.getWebDriver().findElement(By.id("UserID")).clear();
+		this.config.getWebDriver().findElement(By.id("UserID")).sendKeys(this.config.getUserName());
+		this.config.getWebDriver().findElement(By.id("Password")).clear();
+		this.config.getWebDriver().findElement(By.id("Password"))
+		        .sendKeys(this.config.getPassword());
+		this.config.getWebDriver().findElement(By.id("loginButton")).click();
 	}
 
 }

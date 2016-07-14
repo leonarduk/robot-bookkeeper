@@ -61,16 +61,6 @@ public class DateUtils {
 				return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 			}
 			catch (final DateTimeParseException e) {
-				// Try other.
-			}
-			try {
-				// 12201601
-				pattern = new StringBuilder().append(mm).append(yyyy).append(dd);
-				final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern.toString());
-				final LocalDate localDate = LocalDate.parse(text, formatter);
-				return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-			}
-			catch (final DateTimeParseException e) {
 				throw new ParseException("Failed to parse date:" + text + e.getLocalizedMessage());
 			}
 		}
@@ -93,19 +83,6 @@ public class DateUtils {
 					try {
 						// Ex.1994/12/05
 						pattern = new StringBuilder().append(yyyy).append(separator).append(mm)
-						        .append(separator).append(dd);
-						final DateTimeFormatter formatter = DateTimeFormatter
-						        .ofPattern(pattern.toString());
-						final LocalDate localDate = LocalDate.parse(text, formatter);
-						return Date
-						        .from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-					}
-					catch (final DateTimeParseException e) {
-						// ignore
-					}
-					try {
-						// Ex.12/1994/05
-						pattern = new StringBuilder().append(mm).append(separator).append(yyyy)
 						        .append(separator).append(dd);
 						final DateTimeFormatter formatter = DateTimeFormatter
 						        .ofPattern(pattern.toString());
