@@ -45,12 +45,21 @@ public class BookkeeperUtils {
 
 	public static List<TransactionRecord> uploadAmexTransactionsToClearCheckBook(
 	        final Config config) throws Exception {
+		final ClearCheckbookConfig ccbConfig = new ClearCheckbookConfig(config);
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(
-		        new ClearCheckbookConfig(config));
+		        ccbConfig);
 		        final AmexDownloadTransactions amexTransactions = new AmexDownloadTransactions(
 		                new AmexConfig(config));) {
-			clearCheckBook.setAccount(config.getProperty("bookkeeper.web.clearcheckbook.amex"));
-			return BookkeeperUtils.uploadTransactionsFromSource(amexTransactions, clearCheckBook);
+			final String ccbAccountName = config.getProperty("bookkeeper.web.clearcheckbook.amex");
+			clearCheckBook.setAccount(ccbAccountName);
+			final List<TransactionRecord> importedTransactions = BookkeeperUtils
+			        .uploadTransactionsFromSource(amexTransactions, clearCheckBook);
+			final ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(
+			        amexTransactions, ccbConfig, ccbAccountName);
+			final List<TransactionRecord> balancingTransaction = BookkeeperUtils
+			        .uploadTransactionsFromSource(updater, clearCheckBook);
+			importedTransactions.addAll(balancingTransaction);
+			return importedTransactions;
 		}
 	}
 

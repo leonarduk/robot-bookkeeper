@@ -12,8 +12,14 @@ import com.leonarduk.bookkeeper.web.AbstractWebConfig;
 import com.leonarduk.webscraper.core.config.Config;
 
 public class AmexConfig extends AbstractWebConfig {
+	static final String BOOKKEEPER_WEB_AMEX_ACCOUNTSUMMARYURL = "bookkeeper.web.amex.accountsummaryurl";
+
 	public AmexConfig(final Config config) throws IOException {
 		super(config);
+	}
+
+	public String getAccountSummaryUrl() {
+		return this.getConfig().getProperty(AmexConfig.BOOKKEEPER_WEB_AMEX_ACCOUNTSUMMARYURL);
 	}
 
 	public String getBaseUrl() {
