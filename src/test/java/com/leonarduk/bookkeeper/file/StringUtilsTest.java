@@ -20,7 +20,7 @@ public class StringUtilsTest {
 	 */
 	@Test
 	public final void testConvertMoneyString() throws IOException {
-		final double convertMoneyString = StringUtils.convertMoneyString("£750,055");
+		final double convertMoneyString = StringConversionUtils.convertMoneyString("£750,055");
 		final int expected = 750055;
 		Assert.assertEquals(expected, convertMoneyString, 0);
 	}

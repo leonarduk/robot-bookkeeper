@@ -14,9 +14,10 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
-import com.leonarduk.bookkeeper.file.QifFileParser;
+import com.leonarduk.bookkeeper.file.NationwideCsvFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
+import com.leonarduk.bookkeeper.web.download.nationwide.NationwideAccount.FileType;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -64,6 +65,15 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionDo
 		        .getText();
 	}
 
+	@Override
+	public void close() throws Exception {
+		this.waitForPageToLoad();
+		// this.getWebDriver().findElement(By.xpath("//*[@id=\"logoutForm\"]/a/b")).click();
+		// this.getWebDriver().findElement(By.xpath("//*[@id=\"lbBtnYes\"]/i")).click();
+
+		super.close();
+	}
+
 	/**
 	 * Creates the file name.
 	 *
@@ -87,10 +97,11 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionDo
 		this.downloadTransactionsFile();
 		final File[] files = this.login.getConfig().getDownloadDir().listFiles();
 		if (files.length > 0) {
-			final QifFileParser parser = new QifFileParser();
+			final NationwideCsvFileParser parser = new NationwideCsvFileParser();
 			return parser.parse(files[0].getAbsolutePath());
 		}
 		return new ArrayList<>();
+
 	}
 
 	/**

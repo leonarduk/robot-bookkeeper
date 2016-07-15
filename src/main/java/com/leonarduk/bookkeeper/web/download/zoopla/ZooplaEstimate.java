@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 
 import com.leonarduk.bookkeeper.ValueSnapshotProvider;
-import com.leonarduk.bookkeeper.file.StringUtils;
+import com.leonarduk.bookkeeper.file.StringConversionUtils;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -35,7 +35,7 @@ public class ZooplaEstimate extends BaseSeleniumPage implements ValueSnapshotPro
 
 	@Override
 	public double getCurrentValue() {
-		return StringUtils.convertMoneyString(this.getEstimate());
+		return StringConversionUtils.convertMoneyString(this.getEstimate());
 	}
 
 	@Override

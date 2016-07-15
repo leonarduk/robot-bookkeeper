@@ -1,12 +1,14 @@
 /**
  * StringUtils
- * 
+ *
  * @author ${author}
  * @since 04-Jul-2016
  */
 package com.leonarduk.bookkeeper.file;
 
-public class StringUtils {
+import org.apache.commons.lang3.StringUtils;
+
+public class StringConversionUtils {
 	/**
 	 * Convert money string.
 	 *
@@ -15,6 +17,9 @@ public class StringUtils {
 	 * @return the double
 	 */
 	public static double convertMoneyString(final String amount) {
+		if (StringUtils.isEmpty(amount)) {
+			return 0.0;
+		}
 		return Double.valueOf(amount.replaceAll("£", "").replaceAll(",", "")).doubleValue();
 	}
 }

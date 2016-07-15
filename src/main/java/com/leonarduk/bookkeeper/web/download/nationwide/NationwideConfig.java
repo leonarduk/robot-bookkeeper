@@ -18,26 +18,26 @@ public class NationwideConfig extends AbstractWebConfig {
 	}
 
 	public String getAccountListUrl() {
-		return this.getConfig().getProperty("bookkeeper.web.nationwide.accountlist.url");
+		return this.getMandatoryField("bookkeeper.web.nationwide.accountlist.url");
 	}
 
 	public String getCustomerNumber() {
-		return this.getConfig().getProperty("bookkeeper.web.nationwide.customerNumber");
+		return this.getMandatoryField("bookkeeper.web.nationwide.customerNumber");
 	}
 
 	public String getFullStatementUrl(final int aAccountId) {
-		return this.getConfig().getProperty("bookkeeper.web.nationwide.statement.url") + aAccountId;
+		return this.getMandatoryField("bookkeeper.web.nationwide.statement.url") + aAccountId;
 	}
 
 	public String getLoginUrl() {
-		return this.getConfig().getProperty("bookkeeper.web.nationwide.login.url");
+		return this.getMandatoryField("bookkeeper.web.nationwide.login.url");
 	}
 
 	public String getMemorableWord() {
-		return this.getConfig().getProperty("bookkeeper.web.nationwide.memorableword");
+		return this.getMandatoryField("bookkeeper.web.nationwide.memorableword");
 	}
 
 	public String getPassword() {
-		return this.getConfig().getProperty("bookkeeper.web.nationwide.password");
+		return this.getMandatoryField("bookkeeper.web.nationwide.password");
 	}
 }
