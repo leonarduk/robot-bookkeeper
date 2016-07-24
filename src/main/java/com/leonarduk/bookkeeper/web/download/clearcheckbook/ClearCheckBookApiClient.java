@@ -47,7 +47,7 @@ public class ClearCheckBookApiClient {
 		final Boolean jive = Boolean.TRUE;
 		final String memo = record.getDescription();
 		final Long fromAccountId = null;
-		final long categoryId = 0;
+		final Long categoryId = Long.valueOf(0);
 		final Long toAccountId = Long.valueOf(account.getId());
 		return TransactionDataType.create(this.dateFormatter.format(record.getDate()),
 		        Double.valueOf(record.getAmount()), toAccountId, categoryId,
@@ -57,13 +57,13 @@ public class ClearCheckBookApiClient {
 
 	public TransactionRecord convertToTransactionRecord(final TransactionDataType record)
 	        throws ParseException, ClearcheckbookException {
-		Double amount = record.getAmount();
+		double amount = record.getAmount().doubleValue();
 		final com.leonarduk.clearcheckbook.dto.TransactionDataType.Type transactionType = record
 		        .getTransactionType();
 		if (transactionType.equals(TransactionDataType.Type.WITHDRAWAL)) {
 			amount *= -1;
 		}
-		return new TransactionRecord(amount.doubleValue(), this.trim(record.getDescription()),
+		return new TransactionRecord(amount, this.trim(record.getDescription()),
 		        this.dateFormatter.parse(record.getDate()), this.trim(record.getCheckNum()),
 		        this.trim(record.getPayee()));
 	}

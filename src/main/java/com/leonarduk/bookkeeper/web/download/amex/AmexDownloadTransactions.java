@@ -15,7 +15,7 @@ import org.openqa.selenium.WebElement;
 
 import com.leonarduk.bookkeeper.ValueSnapshotProvider;
 import com.leonarduk.bookkeeper.file.QifFileParser;
-import com.leonarduk.bookkeeper.file.StringUtils;
+import com.leonarduk.bookkeeper.file.StringConversionUtils;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.StatementDownloader;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
@@ -129,7 +129,7 @@ public class AmexDownloadTransactions implements TransactionDownloader, Statemen
 		webDriver.get(overviewUrl);
 		final WebElement amountNode = webDriver.findElement(By.xpath(xpathToBalance));
 		final String amountString = amountNode.getText();
-		return StringUtils.convertMoneyString(amountString);
+		return StringConversionUtils.convertMoneyString(amountString);
 	}
 
 	/*

@@ -14,6 +14,9 @@ import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 import com.leonarduk.bookkeeper.web.download.amex.AmexConfig;
 import com.leonarduk.bookkeeper.web.download.amex.AmexDownloadTransactions;
 import com.leonarduk.bookkeeper.web.download.clearcheckbook.ClearCheckBookValueUpdater;
+import com.leonarduk.bookkeeper.web.download.nationwide.NationwideAccount;
+import com.leonarduk.bookkeeper.web.download.nationwide.NationwideConfig;
+import com.leonarduk.bookkeeper.web.download.nationwide.NationwideLogin;
 import com.leonarduk.bookkeeper.web.download.santander.SantanderConfig;
 import com.leonarduk.bookkeeper.web.download.santander.SantanderDownloadTransactions;
 import com.leonarduk.bookkeeper.web.download.santander.SantanderLogin;
@@ -60,6 +63,19 @@ public class BookkeeperUtils {
 			        .uploadTransactionsFromSource(updater, clearCheckBook);
 			importedTransactions.addAll(balancingTransaction);
 			return importedTransactions;
+		}
+	}
+
+	public static List<TransactionRecord> uploadNationwideTransactionsToClearCheckBook(
+	        final Config config, final int accountId) throws Exception {
+		final ClearCheckbookConfig ccbConfig = new ClearCheckbookConfig(config);
+		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(
+		        ccbConfig);
+		        final NationwideAccount transactions = new NationwideAccount(
+		                new NationwideLogin(new NationwideConfig(config)), accountId);) {
+			final String ccbAccountName = config.getProperty("bookkeeper.web.clearcheckbook.joint");
+			clearCheckBook.setAccount(ccbAccountName);
+			return BookkeeperUtils.uploadTransactionsFromSource(transactions, clearCheckBook);
 		}
 	}
 
