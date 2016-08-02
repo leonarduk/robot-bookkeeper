@@ -7,7 +7,10 @@
 package com.leonarduk.bookkeeper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
@@ -32,6 +35,23 @@ import com.leonarduk.web.BaseSeleniumPage;
 import com.leonarduk.webscraper.core.config.Config;
 
 public class BookkeeperUtils {
+	private static final Logger LOGGER = Logger.getLogger(BookkeeperUtils.class);
+
+	public static TransactionWorker getZooplaValueInClearcheckbookTransactionWorker(
+	        final Config config, final String ccbAccountName) throws Exception {
+		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
+		final ZooplaConfig zooplaConfig = new ZooplaConfig(config);
+		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(
+		        config2);
+		        final ZooplaEstimate zooplaEstimate = new ZooplaEstimate(zooplaConfig);
+		        ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(zooplaEstimate,
+		                config2, ccbAccountName);) {
+			clearCheckBook.setAccount(config.getProperty("bookkeeper.web.clearcheckbook.zoopla"));
+			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook);
+			return worker;
+		}
+	}
+
 	public static List<TransactionRecord> updateZooplaValueInClearcheckbook(final Config config,
 	        final String ccbAccountName) throws Exception {
 		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
@@ -42,7 +62,8 @@ public class BookkeeperUtils {
 		        ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(zooplaEstimate,
 		                config2, ccbAccountName);) {
 			clearCheckBook.setAccount(config.getProperty("bookkeeper.web.clearcheckbook.zoopla"));
-			return BookkeeperUtils.uploadTransactionsFromSource(updater, clearCheckBook);
+			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook);
+			return worker.call();
 		}
 	}
 
@@ -75,7 +96,8 @@ public class BookkeeperUtils {
 		                new NationwideLogin(new NationwideConfig(config)), accountId);) {
 			final String ccbAccountName = config.getProperty("bookkeeper.web.clearcheckbook.joint");
 			clearCheckBook.setAccount(ccbAccountName);
-			return BookkeeperUtils.uploadTransactionsFromSource(transactions, clearCheckBook);
+			final TransactionWorker worker = new TransactionWorker(transactions, clearCheckBook);
+			return worker.call();
 		}
 	}
 
@@ -85,28 +107,38 @@ public class BookkeeperUtils {
 		        new FreeAgentLogin(new FreeAgentConfig(config)));
 		        final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(
 		                new SantanderLogin(new SantanderConfig(config)));) {
-			return BookkeeperUtils.uploadTransactionsFromSource(santanderTransactions, freeAgent);
+			final TransactionWorker worker = new TransactionWorker(santanderTransactions,
+			        freeAgent);
+			return worker.call();
 		}
 	}
 
 	public static List<TransactionRecord> uploadTransactionsFromSource(
 	        final TransactionDownloader downloader, final TransactionUploader uploader)
 	                throws Exception {
-		if (downloader instanceof BaseSeleniumPage) {
-			((BaseSeleniumPage) downloader).get();
-		}
-		List<TransactionRecord> transactions = downloader.downloadTransactions();
-		if (null == transactions) {
-			return new ArrayList<>();
-		}
-
-		if (transactions.size() > 0) {
-			if (uploader instanceof BaseSeleniumPage) {
-				((BaseSeleniumPage) uploader).get();
+		try {
+			if (downloader instanceof BaseSeleniumPage) {
+				((BaseSeleniumPage) downloader).get();
 			}
-			transactions = uploader.uploadTransactions(transactions);
+			List<TransactionRecord> transactions = downloader.downloadTransactions();
+			if (null == transactions) {
+				return new ArrayList<>();
+			}
+			BookkeeperUtils.LOGGER.info("There are " + transactions.size() + " records to upload");
+			if (transactions.size() > 0) {
+				if (uploader instanceof BaseSeleniumPage) {
+					((BaseSeleniumPage) uploader).get();
+				}
+				transactions = uploader.uploadTransactions(transactions);
+			}
+			return transactions;
 		}
-		return transactions;
+		catch (final Throwable e) {
+			BookkeeperUtils.LOGGER.error("Error uploading fetching or uploading", e);
+			final List<TransactionRecord> transactions = new ArrayList<>();
+			transactions.add(new TransactionRecord(0, "Error: " + e.getLocalizedMessage(),
+			        new Date(), "", ""));
+			return transactions;
+		}
 	}
-
 }

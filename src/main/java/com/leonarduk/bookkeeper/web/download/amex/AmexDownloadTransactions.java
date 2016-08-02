@@ -89,13 +89,33 @@ public class AmexDownloadTransactions implements TransactionDownloader, Statemen
 			AmexDownloadTransactions.LOGGER.info("No pop up screen. Ignore and try next page", e);
 		}
 
-		this.config.getWebDriver().findElement(By.id("estatement-link")).click();
-		this.config.getWebDriver().findElement(By.cssSelector("#downloads-link > span.copy"))
-		        .click();
-		this.config.getWebDriver()
-		        .findElement(By.cssSelector(
-		                "a[title=\"Export your statement data into a variety of file formats\"]"))
-		        .click();
+		this.config.getWebDriver().get(
+		        "https://global.americanexpress.com/myca/intl/download/emea/download.do?request_type=&Face=en_GB&BPIndex=0&sorted_index=0&inav=gb_myca_pc_statement_export_statement_data");
+		BaseSeleniumPage.waitForPageToLoad(this.config.getWebDriver());
+		try {
+			final WebElement popup = this.findElementByXpath(
+			        "//*[@id=\"eStatement\"]/div[3]/div/div/div/div/div[1]/a/span");
+			if (null != popup) {
+				popup.click();
+			}
+		}
+		catch (final NoSuchElementException e) {
+			AmexDownloadTransactions.LOGGER.info("No pop up screen. Ignore and try next page", e);
+		}
+
+		// //*[@id="DownloadMenuOpen"] // click
+
+		// //*[@id="downloadAllExcel"] // click
+		// //*[@id="downloadAllTrans"]/div[3]/button // click
+
+		// this.config.getWebDriver().findElement(By.cssSelector("#downloads-link > span.copy"))
+		// .click();
+		// this.config.getWebDriver()
+		// .findElement(By.cssSelector(
+		// "a[title=\"Export your statement data into a variety of file formats\"]"))
+		// .click();
+
+		this.config.getWebDriver().findElement(By.id("sprite-ContinueButton_EN")).click();
 		this.config.getWebDriver().findElement(By.id("QIF")).click();
 		this.config.getWebDriver().findElement(By.id("selectCard10")).click();
 		this.config.getWebDriver().findElement(By.id("radioid00")).click();
