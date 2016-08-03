@@ -36,12 +36,11 @@ public class ClearCheckbookTransactionUploaderIT {
 	@Before
 	public void setup() throws IOException {
 		this.clearCheckbook = new ClearCheckbookTransactionUploader(
-		        new ClearCheckbookConfig(SitConfig.getSitConfig()));
+		        new ClearCheckbookConfig(SitConfig.getSitConfig()), "Cash");
 	}
 
 	@Test
 	public void testUploadToClearCheckbookCash() throws Exception {
-		this.clearCheckbook.setAccount("Cash");
 		this.uploadToClearcheckBook();
 
 	}
@@ -53,7 +52,9 @@ public class ClearCheckbookTransactionUploaderIT {
 	 */
 	@Test
 	public void testUploadToClearCheckbookChecking() throws Exception {
-		this.clearCheckbook.setAccount("Checking");
+		this.clearCheckbook = new ClearCheckbookTransactionUploader(
+		        new ClearCheckbookConfig(SitConfig.getSitConfig()), "Checking");
+
 		this.uploadToClearcheckBook();
 	}
 

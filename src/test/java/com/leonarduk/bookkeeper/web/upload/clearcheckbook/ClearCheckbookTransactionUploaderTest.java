@@ -38,7 +38,7 @@ public class ClearCheckbookTransactionUploaderTest {
 		final Timeouts timeouts = Mockito.mock(Timeouts.class);
 		Mockito.when(options.timeouts()).thenReturn(timeouts);
 		Mockito.when(this.config.getWebDriver()).thenReturn(this.driver);
-		this.uploader = new ClearCheckbookTransactionUploader(this.config);
+		this.uploader = new ClearCheckbookTransactionUploader(this.config, "test account");
 	}
 
 	@Test
@@ -55,7 +55,6 @@ public class ClearCheckbookTransactionUploaderTest {
 		final WebElement importLink = Mockito.mock(WebElement.class);
 		final WebElement importToAccountLink = Mockito.mock(WebElement.class);
 		final String accountName = "testAccount testAccount2 ";
-		this.uploader.setAccount(accountName);
 		Mockito.when(importToAccountLink.getTagName()).thenReturn("select");
 		Mockito.when(importToAccountLink.getText()).thenReturn(accountName);
 
