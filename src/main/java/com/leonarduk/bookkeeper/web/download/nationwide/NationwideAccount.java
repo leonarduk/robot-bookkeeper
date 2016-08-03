@@ -95,13 +95,17 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionDo
 	@Override
 	public List<TransactionRecord> downloadTransactions() throws IOException {
 		this.downloadTransactionsFile();
+		return parseDownloadedFile();
+
+	}
+
+	List<TransactionRecord> parseDownloadedFile() throws IOException {
 		final File[] files = this.login.getConfig().getDownloadDir().listFiles();
 		if (files.length > 0) {
 			final NationwideCsvFileParser parser = new NationwideCsvFileParser();
 			return parser.parse(files[0].getAbsolutePath());
 		}
 		return new ArrayList<>();
-
 	}
 
 	/**
