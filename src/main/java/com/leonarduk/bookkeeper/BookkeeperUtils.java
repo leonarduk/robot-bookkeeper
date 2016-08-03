@@ -14,6 +14,8 @@ import org.apache.log4j.Logger;
 
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
+import com.leonarduk.bookkeeper.web.download.alliancetrust.AllianceTrust;
+import com.leonarduk.bookkeeper.web.download.alliancetrust.AllianceTrustConfig;
 import com.leonarduk.bookkeeper.web.download.amex.AmexConfig;
 import com.leonarduk.bookkeeper.web.download.amex.AmexDownloadTransactions;
 import com.leonarduk.bookkeeper.web.download.clearcheckbook.ClearCheckBookValueUpdater;
@@ -62,6 +64,23 @@ public class BookkeeperUtils {
 		        ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(zooplaEstimate,
 		                config2, ccbAccountName);) {
 			clearCheckBook.setAccount(config.getProperty("bookkeeper.web.clearcheckbook.zoopla"));
+			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook);
+			return worker.call();
+		}
+	}
+
+	public static List<TransactionRecord> uploadAllianceTrustTransactionsToClearCheckBook(
+	        final Config config, final String ccbAccountName, final int accountId,
+	        final int accountIndex) throws Exception {
+		final AllianceTrustConfig atConfig = new AllianceTrustConfig(config);
+		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
+		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(
+		        config2);
+		        final AllianceTrust allianceTrust = new AllianceTrust(atConfig, accountIndex,
+		                accountId);
+		        ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(allianceTrust,
+		                config2, ccbAccountName);) {
+			clearCheckBook.setAccount(ccbAccountName);
 			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook);
 			return worker.call();
 		}
