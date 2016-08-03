@@ -4,12 +4,16 @@
 package com.leonarduk.bookkeeper.web.upload.freeagent;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
+import com.leonarduk.bookkeeper.ValueSnapshotProvider;
+import com.leonarduk.bookkeeper.file.StringConversionUtils;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -21,7 +25,7 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @version $Date: $: Date of last commit
  * @since 4 Mar 2015
  */
-public class FreeAgentLogin extends BaseSeleniumPage {
+public class FreeAgentLogin extends BaseSeleniumPage implements ValueSnapshotProvider {
 
 	/** The Constant LOGGER. */
 	private static final Logger		LOGGER	= Logger.getLogger(FreeAgentLogin.class);
@@ -38,6 +42,19 @@ public class FreeAgentLogin extends BaseSeleniumPage {
 	public FreeAgentLogin(final FreeAgentConfig config) throws IOException {
 		super(config.getWebDriver(), config.getFreeagentUrl() + "/overview");
 		this.config = config;
+	}
+
+	@Override
+	public double getCurrentValue() throws IOException {
+		this.load();
+
+		return StringConversionUtils.convertMoneyString(this.getProfits());
+	}
+
+	@Override
+	public String getDescription() {
+		final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		return "From Freeagent Website " + format.format(new Date());
 	}
 
 	/**

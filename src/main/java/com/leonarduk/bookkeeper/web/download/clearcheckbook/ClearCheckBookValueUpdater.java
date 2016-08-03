@@ -52,7 +52,7 @@ public class ClearCheckBookValueUpdater implements AutoCloseable, TransactionDow
 
 			final double currentValue = this.valueSnapshotProvider.getCurrentValue();
 			final double amount = currentValue - ccbAmount;
-			if (Math.abs(amount) < 1) {
+			if (Math.abs(amount) < 0.01) {
 				ClearCheckBookValueUpdater.LOGGER.info("No change");
 				return updates;
 			}

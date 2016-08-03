@@ -5,7 +5,9 @@ package com.leonarduk.bookkeeper.web.download.nationwide;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,10 +16,11 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
+import com.leonarduk.bookkeeper.ValueSnapshotProvider;
 import com.leonarduk.bookkeeper.file.NationwideCsvFileParser;
+import com.leonarduk.bookkeeper.file.StringConversionUtils;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
-import com.leonarduk.bookkeeper.web.download.nationwide.NationwideAccount.FileType;
 import com.leonarduk.web.BaseSeleniumPage;
 
 /**
@@ -29,7 +32,8 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @version $Date: $: Date of last commit
  * @since 28 Mar 2015
  */
-public class NationwideAccount extends BaseSeleniumPage implements TransactionDownloader {
+public class NationwideAccount extends BaseSeleniumPage
+        implements TransactionDownloader, ValueSnapshotProvider {
 
 	/** The Constant _logger. */
 	private static final Logger _logger = Logger.getLogger(NationwideAccount.class);
@@ -95,17 +99,8 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionDo
 	@Override
 	public List<TransactionRecord> downloadTransactions() throws IOException {
 		this.downloadTransactionsFile();
-		return parseDownloadedFile();
+		return this.parseDownloadedFile();
 
-	}
-
-	List<TransactionRecord> parseDownloadedFile() throws IOException {
-		final File[] files = this.login.getConfig().getDownloadDir().listFiles();
-		if (files.length > 0) {
-			final NationwideCsvFileParser parser = new NationwideCsvFileParser();
-			return parser.parse(files[0].getAbsolutePath());
-		}
-		return new ArrayList<>();
 	}
 
 	/**
@@ -115,13 +110,7 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionDo
 	 */
 	@Override
 	public String downloadTransactionsFile() {
-		this.getWebDriver().get(this.login.getConfig().getFullStatementUrl(this.accountId));
-		try {
-			this.getWebDriver().switchTo().alert().accept();
-		}
-		catch (final NoAlertPresentException e) {
-			NationwideAccount._logger.info("no alert to close");
-		}
+		this.refreshAccountPage();
 		final List<WebElement> downloadLinks = this.getWebDriver()
 		        .findElements(By.cssSelector("a.downloadFileLink.custom-tooltip-link"));
 		if ((downloadLinks.size() < 1) || !downloadLinks.get(0).isDisplayed()) {
@@ -146,6 +135,17 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionDo
 		return null;
 	}
 
+	@Override
+	public double getCurrentValue() throws IOException {
+		this.load();
+		this.waitForPageToLoad();
+		this.refreshAccountPage();
+		this.waitForPageToLoad();
+		final String amountString = this.getWebDriver()
+		        .findElement(By.xpath("//*[@id=\"stageInner\"]/div[3]/dl/dd[1]")).getText();
+		return StringConversionUtils.convertMoneyString(amountString);
+	}
+
 	/**
 	 * Gets the dates.
 	 *
@@ -154,6 +154,12 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionDo
 	public final String getDates() {
 		this.get();
 		return this.getWebDriver().findElement(By.id("date-display-dates")).getText();
+	}
+
+	@Override
+	public String getDescription() {
+		final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		return "From Nationwide Website " + format.format(new Date());
 	}
 
 	/*
@@ -165,6 +171,25 @@ public class NationwideAccount extends BaseSeleniumPage implements TransactionDo
 	protected final void load() {
 		if (this.getWebDriver().findElements(By.id("logoutForm")).size() == 0) {
 			this.login.get();
+		}
+	}
+
+	List<TransactionRecord> parseDownloadedFile() throws IOException {
+		final File[] files = this.login.getConfig().getDownloadDir().listFiles();
+		if (files.length > 0) {
+			final NationwideCsvFileParser parser = new NationwideCsvFileParser();
+			return parser.parse(files[0].getAbsolutePath());
+		}
+		return new ArrayList<>();
+	}
+
+	void refreshAccountPage() {
+		this.getWebDriver().get(this.login.getConfig().getFullStatementUrl(this.accountId));
+		try {
+			this.getWebDriver().switchTo().alert().accept();
+		}
+		catch (final NoAlertPresentException e) {
+			NationwideAccount._logger.info("no alert to close");
 		}
 	}
 
