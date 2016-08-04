@@ -57,7 +57,7 @@ public class NationwideCsvFileParser implements FileParser {
 				final String description = fields[1] + " " + fields[2];
 				final String dateString = fields[0];
 				final Date date = dateFormatter.parse(dateString);
-				final String checkNumber = fields[5];
+				final String checkNumber = fields[5].replace("£", "");
 				final String payee = fields[2];
 				records.add(new TransactionRecord(amount, description, date, checkNumber, payee));
 			}

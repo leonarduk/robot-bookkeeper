@@ -40,7 +40,6 @@ public class EmailReporter {
 	        final List<TransactionRecord> transactions) {
 		this.append(this.emailFormatter.formatSubHeader(accountName));
 		this.append(this.emailFormatter.format(transactions));
-
 	}
 
 	public void append(final String text) {

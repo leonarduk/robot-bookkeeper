@@ -20,6 +20,7 @@ public class StringConversionUtils {
 		if (StringUtils.isEmpty(amount)) {
 			return 0.0;
 		}
-		return Double.valueOf(amount.replaceAll("£", "").replaceAll(",", "")).doubleValue();
+		return Double.valueOf(amount.replaceAll("£", "").replaceAll(",", "").replaceAll("�", ""))
+		        .doubleValue();
 	}
 }

@@ -53,7 +53,7 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	private final ClearCheckbookConfig config;
 
 	/** The account. */
-	private String account;
+	private final String account;
 
 	/** The login. */
 	private final ClearCheckBookLogin login;
@@ -63,10 +63,13 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	 *
 	 * @param config
 	 *            the config
+	 * @param account
 	 */
-	public ClearCheckbookTransactionUploader(final ClearCheckbookConfig config) {
+	public ClearCheckbookTransactionUploader(final ClearCheckbookConfig config,
+	        final String account) {
 		this.config = config;
 		this.login = new ClearCheckBookLogin(config);
+		this.account = account;
 	}
 
 	/**
@@ -94,7 +97,11 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	 */
 	@Override
 	public void close() throws Exception {
-		this.config.getWebDriver().close();
+		try {
+			this.config.getWebDriver().close();
+		}
+		catch (final Throwable r) {
+		}
 	}
 
 	/**
@@ -176,16 +183,6 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 			duplicates = Integer.valueOf(driver.findElement(By.xpath(numberOfDupsXpath)).getText()
 			        .replace(" Duplicates Found", "").replace(" Duplicate Found", ""));
 		}
-	}
-
-	/**
-	 * Sets the account.
-	 *
-	 * @param account2
-	 *            the new account
-	 */
-	public void setAccount(final String account2) {
-		this.account = account2;
 	}
 
 	/**
