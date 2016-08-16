@@ -77,8 +77,8 @@ public class FreeAgentLogin extends BaseSeleniumPage implements ValueSnapshotPro
 	protected final void load() {
 		this.getWebDriver().get(this.config.getFreeagentUrl() + "/login");
 		this.waitForPageToLoad();
-		this.enterValueIntoField(this.config.getUsername(), "//*[@id=\"email\"]");
-		this.enterValueIntoField(this.config.getPassword(), "//*[@id=\"password\"]");
+		this.enterValueIntoField(this.config.getUsername(), "//*[@id=\"login_email\"]");
+		this.enterValueIntoField(this.config.getPassword(), "//*[@id=\"login_password\"]");
 		this.clickField("/html/body/div/div/form[1]/p[2]/input");
 		try {
 			this.waitForPageToLoad();
