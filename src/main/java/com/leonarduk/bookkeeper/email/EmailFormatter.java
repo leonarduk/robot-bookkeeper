@@ -9,17 +9,10 @@ package com.leonarduk.bookkeeper.email;
 import java.util.List;
 
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.webscraper.core.format.Formatter;
 
-public interface EmailFormatter {
-
-	String endMessageBody();
+public interface EmailFormatter extends Formatter{
 
 	String format(List<TransactionRecord> uploadSantanderTransactionsToFreeAgent);
-
-	String formatHeader(String string);
-
-	String formatSubHeader(String string);
-
-	String startMessageBody();
 
 }

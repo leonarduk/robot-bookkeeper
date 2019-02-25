@@ -53,17 +53,16 @@ public class EmailReporter {
 		final String server = this.config.getEmailServer();
 		final String password = this.config.getEmailPassword();
 		final String port = this.config.getEmailPort();
-		final boolean useHtml = this.config.getUseHtml();
 
 		final EmailSession session = new EmailSessionImpl(user, password, server, port);
 
 		this.endEmailBody();
 		this.emailSender.sendMessage(this.config.getFromEmail(), this.config.getFromEmailName(),
-		        subject, this.changes.toString(), useHtml, session, toEmail);
+		        subject, this.changes.toString(), this.emailFormatter, session, toEmail);
 	}
 
 	public void endEmailBody() {
-		this.append(this.emailFormatter.endMessageBody());
+		this.append(this.emailFormatter.endFile());
 	}
 
 	StringBuilder getChanges() {
@@ -71,7 +70,7 @@ public class EmailReporter {
 	}
 
 	public void startEmailBody() {
-		this.append(this.emailFormatter.startMessageBody());
+		this.append(this.emailFormatter.startFile());
 		this.append(this.emailFormatter.formatHeader("Todays Transactions"));
 
 	}

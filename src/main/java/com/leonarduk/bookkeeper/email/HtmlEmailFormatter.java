@@ -14,22 +14,6 @@ import com.leonarduk.webscraper.core.format.HtmlFormatter;
 
 public class HtmlEmailFormatter extends HtmlFormatter implements EmailFormatter {
 
-	private String addHeader(final String value) {
-		return this.addNode(value, "th");
-	}
-
-	public String addNode(final String value, final String element) {
-		return "<" + element + ">" + value + "</" + element + ">";
-	}
-
-	private String addValue(final String value) {
-		return this.addNode(value, "td");
-	}
-
-	public String endMessageBody() {
-		return "</body></html>";
-	}
-
 	public String format(final List<TransactionRecord> records) {
 		final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
 
@@ -55,7 +39,4 @@ public class HtmlEmailFormatter extends HtmlFormatter implements EmailFormatter 
 		return builder.toString();
 	}
 
-	public String startMessageBody() {
-		return "<html><body>";
-	}
 }

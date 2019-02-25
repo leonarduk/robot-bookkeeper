@@ -13,7 +13,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 import com.leonarduk.web.BaseSeleniumPage;
-import com.thoughtworks.selenium.SeleniumException;
+import com.leonarduk.web.SeleniumException;
 
 /**
  * The Class SantanderLogin.
@@ -27,19 +27,18 @@ import com.thoughtworks.selenium.SeleniumException;
 public class SantanderLogin extends BaseSeleniumPage {
 
 	/** The Constant PASSWORD_SUBMIT_XPATH. */
-	public static final String PASSWORD_SUBMIT_XPATH = "//*[@id=\"formAuthenticationAbbey\"]/div[2]/span[1]/input";
-
+	public static final String PASSWORD_SUBMIT_XPATH = "//*[@id=\"formAuthenticationAbbey\"]/div[2]/div[3]/span/input";
 	/** The Constant PASSWORD_VALUE_XPATH. */
 	public static final String PASSWORD_VALUE_XPATH = "//*[@id=\"passwordPosition";
 
 	/** The Constant SIGN_POSITION_PREFIX. */
 	public static final String SIGN_POSITION_PREFIX = "signPosition";
-
+	//*[@id="signPosition1"]
 	/** The Constant ANSWER_SUBMIT_XPATH. */
 	public static final String ANSWER_SUBMIT_XPATH = "//*[@id=\"formCustomerID\"]/div/span[1]/input";
 
 	/** The Constant CUSTOMER_ID_SUBMIT_XPATH. */
-	public static final String CUSTOMER_ID_SUBMIT_XPATH = "//*[@id=\"formCustomerID_1\"]/fieldset/div/div/span/input";
+	public static final String CUSTOMER_ID_SUBMIT_XPATH = "/html/body/div[2]/div[3]/div/div/div[2]/div[1]/form/fieldset/div/span/span[1]/span[2]/input";
 
 	/** The Constant CUSTOMER_ID_XPATH. */
 	public static final String CUSTOMER_ID_XPATH = "//*[@id=\"infoLDAP_E.customerID\"]";
@@ -58,10 +57,10 @@ public class SantanderLogin extends BaseSeleniumPage {
 	private static final String SECURITY_ID_POSITION_PREFIX = "passwordPosition";
 
 	/** The Constant SECURITY_ID_INDEX_PREFIX. */
-	private static final String SECURITY_ID_INDEX_PREFIX = "//*[@id=\"formAuthenticationAbbey\"]/div[1]/div[2]/span[2]/span/span[1]/label[";
-
-	/** The Constant passwordXpathPrefix. */
-	public static final String PASSWORD_INDEX_XPATH = "//*[@id=\"formAuthenticationAbbey\"]/div[1]/div[1]/span[2]/span/span[1]/label[";
+	private static final String SECURITY_ID_INDEX_PREFIX = "//*[@id=\"formAuthenticationAbbey\"]/div[2]/div[2]/div/span[2]/span/span[1]/label[";
+	public static final String PASSWORD_INDEX_XPATH = 
+			"//*[@id=\"formAuthenticationAbbey\"]/div[2]/div[1]/div/span[2]/span/span[1]/label[";
+//	"//*[@id=\"formAuthenticationAbbey\"]/div[1]/div[1]/span[2]/span/span[1]/label[";
 
 	/** The customer number. */
 	private final String customerId;
@@ -120,8 +119,8 @@ public class SantanderLogin extends BaseSeleniumPage {
 		final int lastDigit = 3;
 		final WebElement[] nodes = new WebElement[lastDigit];
 		for (int i = 1; i < (lastDigit + 1); i++) {
-			final WebElement node = this.getWebDriver()
-			        .findElement(By.name(signPositionPrefix + i));
+			final WebElement node = this.getWebDriver() //*[@id="signPosition1"]
+			        .findElement(By.id(signPositionPrefix + i));//*[@id="formAuthenticationAbbey"]/div[2]/div[1]/div/span[2]/span/span[1]/label[1]/strong/b
 			int index = (Integer.valueOf(node.getAttribute("tabindex"))).intValue() - 1;
 			if (index >= lastDigit) {
 				index -= lastDigit;
@@ -243,6 +242,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 		try {
 			final WebElement popup = this
 			        .findElementByXpath("//*[@id=\"PopUp\"]/div/form/fieldset/div/span/a");
+			
 			if (null != popup) {
 				popup.click();
 			}
