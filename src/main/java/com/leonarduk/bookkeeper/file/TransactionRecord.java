@@ -6,8 +6,12 @@
  */
 package com.leonarduk.bookkeeper.file;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * The Class TransactionRecord.
@@ -32,19 +36,14 @@ public class TransactionRecord {
 	/**
 	 * Instantiates a new transaction record.
 	 *
-	 * @param amount
-	 *            the amount
-	 * @param description
-	 *            the description
-	 * @param date2
-	 *            the date2
-	 * @param checkNumber
-	 *            the check number
-	 * @param payee
-	 *            the payee
+	 * @param amount      the amount
+	 * @param description the description
+	 * @param date2       the date2
+	 * @param checkNumber the check number
+	 * @param payee       the payee
 	 */
-	public TransactionRecord(final double amount, final String description, final Date date2,
-	        final String checkNumber, final String payee) {
+	public TransactionRecord(final double amount, final String description, final Date date2, final String checkNumber,
+			final String payee) {
 		this.amount = amount;
 		this.description = description;
 		final Calendar calendar = Calendar.getInstance();
@@ -78,32 +77,28 @@ public class TransactionRecord {
 			if (other.checkNumber != null) {
 				return false;
 			}
-		}
-		else if (!this.checkNumber.equals(other.checkNumber)) {
+		} else if (!this.checkNumber.equals(other.checkNumber)) {
 			return false;
 		}
 		if (this.date == null) {
 			if (other.date != null) {
 				return false;
 			}
-		}
-		else if (!this.date.equals(other.date)) {
+		} else if (!this.date.equals(other.date)) {
 			return false;
 		}
 		if (this.description == null) {
 			if (other.description != null) {
 				return false;
 			}
-		}
-		else if (!this.description.equals(other.description)) {
+		} else if (!this.description.equals(other.description)) {
 			return false;
 		}
 		if (this.payee == null) {
 			if (other.payee != null) {
 				return false;
 			}
-		}
-		else if (!this.payee.equals(other.payee)) {
+		} else if (!this.payee.equals(other.payee)) {
 			return false;
 		}
 		return true;
@@ -170,8 +165,25 @@ public class TransactionRecord {
 
 	@Override
 	public String toString() {
-		return "TransactionRecord [amount=" + this.amount + ", description=" + this.description
-		        + ", date=" + this.date + ", checkNumber=" + this.checkNumber + ", payee="
-		        + this.payee + "]";
+		return "TransactionRecord [amount=" + this.amount + ", description=" + this.description + ", date=" + this.date
+				+ ", checkNumber=" + this.checkNumber + ", payee=" + this.payee + "]";
+	}
+
+	public String toDataString(String delimiter, DateFormat dateformat) {
+		return this.amount + delimiter + this.description + delimiter + dateformat.format(this.date) + delimiter
+				+ this.checkNumber + delimiter + this.payee;
+
+	}
+
+	public static String getHeaderString(String delimiter) {
+		return "amount" + delimiter + "description" + delimiter + "date" + delimiter + "checkNumber" + delimiter
+				+ "payee";
+	}
+
+	public static TransactionRecord fromString(String dataString, String delimiter, DateFormat dateformat)
+			throws NumberFormatException, ParseException {
+		Iterator<String> fields = Arrays.asList(dataString.split(delimiter)).iterator();
+		return new TransactionRecord(Double.parseDouble(fields.next()), fields.next(), dateformat.parse(fields.next()),
+				fields.next(), fields.next());
 	}
 }

@@ -23,7 +23,7 @@ public class AmexDownloadTransactionsIT {
 		final AmexConfig config = new AmexConfig(SitConfig.getSitConfig());
 		final AmexDownloadTransactions transactions = new AmexDownloadTransactions(config);
 
-		final List<TransactionRecord> records = transactions.downloadTransactions();
+		final List<TransactionRecord> records = transactions.saveTransactions();
 		final FileFormatter formatter = new CsvFormatter();
 		final String outputFileName = "test.qif";
 		formatter.format(records, outputFileName);

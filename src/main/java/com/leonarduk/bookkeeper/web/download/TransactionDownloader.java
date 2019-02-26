@@ -13,7 +13,7 @@ import com.leonarduk.bookkeeper.file.TransactionRecord;
 
 public interface TransactionDownloader {
 
-	List<TransactionRecord> downloadTransactions() throws IOException;
+	List<TransactionRecord> saveTransactions() throws IOException;
 
 	String downloadTransactionsFile() throws IOException;
 

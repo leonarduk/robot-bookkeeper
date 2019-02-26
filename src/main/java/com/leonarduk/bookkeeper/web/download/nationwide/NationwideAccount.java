@@ -97,7 +97,7 @@ public class NationwideAccount extends BaseSeleniumPage
 	 * @see com.leonarduk.bookkeeper.web.download.TransactionsDownloader#downloadTransactions()
 	 */
 	@Override
-	public List<TransactionRecord> downloadTransactions() throws IOException {
+	public List<TransactionRecord> saveTransactions() throws IOException {
 		this.downloadTransactionsFile();
 		return this.parseDownloadedFile();
 

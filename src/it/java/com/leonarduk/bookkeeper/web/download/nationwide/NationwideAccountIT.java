@@ -49,7 +49,7 @@ public class NationwideAccountIT {
 
 	@Test
 	public final void testDownloadTransactions() throws IOException {
-		final List<TransactionRecord> records = this.nationwideAccount.downloadTransactions();
+		final List<TransactionRecord> records = this.nationwideAccount.saveTransactions();
 		Assert.assertFalse(records.isEmpty());
 		final FileFormatter formatter = new CsvFormatter();
 		final String outputFileName = "test.csv";

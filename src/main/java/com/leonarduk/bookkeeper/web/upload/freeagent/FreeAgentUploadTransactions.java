@@ -66,7 +66,7 @@ public class FreeAgentUploadTransactions extends BaseSeleniumPage implements Tra
 	}
 
 	@Override
-	public final List<TransactionRecord> uploadTransactions(
+	public final List<TransactionRecord> writeTransactions(
 	        final List<TransactionRecord> transactions) throws IOException {
 		final File folder = FileUtils.createTempDir();
 		folder.deleteOnExit();

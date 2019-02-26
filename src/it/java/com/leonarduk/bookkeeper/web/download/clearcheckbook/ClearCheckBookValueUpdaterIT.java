@@ -48,7 +48,7 @@ public class ClearCheckBookValueUpdaterIT {
 		try (final ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(
 		        valueSnapshotProvider, new ClearCheckbookConfig(SitConfig.getSitConfig()),
 		        "zoopla");) {
-			final List<TransactionRecord> transactions = updater.downloadTransactions();
+			final List<TransactionRecord> transactions = updater.saveTransactions();
 			System.out.println(transactions.toString());
 		}
 	}

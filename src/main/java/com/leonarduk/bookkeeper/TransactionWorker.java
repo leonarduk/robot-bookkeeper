@@ -13,12 +13,17 @@ import com.leonarduk.bookkeeper.file.TransactionRecord;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 import com.leonarduk.bookkeeper.web.upload.TransactionUploader;
 
+/**
+ * This class takes transactions from one source and uploads to the second.
+ * 
+ * @author Stephen Leonard
+ *
+ */
 public class TransactionWorker implements Callable<List<TransactionRecord>> {
-	private final TransactionDownloader	downloader;
-	private final TransactionUploader	uploader;
+	private final TransactionDownloader downloader;
+	private final TransactionUploader uploader;
 
-	public TransactionWorker(final TransactionDownloader downloader,
-	        final TransactionUploader uploader) {
+	public TransactionWorker(final TransactionDownloader downloader, final TransactionUploader uploader) {
 		this.downloader = downloader;
 		this.uploader = uploader;
 	}

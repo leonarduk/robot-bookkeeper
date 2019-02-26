@@ -209,7 +209,7 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	 * com.leonarduk.bookkeeper.web.upload.TransactionUploader#uploadTransactions(java.util.List)
 	 */
 	@Override
-	public List<TransactionRecord> uploadTransactions(final List<TransactionRecord> transactions)
+	public List<TransactionRecord> writeTransactions(final List<TransactionRecord> transactions)
 	        throws IOException {
 		try {
 			return this.uploadViaApi(transactions);

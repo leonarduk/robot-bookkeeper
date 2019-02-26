@@ -76,7 +76,8 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage
 	}
 
 	@Override
-	public final List<TransactionRecord> downloadTransactions() throws IOException {
+	public final List<TransactionRecord> saveTransactions() throws IOException {
+		this.isLoaded();
 		final QifFileParser parser = new QifFileParser();
 		final String fileName = this.downloadTransactionsFile();
 		if (fileName == null) {

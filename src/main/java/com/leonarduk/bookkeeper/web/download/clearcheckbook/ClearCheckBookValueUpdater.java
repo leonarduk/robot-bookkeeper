@@ -42,7 +42,7 @@ public class ClearCheckBookValueUpdater implements AutoCloseable, TransactionDow
 	}
 
 	@Override
-	public List<TransactionRecord> downloadTransactions() throws IOException {
+	public List<TransactionRecord> saveTransactions() throws IOException {
 		final List<TransactionRecord> updates = new ArrayList<>();
 		try {
 			ClearCheckBookValueUpdater.LOGGER.info("downloadTransactions");

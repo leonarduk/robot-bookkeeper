@@ -45,7 +45,7 @@ public class SantanderDownloadTransactionsIT {
 		final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(
 		        santanderLogin);
 		santanderTransactions.get();
-		final List<TransactionRecord> records = santanderTransactions.downloadTransactions();
+		final List<TransactionRecord> records = santanderTransactions.saveTransactions();
 		final FileFormatter formatter = new CsvFormatter();
 		final String outputFileName = "test.qif";
 		formatter.format(records, outputFileName);

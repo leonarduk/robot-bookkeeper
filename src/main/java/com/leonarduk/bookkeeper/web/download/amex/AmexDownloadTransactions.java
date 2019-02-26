@@ -62,7 +62,7 @@ public class AmexDownloadTransactions implements TransactionDownloader, Statemen
 	}
 
 	@Override
-	public List<TransactionRecord> downloadTransactions() throws IOException {
+	public List<TransactionRecord> saveTransactions() throws IOException {
 		final QifFileParser parser = new QifFileParser();
 		final String fileName = this.downloadTransactionsFile();
 		BaseSeleniumPage.waitForPageToLoad(this.config.getWebDriver());
