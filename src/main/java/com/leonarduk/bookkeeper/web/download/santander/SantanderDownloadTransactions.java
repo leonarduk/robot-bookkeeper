@@ -101,7 +101,7 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage
 		this.findElementByXpath("//*[@id=\"content\"]/p[4]/a").click();
 		this.waitForPageToLoad();
 		// select all since last download
-		this.findElementByXpath("//*[@id=\"AllorLastL\"]").click();
+//		this.findElementByXpath("//*[@id=\"AllorLastL\"]").click();
 		// select 1 - XLS ; 2 - QIF ; 3 - QIF ; 4 - PDF ; 5 - TXT
 		this.findElementByXpath("//*[@id=\"sel_downloadto\"]/option[2]").click();
 		// click Download
