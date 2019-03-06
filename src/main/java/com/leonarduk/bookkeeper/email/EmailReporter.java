@@ -54,7 +54,8 @@ public class EmailReporter {
 		final String password = this.config.getEmailPassword();
 		final String port = this.config.getEmailPort();
 
-		final EmailSession session = new EmailSessionImpl(user, password, server, port);
+		final boolean useSsl = this.config.getUseSsl(); 
+		final EmailSession session = new EmailSessionImpl(user, password, server, port, useSsl);
 
 		this.endEmailBody();
 		this.emailSender.sendMessage(this.config.getFromEmail(), this.config.getFromEmailName(),

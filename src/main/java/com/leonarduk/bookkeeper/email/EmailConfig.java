@@ -51,4 +51,8 @@ public class EmailConfig {
 		return this.config.getBooleanProperty("bookkeeper.email.usehtml");
 	}
 
+	public boolean getUseSsl() {
+		return this.config.getBooleanProperty("bookkeeper.email.usessl");
+	}
+
 }
