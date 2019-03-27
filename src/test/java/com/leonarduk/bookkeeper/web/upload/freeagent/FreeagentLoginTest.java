@@ -27,8 +27,7 @@ public class FreeagentLoginTest {
 	/**
 	 * Sets the up.
 	 *
-	 * @throws Exception
-	 *             the exception
+	 * @throws Exception the exception
 	 */
 	@Before
 	public final void setUp() throws Exception {
@@ -39,8 +38,7 @@ public class FreeagentLoginTest {
 	/**
 	 * Tear down.
 	 *
-	 * @throws Exception
-	 *             the exception
+	 * @throws Exception the exception
 	 */
 	@After
 	public void tearDown() throws Exception {
@@ -56,9 +54,8 @@ public class FreeagentLoginTest {
 	public final void testIsLoaded() {
 		try {
 			this.login.get();
-			this.login.uploadTransactions("/tmp/heaDd2/Statements09015613132580.qif");
-		}
-		catch (final Exception e) {
+			this.login.uploadTransactions(new FreeagentFile("/tmp/heaDd2/Statements09015613132580.qif"));
+		} catch (final Exception e) {
 			Assert.fail("Caught exception: " + e.getLocalizedMessage());
 		}
 	}

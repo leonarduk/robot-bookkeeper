@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.leonarduk.bookkeeper.ValueSnapshotProvider;
 import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.bookkeeper.web.upload.clearcheckbook.ClearCheckbookConfig;
 
 public class ClearCheckBookValueUpdaterIT {
@@ -48,7 +49,8 @@ public class ClearCheckBookValueUpdaterIT {
 		try (final ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(
 		        valueSnapshotProvider, new ClearCheckbookConfig(SitConfig.getSitConfig()),
 		        "zoopla");) {
-			final List<TransactionRecord> transactions = updater.saveTransactions();
+			TransactionRecordFilter filter = (record) -> true;
+			final List<TransactionRecord> transactions = updater.saveTransactions(filter);
 			System.out.println(transactions.toString());
 		}
 	}

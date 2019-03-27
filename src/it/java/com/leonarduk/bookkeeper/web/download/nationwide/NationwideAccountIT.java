@@ -20,13 +20,14 @@ import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.webscraper.core.FileUtils;
 
 public class NationwideAccountIT {
 
-	private NationwideAccount	nationwideAccount;
-	private NationwideConfig	nationwideConfig;
-	private NationwideLogin		aLogin;
+	private NationwideAccount nationwideAccount;
+	private NationwideConfig nationwideConfig;
+	private NationwideLogin aLogin;
 
 	@SuppressWarnings("resource")
 	@Before
@@ -49,11 +50,12 @@ public class NationwideAccountIT {
 
 	@Test
 	public final void testDownloadTransactions() throws IOException {
-		final List<TransactionRecord> records = this.nationwideAccount.saveTransactions();
+		TransactionRecordFilter filter = (record) -> true;
+		final List<TransactionRecord> records = this.nationwideAccount.saveTransactions(filter);
 		Assert.assertFalse(records.isEmpty());
 		final FileFormatter formatter = new CsvFormatter();
 		final String outputFileName = "test.csv";
-		formatter.format(records, outputFileName);
+		formatter.format(records, outputFileName, filter);
 		System.out.println(FileUtils.getFileContents(outputFileName));
 	}
 
@@ -64,12 +66,13 @@ public class NationwideAccountIT {
 		Assert.assertNotNull(files);
 		Assert.assertTrue(files.length > 0);
 
+		TransactionRecordFilter filter = (record) -> true;
 		if (files.length > 0) {
 			final QifFileParser parser = new QifFileParser();
-			final List<TransactionRecord> records = parser.parse(files[0].getAbsolutePath());
+			final List<TransactionRecord> records = parser.parse(files[0].getAbsolutePath(), filter);
 			final FileFormatter formatter = new CsvFormatter();
 			final String outputFileName = "test.csv";
-			formatter.format(records, outputFileName);
+			formatter.format(records, outputFileName, filter);
 			System.out.println(FileUtils.getFileContents(outputFileName));
 		}
 	}

@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface FileParser {
 
-	List<TransactionRecord> parse(String fileName) throws IOException;
+	List<TransactionRecord> parse(String fileName, TransactionRecordFilter filter) throws IOException;
 
 }

@@ -20,6 +20,7 @@ import com.leonarduk.bookkeeper.ValueSnapshotProvider;
 import com.leonarduk.bookkeeper.file.NationwideCsvFileParser;
 import com.leonarduk.bookkeeper.file.StringConversionUtils;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 import com.leonarduk.web.BaseSeleniumPage;
 
@@ -32,8 +33,7 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @version $Date: $: Date of last commit
  * @since 28 Mar 2015
  */
-public class NationwideAccount extends BaseSeleniumPage
-        implements TransactionDownloader, ValueSnapshotProvider {
+public class NationwideAccount extends BaseSeleniumPage implements TransactionDownloader, ValueSnapshotProvider {
 
 	/** The Constant _logger. */
 	private static final Logger _logger = Logger.getLogger(NationwideAccount.class);
@@ -47,10 +47,8 @@ public class NationwideAccount extends BaseSeleniumPage
 	/**
 	 * Instantiates a new nationwide account.
 	 *
-	 * @param aLogin
-	 *            the a login
-	 * @param aAccountId
-	 *            the a account id
+	 * @param aLogin     the a login
+	 * @param aAccountId the a account id
 	 */
 	public NationwideAccount(final NationwideLogin aLogin, final int aAccountId) {
 		super(aLogin.getWebDriver(), aLogin.getConfig().getAccountListUrl()); // getFullStatementUrl(aAccountId));
@@ -65,8 +63,7 @@ public class NationwideAccount extends BaseSeleniumPage
 	 */
 	public final String accountName() {
 		this.getWebDriver().get(this.login.getConfig().getFullStatementUrl(this.accountId));
-		return this.getWebDriver().findElement(By.xpath("//*[@id=\"stageInner\"]/div[3]/h2"))
-		        .getText();
+		return this.getWebDriver().findElement(By.xpath("//*[@id=\"stageInner\"]/div[3]/h2")).getText();
 	}
 
 	@Override
@@ -94,12 +91,13 @@ public class NationwideAccount extends BaseSeleniumPage
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see com.leonarduk.bookkeeper.web.download.TransactionsDownloader#downloadTransactions()
+	 * @see com.leonarduk.bookkeeper.web.download.TransactionsDownloader#
+	 * downloadTransactions()
 	 */
 	@Override
-	public List<TransactionRecord> saveTransactions() throws IOException {
+	public List<TransactionRecord> saveTransactions(TransactionRecordFilter filter) throws IOException {
 		this.downloadTransactionsFile();
-		return this.parseDownloadedFile();
+		return this.parseDownloadedFile(filter);
 
 	}
 
@@ -112,7 +110,7 @@ public class NationwideAccount extends BaseSeleniumPage
 	public String downloadTransactionsFile() {
 		this.refreshAccountPage();
 		final List<WebElement> downloadLinks = this.getWebDriver()
-		        .findElements(By.cssSelector("a.downloadFileLink.custom-tooltip-link"));
+				.findElements(By.cssSelector("a.downloadFileLink.custom-tooltip-link"));
 		if ((downloadLinks.size() < 1) || !downloadLinks.get(0).isDisplayed()) {
 			return null;
 		}
@@ -120,15 +118,13 @@ public class NationwideAccount extends BaseSeleniumPage
 		final FileType fileType = NationwideAccount.FileType.CSV;
 		downloadLinks.get(0).click();
 		this.getWebDriver()
-		        .findElement(By.xpath("(//form[@action='/Transactions/FullStatement/DownloadFS'])["
-		                + FileType.CSV.getIndex() + "]"))
-		        .click();
+				.findElement(By.xpath(
+						"(//form[@action='/Transactions/FullStatement/DownloadFS'])[" + FileType.CSV.getIndex() + "]"))
+				.click();
 		this.getWebDriver().findElement(By.cssSelector("b.reveal-info-down")).click();
 		try {
-			this.getWebDriver().findElement(By.linkText("Download " + fileType.name() + " file"))
-			        .click();
-		}
-		catch (final NoSuchElementException e) {
+			this.getWebDriver().findElement(By.linkText("Download " + fileType.name() + " file")).click();
+		} catch (final NoSuchElementException e) {
 			NationwideAccount._logger.info("no data");
 			// Ignore as this means there is no data
 		}
@@ -141,8 +137,8 @@ public class NationwideAccount extends BaseSeleniumPage
 		this.waitForPageToLoad();
 		this.refreshAccountPage();
 		this.waitForPageToLoad();
-		final String amountString = this.getWebDriver()
-		        .findElement(By.xpath("//*[@id=\"stageInner\"]/div[3]/dl/dd[1]")).getText();
+		final String amountString = this.getWebDriver().findElement(By.xpath("//*[@id=\"stageInner\"]/div[3]/dl/dd[1]"))
+				.getText();
 		return StringConversionUtils.convertMoneyString(amountString);
 	}
 
@@ -174,11 +170,11 @@ public class NationwideAccount extends BaseSeleniumPage
 		}
 	}
 
-	List<TransactionRecord> parseDownloadedFile() throws IOException {
+	List<TransactionRecord> parseDownloadedFile(TransactionRecordFilter filter) throws IOException {
 		final File[] files = this.login.getConfig().getDownloadDir().listFiles();
 		if (files.length > 0) {
 			final NationwideCsvFileParser parser = new NationwideCsvFileParser();
-			return parser.parse(files[0].getAbsolutePath());
+			return parser.parse(files[0].getAbsolutePath(), filter);
 		}
 		return new ArrayList<>();
 	}
@@ -187,8 +183,7 @@ public class NationwideAccount extends BaseSeleniumPage
 		this.getWebDriver().get(this.login.getConfig().getFullStatementUrl(this.accountId));
 		try {
 			this.getWebDriver().switchTo().alert().accept();
-		}
-		catch (final NoAlertPresentException e) {
+		} catch (final NoAlertPresentException e) {
 			NationwideAccount._logger.info("no alert to close");
 		}
 	}
@@ -199,7 +194,8 @@ public class NationwideAccount extends BaseSeleniumPage
 	public enum FileType {
 
 		/** The csv. */
-		CSV(1), /** The ofx. */
+		CSV(1),
+		/** The ofx. */
 		OFX(2);
 
 		private int index;

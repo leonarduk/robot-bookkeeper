@@ -23,7 +23,7 @@ public class SantanderLoginIT {
 		final SantanderLogin santanderLogin = new SantanderLogin(config);
 		santanderLogin.get();
 		SantanderLoginIT.LOGGER.info("Complete");
-		santanderLogin.getWebDriver().close();
+		santanderLogin.getBrowserController().close();
 	}
 
 }

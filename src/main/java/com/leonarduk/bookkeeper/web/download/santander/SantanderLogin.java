@@ -6,13 +6,13 @@ package com.leonarduk.bookkeeper.web.download.santander;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 
-import com.leonarduk.web.BaseSeleniumPage;
+import com.leonarduk.web.BasePage;
+import com.leonarduk.web.ClickableElement;
+import com.leonarduk.web.SeleniumBrowserController;
 import com.leonarduk.web.SeleniumException;
 
 /**
@@ -24,7 +24,7 @@ import com.leonarduk.web.SeleniumException;
  * @version $Date: $: Date of last commit
  * @since 3 Feb 2015
  */
-public class SantanderLogin extends BaseSeleniumPage {
+public class SantanderLogin extends BasePage<SantanderLogin> {
 
 	/** The Constant PASSWORD_SUBMIT_XPATH. */
 	public static final String PASSWORD_SUBMIT_XPATH = "//*[@id=\"formAuthenticationAbbey\"]/div[2]/div[3]/span/input";
@@ -33,7 +33,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 
 	/** The Constant SIGN_POSITION_PREFIX. */
 	public static final String SIGN_POSITION_PREFIX = "signPosition";
-	//*[@id="signPosition1"]
+	// *[@id="signPosition1"]
 	/** The Constant ANSWER_SUBMIT_XPATH. */
 	public static final String ANSWER_SUBMIT_XPATH = "//*[@id=\"formCustomerID\"]/div/span[1]/input";
 
@@ -58,8 +58,7 @@ public class SantanderLogin extends BaseSeleniumPage {
 
 	/** The Constant SECURITY_ID_INDEX_PREFIX. */
 	private static final String SECURITY_ID_INDEX_PREFIX = "//*[@id=\"formAuthenticationAbbey\"]/div[2]/div[2]/div/span[2]/span/span[1]/label[";
-	public static final String PASSWORD_INDEX_XPATH = 
-			"//*[@id=\"formAuthenticationAbbey\"]/div[2]/div[1]/div/span[2]/span/span[1]/label[";
+	public static final String PASSWORD_INDEX_XPATH = "//*[@id=\"formAuthenticationAbbey\"]/div[2]/div[1]/div/span[2]/span/span[1]/label[";
 //	"//*[@id=\"formAuthenticationAbbey\"]/div[1]/div[1]/span[2]/span/span[1]/label[";
 
 	/** The customer number. */
@@ -83,13 +82,11 @@ public class SantanderLogin extends BaseSeleniumPage {
 	/**
 	 * Instantiates a new santander login.
 	 *
-	 * @param config
-	 *            the config
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @param config the config
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public SantanderLogin(final SantanderConfig config) throws IOException {
-		super(config.getWebDriver(), config.getSantanderAccountsUrl());
+		super(new SeleniumBrowserController(config.getWebDriver()), config.getSantanderAccountsUrl());
 		this.config = config;
 		this.loginUrl = this.config.getSantanderStartUrl();
 		this.customerId = this.config.getSantanderId();
@@ -107,20 +104,17 @@ public class SantanderLogin extends BaseSeleniumPage {
 	/**
 	 * Enter characters.
 	 *
-	 * @param signPositionPrefix
-	 *            the sign position prefix
-	 * @param prefix
-	 *            the prefix
-	 * @param keyword
-	 *            the keyword
+	 * @param signPositionPrefix the sign position prefix
+	 * @param prefix             the prefix
+	 * @param keyword            the keyword
+	 * @throws IOException 
 	 */
-	private void enterCharacters(final String signPositionPrefix, final String prefix,
-	        final String keyword) {
+	private void enterCharacters(final String signPositionPrefix, final String prefix, final String keyword) throws IOException {
 		final int lastDigit = 3;
-		final WebElement[] nodes = new WebElement[lastDigit];
+		final ClickableElement[] nodes = new ClickableElement[lastDigit];
 		for (int i = 1; i < (lastDigit + 1); i++) {
-			final WebElement node = this.getWebDriver() //*[@id="signPosition1"]
-			        .findElement(By.id(signPositionPrefix + i));//*[@id="formAuthenticationAbbey"]/div[2]/div[1]/div/span[2]/span/span[1]/label[1]/strong/b
+			final ClickableElement node = this // *[@id="signPosition1"]
+					.findElementById(signPositionPrefix + i);// *[@id="formAuthenticationAbbey"]/div[2]/div[1]/div/span[2]/span/span[1]/label[1]/strong/b
 			int index = (Integer.valueOf(node.getAttribute("tabindex"))).intValue() - 1;
 			if (index >= lastDigit) {
 				index -= lastDigit;
@@ -136,18 +130,15 @@ public class SantanderLogin extends BaseSeleniumPage {
 	/**
 	 * Gets the required character.
 	 *
-	 * @param index
-	 *            the index
-	 * @param webElement
-	 *            the web element
-	 * @param prefix
-	 *            the prefix
-	 * @param keyphrase
-	 *            the keyphrase
+	 * @param index      the index
+	 * @param webElement the web element
+	 * @param prefix     the prefix
+	 * @param keyphrase  the keyphrase
+	 * @throws IOException 
 	 */
 
-	private void enterCode(final int index, final WebElement webElement, final String prefix,
-	        final String keyphrase) {
+	private void enterCode(final int index, final ClickableElement webElement, final String prefix,
+			final String keyphrase) throws IOException {
 		final String xpath = prefix + (index) + "]";
 		final String text = this.findElementByXpath(xpath).getText();
 		final int value = this.keepNumberOnly(text);
@@ -159,16 +150,18 @@ public class SantanderLogin extends BaseSeleniumPage {
 
 	/**
 	 * Enter customer id.
+	 * @throws IOException 
 	 */
-	private void enterCustomerId() {
+	private void enterCustomerId() throws IOException {
 		this.enterValueIntoField(this.customerId, SantanderLogin.CUSTOMER_ID_XPATH);
 		this.clickField(SantanderLogin.CUSTOMER_ID_SUBMIT_XPATH);
 	}
 
 	/**
 	 * Enter password.
+	 * @throws IOException 
 	 */
-	private void enterPassword() {
+	private void enterPassword() throws IOException {
 		final String signPositionPrefix = SantanderLogin.SIGN_POSITION_PREFIX;
 		final String prefix = SantanderLogin.PASSWORD_INDEX_XPATH;
 		this.enterCharacters(signPositionPrefix, prefix, this.password);
@@ -176,8 +169,9 @@ public class SantanderLogin extends BaseSeleniumPage {
 
 	/**
 	 * Enter security number.
+	 * @throws IOException 
 	 */
-	private void enterSecurityNumber() {
+	private void enterSecurityNumber() throws IOException {
 		final String signPositionPrefix = SantanderLogin.SECURITY_ID_POSITION_PREFIX;
 		final String prefix = SantanderLogin.SECURITY_ID_INDEX_PREFIX;
 		this.enterCharacters(signPositionPrefix, prefix, this.securityNumber);
@@ -185,10 +179,10 @@ public class SantanderLogin extends BaseSeleniumPage {
 
 	/**
 	 * Filter question.
+	 * @throws IOException 
 	 */
-	private void filterQuestion() {
-		final List<WebElement> questopnList = this.getWebDriver()
-		        .findElements(By.xpath(SantanderLogin.QUESTION_XPATH));
+	private void filterQuestion() throws IOException {
+		final List<ClickableElement> questopnList = this.findElementsByXpath(SantanderLogin.QUESTION_XPATH);
 		if (questopnList.size() < 1) {
 			return;
 		}
@@ -225,29 +219,26 @@ public class SantanderLogin extends BaseSeleniumPage {
 	 * @see org.openqa.selenium.support.ui.LoadableComponent#load()
 	 */
 	@Override
-	protected final void load() {
-		this.getWebDriver().get(this.loginUrl);
+	protected final void load() throws IOException {
+		this.getBrowserController().get(this.loginUrl);
 		this.waitForPageToLoad();
 		this.enterCustomerId();
 		this.waitForPageToLoad();
 		try {
 			this.filterQuestion();
 			this.waitForPageToLoad();
-		}
-		catch (final NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			SantanderLogin.LOGGER.info("No filter screen. Ignore and try next page", e);
 		}
 		this.passwordPage();
 
 		try {
-			final WebElement popup = this
-			        .findElementByXpath("//*[@id=\"PopUp\"]/div/form/fieldset/div/span/a");
-			
+			final ClickableElement popup = this.findElementByXpath("//*[@id=\"PopUp\"]/div/form/fieldset/div/span/a");
+
 			if (null != popup) {
 				popup.click();
 			}
-		}
-		catch (final NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			SantanderLogin.LOGGER.info("No pop up screen. Ignore and try next page", e);
 		}
 		this.waitForPageToLoad();
@@ -255,8 +246,9 @@ public class SantanderLogin extends BaseSeleniumPage {
 
 	/**
 	 * Password page.
+	 * @throws IOException 
 	 */
-	private void passwordPage() {
+	private void passwordPage() throws IOException {
 		this.enterPassword();
 		this.enterSecurityNumber();
 		this.clickField(SantanderLogin.PASSWORD_SUBMIT_XPATH);

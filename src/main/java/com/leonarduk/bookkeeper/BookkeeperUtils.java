@@ -7,8 +7,8 @@
 package com.leonarduk.bookkeeper;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import com.leonarduk.bookkeeper.file.TransactionFileReader;
 import com.leonarduk.bookkeeper.file.TransactionFileWriter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 import com.leonarduk.bookkeeper.web.download.alliancetrust.AllianceTrust;
 import com.leonarduk.bookkeeper.web.download.alliancetrust.AllianceTrustConfig;
@@ -43,7 +44,7 @@ public class BookkeeperUtils {
 	private static final Logger LOGGER = Logger.getLogger(BookkeeperUtils.class);
 
 	public static TransactionWorker getZooplaValueInClearcheckbookTransactionWorker(final Config config,
-			final String ccbAccountName) throws Exception {
+			final String ccbAccountName, TransactionRecordFilter filter) throws Exception {
 		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
 		final ZooplaConfig zooplaConfig = new ZooplaConfig(config);
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(config2,
@@ -51,13 +52,13 @@ public class BookkeeperUtils {
 				final ZooplaEstimate zooplaEstimate = new ZooplaEstimate(zooplaConfig);
 				ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(zooplaEstimate, config2,
 						ccbAccountName);) {
-			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook);
+			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook, filter);
 			return worker;
 		}
 	}
 
 	public static List<TransactionRecord> updateLukValueInClearcheckbook(final Config config,
-			final String ccbAccountName) throws Exception {
+			final String ccbAccountName, TransactionRecordFilter filter) throws Exception {
 		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
 		final FreeAgentConfig zooplaConfig = new FreeAgentConfig(config);
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(config2,
@@ -65,13 +66,13 @@ public class BookkeeperUtils {
 				final FreeAgentLogin lukProfits = new FreeAgentLogin(zooplaConfig);
 				ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(lukProfits, config2,
 						ccbAccountName);) {
-			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook);
+			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook, filter);
 			return worker.call();
 		}
 	}
 
 	public static List<TransactionRecord> updateZooplaValueInClearcheckbook(final Config config,
-			final String ccbAccountName) throws Exception {
+			final String ccbAccountName, TransactionRecordFilter filter) throws Exception {
 		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
 		final ZooplaConfig zooplaConfig = new ZooplaConfig(config);
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(config2,
@@ -79,13 +80,14 @@ public class BookkeeperUtils {
 				final ZooplaEstimate zooplaEstimate = new ZooplaEstimate(zooplaConfig);
 				ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(zooplaEstimate, config2,
 						ccbAccountName);) {
-			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook);
+			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook, filter);
 			return worker.call();
 		}
 	}
 
 	public static List<TransactionRecord> uploadAllianceTrustTransactionsToClearCheckBook(final Config config,
-			final String ccbAccountName, final int accountId, final int accountIndex) throws Exception {
+			final String ccbAccountName, final int accountId, final int accountIndex, TransactionRecordFilter filter)
+			throws Exception {
 		final AllianceTrustConfig atConfig = new AllianceTrustConfig(config);
 		final ClearCheckbookConfig config2 = new ClearCheckbookConfig(config);
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(config2,
@@ -93,12 +95,13 @@ public class BookkeeperUtils {
 				final AllianceTrust allianceTrust = new AllianceTrust(atConfig, accountIndex, accountId);
 				ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(allianceTrust, config2,
 						ccbAccountName);) {
-			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook);
+			final TransactionWorker worker = new TransactionWorker(updater, clearCheckBook, filter);
 			return worker.call();
 		}
 	}
 
-	public static List<TransactionRecord> uploadAmexTransactionsToClearCheckBook(final Config config) throws Exception {
+	public static List<TransactionRecord> uploadAmexTransactionsToClearCheckBook(final Config config,
+			TransactionRecordFilter filter) throws Exception {
 		final ClearCheckbookConfig ccbConfig = new ClearCheckbookConfig(config);
 		final String ccbAccountName = config.getProperty("bookkeeper.web.clearcheckbook.amex");
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(ccbConfig,
@@ -107,23 +110,23 @@ public class BookkeeperUtils {
 				final ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(amexTransactions, ccbConfig,
 						ccbAccountName);) {
 			final List<TransactionRecord> importedTransactions = BookkeeperUtils
-					.uploadTransactionsFromSource(amexTransactions, clearCheckBook);
+					.uploadTransactionsFromSource(amexTransactions, clearCheckBook, filter);
 			final List<TransactionRecord> balancingTransaction = BookkeeperUtils.uploadTransactionsFromSource(updater,
-					clearCheckBook);
+					clearCheckBook, filter);
 			importedTransactions.addAll(balancingTransaction);
 			return importedTransactions;
 		}
 	}
 
 	public static List<TransactionRecord> uploadNationwideTransactionsToClearCheckBook(final Config config,
-			final int accountId, final String ccbAccountName) throws Exception {
+			final int accountId, final String ccbAccountName, TransactionRecordFilter filter) throws Exception {
 		ClearCheckbookConfig ccbConfig = new ClearCheckbookConfig(config);
 		final List<TransactionRecord> transactions = new ArrayList<>();
 		try (final ClearCheckbookTransactionUploader clearCheckBook = new ClearCheckbookTransactionUploader(ccbConfig,
 				ccbAccountName);
 				final NationwideAccount nationwide = new NationwideAccount(
 						new NationwideLogin(new NationwideConfig(config)), accountId);) {
-			final TransactionWorker worker = new TransactionWorker(nationwide, clearCheckBook);
+			final TransactionWorker worker = new TransactionWorker(nationwide, clearCheckBook, filter);
 			transactions.addAll(worker.call());
 		}
 
@@ -135,14 +138,15 @@ public class BookkeeperUtils {
 				final ClearCheckBookValueUpdater updater = new ClearCheckBookValueUpdater(nationwide, ccbConfig,
 						ccbAccountName);) {
 			final List<TransactionRecord> balancingTransaction = BookkeeperUtils.uploadTransactionsFromSource(updater,
-					clearCheckBook);
+					clearCheckBook, filter);
 			transactions.addAll(balancingTransaction);
 
 			return transactions;
 		}
 	}
 
-	public static List<TransactionRecord> uploadSantanderTransactionsToFreeAgent(final Config config) throws Exception {
+	public static List<TransactionRecord> uploadSantanderTransactionsToFreeAgent(final Config config,
+			TransactionRecordFilter filter) throws Exception {
 		try (final FreeAgentUploadTransactions freeAgent = new FreeAgentUploadTransactions(
 				new FreeAgentLogin(new FreeAgentConfig(config)));
 
@@ -152,20 +156,22 @@ public class BookkeeperUtils {
 			File createTempFile = File.createTempFile("santander", "csv");
 
 			LOGGER.info("Saving to " + createTempFile.getAbsolutePath());
-			
-			new TransactionFileWriter(createTempFile).writeTransactions(santanderTransactions.saveTransactions());
 
-			return BookkeeperUtils.uploadTransactionsFromSource(new TransactionFileReader(createTempFile), freeAgent);
+			new TransactionFileWriter().writeTransactions(santanderTransactions.saveTransactions(filter),
+					createTempFile, filter);
+
+			return BookkeeperUtils.uploadTransactionsFromSource(new TransactionFileReader(createTempFile), freeAgent,
+					filter);
 		}
 	}
 
 	public static List<TransactionRecord> uploadTransactionsFromSource(final TransactionDownloader downloader,
-			final TransactionUploader uploader) throws Exception {
+			final TransactionUploader uploader, TransactionRecordFilter filter) throws Exception {
 		try {
 			if (downloader instanceof BaseSeleniumPage) {
 				((BaseSeleniumPage) downloader).get();
 			}
-			List<TransactionRecord> transactions = downloader.saveTransactions();
+			List<TransactionRecord> transactions = downloader.saveTransactions(filter);
 			if (null == transactions) {
 				return new ArrayList<>();
 			}
@@ -174,13 +180,13 @@ public class BookkeeperUtils {
 				if (uploader instanceof BaseSeleniumPage) {
 					((BaseSeleniumPage) uploader).get();
 				}
-				transactions = uploader.writeTransactions(transactions);
+				transactions = uploader.writeTransactions(transactions, "", filter);
 			}
 			return transactions;
 		} catch (final Throwable e) {
 			BookkeeperUtils.LOGGER.error("Error uploading fetching or uploading", e);
 			final List<TransactionRecord> transactions = new ArrayList<>();
-			transactions.add(new TransactionRecord(0, "Error: " + e.getLocalizedMessage(), new Date(), "", ""));
+			transactions.add(new TransactionRecord(0, "Error: " + e.getLocalizedMessage(), LocalDate.now(), "", ""));
 			return transactions;
 		}
 	}

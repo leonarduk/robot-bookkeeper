@@ -17,6 +17,7 @@ import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.webscraper.core.FileUtils;
 
 public class SantanderDownloadTransactionsIT {
@@ -27,29 +28,28 @@ public class SantanderDownloadTransactionsIT {
 		final SantanderConfig config = new SantanderConfig(SitConfig.getSitConfig());
 
 		final SantanderLogin santanderLogin = new SantanderLogin(config);
-		final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(
-		        santanderLogin);
+		final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(santanderLogin);
 		santanderTransactions.get();
 		santanderTransactions.downloadLatestStatement();
 		final File[] listFiles = config.getDownloadDir().listFiles();
 		final File file = listFiles[0];
 		Assert.assertTrue(file.exists());
-		santanderLogin.getWebDriver().close();
+		santanderLogin.getBrowserController().close();
 	}
 
 	@Test
 	public void testDownloadTransactions() throws Exception {
 		final SantanderConfig config = new SantanderConfig(SitConfig.getSitConfig());
+		TransactionRecordFilter filter = (record) -> true;
 
 		final SantanderLogin santanderLogin = new SantanderLogin(config);
-		final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(
-		        santanderLogin);
+		final SantanderDownloadTransactions santanderTransactions = new SantanderDownloadTransactions(santanderLogin);
 		santanderTransactions.get();
-		final List<TransactionRecord> records = santanderTransactions.saveTransactions();
+		final List<TransactionRecord> records = santanderTransactions.saveTransactions(filter);
 		final FileFormatter formatter = new CsvFormatter();
 		final String outputFileName = "test.qif";
-		formatter.format(records, outputFileName);
+		formatter.format(records, outputFileName, filter);
 		System.out.println(FileUtils.getFileContents(outputFileName));
-		santanderLogin.getWebDriver().close();
+		santanderLogin.getBrowserController().close();
 	}
 }

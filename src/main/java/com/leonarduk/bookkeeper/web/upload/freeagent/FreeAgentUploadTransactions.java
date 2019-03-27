@@ -3,7 +3,6 @@
  */
 package com.leonarduk.bookkeeper.web.upload.freeagent;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -13,9 +12,10 @@ import org.openqa.selenium.WebElement;
 
 import com.leonarduk.bookkeeper.file.QifFileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.bookkeeper.web.upload.TransactionUploader;
+import com.leonarduk.web.BasePage;
 import com.leonarduk.web.BaseSeleniumPage;
-import com.leonarduk.webscraper.core.FileUtils;
 
 /**
  * The Class SantanderDownloadTransactions.
@@ -41,8 +41,7 @@ public class FreeAgentUploadTransactions extends BaseSeleniumPage implements Tra
 	/**
 	 * Instantiates a new santander download transactions.
 	 *
-	 * @param login
-	 *            the login
+	 * @param login the login
 	 */
 	public FreeAgentUploadTransactions(final FreeAgentLogin login) {
 		super(login.getWebDriver(), login.getExpectedUrl());
@@ -58,40 +57,25 @@ public class FreeAgentUploadTransactions extends BaseSeleniumPage implements Tra
 	protected final void load() {
 		this.loginPage.get();
 		try {
-			Thread.sleep(BaseSeleniumPage.ONE_SECOND_IN_MS);
-		}
-		catch (final InterruptedException e) {
+			Thread.sleep(BasePage.ONE_SECOND_IN_MS);
+		} catch (final InterruptedException e) {
 			FreeAgentUploadTransactions.LOGGER.info("Interrupted", e);
 		}
 	}
 
 	@Override
-	public final List<TransactionRecord> writeTransactions(
-	        final List<TransactionRecord> transactions) throws IOException {
-		final File folder = FileUtils.createTempDir();
-		folder.deleteOnExit();
-		final String outputFileName = folder.getAbsolutePath() + File.separator + "freeagent.csv";
-		FreeAgentUploadTransactions.getQifFileFormatter().format(transactions, outputFileName);
-		this.uploadTransactions(outputFileName);
+	public final List<TransactionRecord> writeTransactions(final List<TransactionRecord> transactions,
+			final String outputFileName, TransactionRecordFilter filter) throws IOException {
+		FreeAgentUploadTransactions.getQifFileFormatter().format(transactions, outputFileName, filter);
+		this.uploadTransactions(new FreeagentFile(outputFileName));
 		return transactions;
 	}
 
-	/**
-	 * Upload transactions.
-	 *
-	 * @param fileName
-	 *            the file name
-	 */
-	public final void uploadTransactions(final String fileName) {
-		this.clickField("//*[@id=\"primary_nav\"]/ul/li[6]/a");
+	public final void uploadTransactions(final FreeagentFile file) {
+		this.getWebDriver().get("https://leonarduk.freeagent.com/bank_accounts/2234/upload/new");
 		this.waitForPageToLoad();
-
-		this.clickField("//*[@id=\"title_actions\"]/ul/li[1]/a/span/em");
-		this.waitForPageToLoad();
-
-		final File file = new File(fileName);
 		final WebElement element = this.getWebDriver().findElement(By.name("upload[attachment]"));
-		element.sendKeys(file.getAbsolutePath());
+		element.sendKeys(file.getFreeagentFile().getAbsolutePath());
 		// *[@id="upload_statement_form"]/p[3]/input
 		this.waitForPageToLoad();
 		this.getWebDriver().findElement(By.name("commit")).click();

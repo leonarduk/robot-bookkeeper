@@ -7,14 +7,15 @@
 package com.leonarduk.bookkeeper.web.download.clearcheckbook;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.leonarduk.bookkeeper.ValueSnapshotProvider;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 import com.leonarduk.bookkeeper.web.upload.clearcheckbook.ClearCheckbookConfig;
 import com.leonarduk.clearcheckbook.ClearcheckbookException;
@@ -30,7 +31,7 @@ public class ClearCheckBookValueUpdater implements AutoCloseable, TransactionDow
 	private final String accountname;
 
 	public ClearCheckBookValueUpdater(final ValueSnapshotProvider valueSnapshotProvider,
-	        final ClearCheckbookConfig config, final String ccbAccountName) {
+			final ClearCheckbookConfig config, final String ccbAccountName) {
 		this.config = config;
 		this.valueSnapshotProvider = valueSnapshotProvider;
 		this.accountname = ccbAccountName;
@@ -42,7 +43,7 @@ public class ClearCheckBookValueUpdater implements AutoCloseable, TransactionDow
 	}
 
 	@Override
-	public List<TransactionRecord> saveTransactions() throws IOException {
+	public List<TransactionRecord> saveTransactions(TransactionRecordFilter filter) throws IOException {
 		final List<TransactionRecord> updates = new ArrayList<>();
 		try {
 			ClearCheckBookValueUpdater.LOGGER.info("downloadTransactions");
@@ -62,17 +63,15 @@ public class ClearCheckBookValueUpdater implements AutoCloseable, TransactionDow
 			// "Suspected error, ignoring move from " + ccbAmount + " to " + currentValue);
 			// return updates;
 			// }
-			ClearCheckBookValueUpdater.LOGGER
-			        .info("Updating value from " + ccbAmount + " to " + currentValue);
+			ClearCheckBookValueUpdater.LOGGER.info("Updating value from " + ccbAmount + " to " + currentValue);
 
-			final Date date2 = new Date();
-
-			updates.add(new TransactionRecord(amount, this.valueSnapshotProvider.getDescription(),
-			        date2, "", ""));
-		}
-		catch (final ClearcheckbookException e) {
-			updates.add(new TransactionRecord(0, e.getMessage(), new Date(), "error",
-			        e.getLocalizedMessage()));
+			TransactionRecord record = new TransactionRecord(amount, this.valueSnapshotProvider.getDescription(),
+					LocalDate.now(), "", "");
+			if (filter.include(record)) {
+				updates.add(record);
+			}
+		} catch (final ClearcheckbookException e) {
+			updates.add(new TransactionRecord(0, e.getMessage(), LocalDate.now(), "error", e.getLocalizedMessage()));
 		}
 		return updates;
 	}

@@ -8,9 +8,9 @@ package com.leonarduk.bookkeeper.file;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -25,7 +25,7 @@ public class TransactionRecord {
 	private final String description;
 
 	/** The date. */
-	private final Date date;
+	private final LocalDate date;
 
 	/** The check number. */
 	private final String checkNumber;
@@ -42,18 +42,11 @@ public class TransactionRecord {
 	 * @param checkNumber the check number
 	 * @param payee       the payee
 	 */
-	public TransactionRecord(final double amount, final String description, final Date date2, final String checkNumber,
-			final String payee) {
+	public TransactionRecord(final double amount, final String description, final LocalDate date2,
+			final String checkNumber, final String payee) {
 		this.amount = amount;
 		this.description = description;
-		final Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date2);
-		calendar.set(Calendar.HOUR_OF_DAY, 12);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		this.date = calendar.getTime();
-
+		this.date = date2;
 		this.checkNumber = checkNumber;
 		this.payee = payee;
 	}
@@ -127,7 +120,7 @@ public class TransactionRecord {
 	 *
 	 * @return the date
 	 */
-	public Date getDate() {
+	public LocalDate getDate() {
 		return this.date;
 	}
 
@@ -169,8 +162,8 @@ public class TransactionRecord {
 				+ ", checkNumber=" + this.checkNumber + ", payee=" + this.payee + "]";
 	}
 
-	public String toDataString(String delimiter, DateFormat dateformat) {
-		return this.amount + delimiter + this.description + delimiter + dateformat.format(this.date) + delimiter
+	public String toDataString(String delimiter, DateTimeFormatter dateformat) {
+		return this.amount + delimiter + this.description + delimiter + this.date.format(dateformat) + delimiter
 				+ this.checkNumber + delimiter + this.payee;
 
 	}
@@ -183,7 +176,7 @@ public class TransactionRecord {
 	public static TransactionRecord fromString(String dataString, String delimiter, DateFormat dateformat)
 			throws NumberFormatException, ParseException {
 		Iterator<String> fields = Arrays.asList(dataString.split(delimiter)).iterator();
-		return new TransactionRecord(Double.parseDouble(fields.next()), fields.next(), dateformat.parse(fields.next()),
+		return new TransactionRecord(Double.parseDouble(fields.next()), fields.next(), DateUtils.parse(fields.next()),
 				fields.next(), fields.next());
 	}
 }

@@ -10,10 +10,11 @@ import java.io.IOException;
 import java.util.List;
 
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 
 public interface TransactionDownloader {
 
-	List<TransactionRecord> saveTransactions() throws IOException;
+	List<TransactionRecord> saveTransactions(TransactionRecordFilter filter) throws IOException;
 
 	String downloadTransactionsFile() throws IOException;
 

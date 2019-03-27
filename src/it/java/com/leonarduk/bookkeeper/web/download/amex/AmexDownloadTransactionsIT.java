@@ -14,6 +14,7 @@ import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.bookkeeper.file.CsvFormatter;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.webscraper.core.FileUtils;
 
 public class AmexDownloadTransactionsIT {
@@ -22,11 +23,11 @@ public class AmexDownloadTransactionsIT {
 	public final void testDownloadTransactions() throws Exception {
 		final AmexConfig config = new AmexConfig(SitConfig.getSitConfig());
 		final AmexDownloadTransactions transactions = new AmexDownloadTransactions(config);
-
-		final List<TransactionRecord> records = transactions.saveTransactions();
+		TransactionRecordFilter filter = (record) -> true;
+		final List<TransactionRecord> records = transactions.saveTransactions(filter);
 		final FileFormatter formatter = new CsvFormatter();
 		final String outputFileName = "test.qif";
-		formatter.format(records, outputFileName);
+		formatter.format(records, outputFileName, filter);
 		System.out.println(FileUtils.getFileContents(outputFileName));
 		config.getWebDriver().close();
 	}

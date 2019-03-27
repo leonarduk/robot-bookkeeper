@@ -7,11 +7,9 @@
 package com.leonarduk.bookkeeper.file;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 
 import org.apache.http.ParseException;
 
@@ -31,13 +29,16 @@ public class DateUtils {
 	 * @since 11/06/2016
 	 */
 	@SuppressWarnings("unused")
-	public static Date stringToDate(final String text) {
+	public static LocalDate parse(String text) {
 		StringBuilder pattern = null;
 
 		if ((null == text) || text.equals("")) {
 			return null;
 		}
 
+		if(text.startsWith("D")) {
+			text = text.replaceFirst("D", "");
+		}
 		final String yyyy = "yyyy";
 		final String dd = "dd";
 		final String mm = "MM";
@@ -47,8 +48,7 @@ public class DateUtils {
 				// 20101229
 				pattern = new StringBuilder().append(yyyy).append(mm).append(dd);
 				final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern.toString());
-				final LocalDate localDate = LocalDate.parse(text, formatter);
-				return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+				return LocalDate.parse(text, formatter);
 			}
 			catch (final DateTimeParseException e) {
 				// Try other.
@@ -57,8 +57,7 @@ public class DateUtils {
 				// 13122010
 				pattern = new StringBuilder().append(dd).append(mm).append(yyyy);
 				final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern.toString());
-				final LocalDate localDate = LocalDate.parse(text, formatter);
-				return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+				return LocalDate.parse(text, formatter);
 			}
 			catch (final DateTimeParseException e) {
 				throw new ParseException("Failed to parse date:" + text + e.getLocalizedMessage());
@@ -73,9 +72,7 @@ public class DateUtils {
 						        .append(separator).append(yyyy);
 						final DateTimeFormatter formatter = DateTimeFormatter
 						        .ofPattern(pattern.toString());
-						final LocalDate localDate = LocalDate.parse(text, formatter);
-						return Date
-						        .from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+						return LocalDate.parse(text, formatter);
 					}
 					catch (final DateTimeParseException e) {
 						// ignore
@@ -86,9 +83,7 @@ public class DateUtils {
 						        .append(separator).append(dd);
 						final DateTimeFormatter formatter = DateTimeFormatter
 						        .ofPattern(pattern.toString());
-						final LocalDate localDate = LocalDate.parse(text, formatter);
-						return Date
-						        .from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+						return LocalDate.parse(text, formatter);
 					}
 					catch (final DateTimeParseException e) {
 						// ignore
@@ -106,8 +101,7 @@ public class DateUtils {
 				dateText = dateText.substring(4, dateText.indexOf("(")).trim();
 
 				final DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
-				final ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateText, formatter);
-				return Date.from(zonedDateTime.toInstant());
+				return ZonedDateTime.parse(dateText, formatter).toLocalDate();
 			}
 			else if (dateText.substring(0, 1).matches("[a-zA-Z]")) {
 				dateText = dateText.substring(4, dateText.length()).trim();
@@ -115,16 +109,15 @@ public class DateUtils {
 				// TRIM TO
 				// 18 Jan 2015 23:40:56 +0000
 				final DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
-				final ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateText, formatter);
-				return Date.from(zonedDateTime.toInstant());
+				return ZonedDateTime.parse(dateText, formatter).toLocalDate();
 			}
 			else {
 				// 30 Jan 2015 23:37:13 GMT
 				final DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
-				final LocalDate localDate = LocalDate.parse(dateText, formatter);
-				return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+				LocalDate.parse(dateText, formatter);
 			}
 		}
+		return null;
 	}
 
 }

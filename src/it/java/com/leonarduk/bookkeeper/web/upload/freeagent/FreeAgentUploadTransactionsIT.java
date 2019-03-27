@@ -19,6 +19,7 @@ import com.leonarduk.bookkeeper.file.DateUtils;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 
 public class FreeAgentUploadTransactionsIT {
 
@@ -28,7 +29,7 @@ public class FreeAgentUploadTransactionsIT {
 	@Before
 	public void setUp() throws Exception {
 		this.transactions = new FreeAgentUploadTransactions(
-		        new FreeAgentLogin(new FreeAgentConfig(SitConfig.getSitConfig())));
+				new FreeAgentLogin(new FreeAgentConfig(SitConfig.getSitConfig())));
 		this.transactions.get();
 	}
 
@@ -41,14 +42,15 @@ public class FreeAgentUploadTransactionsIT {
 	public final void testUploadTransactions() throws IOException {
 		final FileFormatter formatter = new QifFileFormatter(QifFileFormatter.FREEAGENT_FORMAT);
 		final List<TransactionRecord> transactionRecords = new ArrayList<>();
-		transactionRecords.add(new TransactionRecord(-12.23, "Payment",
-		        DateUtils.stringToDate("2016/06/23"), "1", "Payee"));
-		transactionRecords.add(new TransactionRecord(2.23, "Receipt",
-		        DateUtils.stringToDate("2016/06/26"), "2", "Payee2"));
+		transactionRecords
+				.add(new TransactionRecord(-12.23, "Payment", DateUtils.parse("2016/06/23"), "1", "Payee"));
+		transactionRecords
+				.add(new TransactionRecord(2.23, "Receipt", DateUtils.parse("2016/06/26"), "2", "Payee2"));
 		final String outputFileName = "output.csv";
-		formatter.format(transactionRecords, outputFileName);
+		TransactionRecordFilter filter = (record) -> true; 
+		formatter.format(transactionRecords, outputFileName, filter);
 
-		this.transactions.uploadTransactions(outputFileName);
+		this.transactions.uploadTransactions(new FreeagentFile(outputFileName));
 	}
 
 }

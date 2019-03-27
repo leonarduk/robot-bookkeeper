@@ -23,7 +23,7 @@ public class TransactionFileReader implements TransactionDownloader {
 	}
 
 	@Override
-	public List<TransactionRecord> saveTransactions() throws IOException {
+	public List<TransactionRecord> saveTransactions(TransactionRecordFilter filter) throws IOException {
 		List<TransactionRecord> transactions = Lists.newArrayList();
 		ListIterator<String> lineIter = Files.readLines(file, Charset.defaultCharset()).listIterator();
 		if (lineIter.hasNext()) {
@@ -31,7 +31,10 @@ public class TransactionFileReader implements TransactionDownloader {
 
 			while (lineIter.hasNext()) {
 				try {
-					transactions.add(TransactionRecord.fromString(lineIter.next(), ",", dateformat));
+					TransactionRecord record = TransactionRecord.fromString(lineIter.next(), ",", dateformat);
+					if (filter.include(record)) {
+						transactions.add(record);
+					}
 				} catch (NumberFormatException | ParseException e) {
 					throw new IOException(e);
 				}

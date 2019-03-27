@@ -10,10 +10,8 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,12 +22,11 @@ public class NationwideCsvFileParser implements FileParser {
 	}
 
 	@Override
-	public List<TransactionRecord> parse(final String fileName) throws IOException {
-		final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
+	public List<TransactionRecord> parse(final String fileName, TransactionRecordFilter filter) throws IOException {
 		// Open the file
 		final List<TransactionRecord> records = new ArrayList<>();
 		try (FileInputStream fstream = new FileInputStream(fileName);
-		        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(fstream));) {
 
 			final int headerRows = 5;
 			// Skip header
@@ -56,16 +53,16 @@ public class NationwideCsvFileParser implements FileParser {
 				final double amount = amountIn - amountOut;
 				final String description = fields[1] + " " + fields[2];
 				final String dateString = fields[0];
-				final Date date = dateFormatter.parse(dateString);
+				final LocalDate date = DateUtils.parse(dateString);
 				final String checkNumber = fields[5].replace("£", "");
 				final String payee = fields[2];
-				records.add(new TransactionRecord(amount, description, date, checkNumber, payee));
+				TransactionRecord record = new TransactionRecord(amount, description, date, checkNumber, payee);
+				if (filter.include(record)) {
+					records.add(record);
+				}
 			}
 
 			return records;
-		}
-		catch (final ParseException e) {
-			throw new IOException("Failed to parse date", e);
 		}
 	}
 

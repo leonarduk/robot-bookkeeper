@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Before;
@@ -30,14 +30,13 @@ public class TransactionFileReaderTest {
 	public void testSaveTransactions() throws IOException, ParseException {
 		String records = "amount,description,date,checkNumber,payee\n"
 				+ "12.12,description,2019-02-02,checkNumber,payee\n" + "34.21,description,2019-02-02,checkNumber,payee";
-
+		TransactionRecordFilter filter = (record) -> true;
 		FileUtils.writeStringToFile(tempFile.getAbsolutePath(), records);
-		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 		List<TransactionRecord> expected = ImmutableList.of(
-				new TransactionRecord(12.12, "description", dateformat.parse("2019-02-02"), "checkNumber", "payee"),
-				new TransactionRecord(34.21, "description", dateformat.parse("2019-02-02"), "checkNumber", "payee"));
+				new TransactionRecord(12.12, "description", DateUtils.parse("2019-02-02"), "checkNumber", "payee"),
+				new TransactionRecord(34.21, "description", DateUtils.parse("2019-02-02"), "checkNumber", "payee"));
 
-		List<TransactionRecord> actual = this.reader.saveTransactions();
+		List<TransactionRecord> actual = this.reader.saveTransactions(filter);
 		assertEquals(expected, actual);
 	}
 

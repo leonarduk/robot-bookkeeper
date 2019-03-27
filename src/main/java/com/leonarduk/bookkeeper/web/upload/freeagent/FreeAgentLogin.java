@@ -94,10 +94,22 @@ public class FreeAgentLogin extends BaseSeleniumPage implements ValueSnapshotPro
 			}
 		}
 		catch (final NoSuchElementException e) {
-			FreeAgentLogin.LOGGER.info("No pop up screen. Ignore and try next page", e);
+			FreeAgentLogin.LOGGER.info("No pop up screen. Ignore and try next page");
+		}
+		try {
+			final WebElement popup = this
+			        .findElementByXpath("/html/body/div[2]/div/div/div/div[2]/button");
+			if (null != popup) {
+				popup.click();
+			}
+		}
+		catch (final NoSuchElementException e) {
+			FreeAgentLogin.LOGGER.info("No pop up screen. Ignore and try next page");
 		}
 
 		this.waitForPageToLoad();
+		
+		
 	}
 
 }

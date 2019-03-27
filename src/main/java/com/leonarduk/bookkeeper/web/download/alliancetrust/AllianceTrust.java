@@ -23,16 +23,6 @@ public class AllianceTrust extends BaseSeleniumPage implements ValueSnapshotProv
 	private final int					accountIndex;
 	private final int					accountNumber;
 
-	/**
-	 * Instantiates a new alliance trust.
-	 *
-	 * @param config
-	 *            the config
-	 * @param accountIndex
-	 * @param accountNumber
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
 	public AllianceTrust(final AllianceTrustConfig config, final int accountIndex,
 	        final int accountNumber) throws IOException {
 		super(config.getWebDriver(), config.getCustomerListViewUrl());

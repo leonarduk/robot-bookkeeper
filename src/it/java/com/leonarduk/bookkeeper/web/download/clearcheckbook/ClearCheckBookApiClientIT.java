@@ -7,8 +7,8 @@
 package com.leonarduk.bookkeeper.web.download.clearcheckbook;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.After;
@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import com.leonarduk.bookkeeper.email.SitConfig;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.bookkeeper.web.upload.clearcheckbook.ClearCheckbookConfig;
 import com.leonarduk.clearcheckbook.ClearcheckbookException;
 import com.leonarduk.clearcheckbook.dto.AccountDataType;
@@ -26,17 +27,15 @@ import com.leonarduk.webscraper.core.config.Config;
 
 public class ClearCheckBookApiClientIT {
 
-	private ClearCheckBookApiClient	client;
-	private ClearCheckbookConfig	ccbConfig;
-	private Config					config;
-	private String					accountName;
-	private double					initialBalance;
+	private ClearCheckBookApiClient client;
+	private ClearCheckbookConfig ccbConfig;
+	private Config config;
+	private String accountName;
+	private double initialBalance;
 
 	public TransactionRecord createTestRecord() {
-		final Date date2 = new Date();
-
-		final TransactionRecord record = new TransactionRecord(12.34, "test payment", date2, "123",
-		        "test payee");
+		final LocalDate date2 = LocalDate.now();
+		final TransactionRecord record = new TransactionRecord(12.34, "test payment", date2, "123", "test payee");
 		return record;
 	}
 
@@ -53,8 +52,7 @@ public class ClearCheckBookApiClientIT {
 		this.client = new ClearCheckBookApiClient(this.ccbConfig);
 		this.accountName = "TestAccount" + Math.random();
 		this.initialBalance = 100.23;
-		this.client.createAccount(this.accountName, AccountDataType.Type.CHECKING,
-		        this.initialBalance);
+		this.client.createAccount(this.accountName, AccountDataType.Type.CHECKING, this.initialBalance);
 	}
 
 	@After
@@ -66,16 +64,14 @@ public class ClearCheckBookApiClientIT {
 	public final void testConvertToTransactionDataType() throws ClearcheckbookException {
 		final double amount = 12.45;
 		final String description = "test income";
-		final Date date2 = new Date();
+		final LocalDate date2 = LocalDate.now();
 		final String checkNumber = "123";
 		final String payee = "test payee";
-		final TransactionRecord record = new TransactionRecord(amount, description, date2,
-		        checkNumber, payee);
+		final TransactionRecord record = new TransactionRecord(amount, description, date2, checkNumber, payee);
 
 		final AccountDataType account = this.client
-		        .getAccount(this.config.getProperty("bookkeeper.web.clearcheckbook.amex"));
-		final TransactionDataType actual = this.client.convertToTransactionDataType(record,
-		        account);
+				.getAccount(this.config.getProperty("bookkeeper.web.clearcheckbook.amex"));
+		final TransactionDataType actual = this.client.convertToTransactionDataType(record, account);
 		Assert.assertEquals(Double.valueOf(amount), actual.getAmount());
 	}
 
@@ -95,7 +91,7 @@ public class ClearCheckBookApiClientIT {
 	@Test
 	public void testGetTransactionRecordsForAccount() throws Exception {
 		final List<TransactionRecord> records = this.client
-		        .getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 100);
+				.getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 100);
 		System.out.println(records);
 		Assert.assertEquals(1, records.size());
 
@@ -110,35 +106,31 @@ public class ClearCheckBookApiClientIT {
 
 	@Test
 	public final void testInsertRecordsDuplicates() throws ClearcheckbookException, ParseException {
+		TransactionRecordFilter filter = (record) -> true;
 		final List<TransactionRecord> records = new ArrayList<>();
 		final TransactionRecord record = this.createTestRecord();
 		records.add(record);
 		records.add(record);
 
-		final List<TransactionRecord> ids = this.client.insertRecords(records, this.accountName,
-		        100);
+		final List<TransactionRecord> ids = this.client.insertRecords(records, this.accountName, 100, filter);
 		Assert.assertEquals(1, ids.size());
-		System.out.println(this.client
-		        .getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 10));
-		final List<TransactionRecord> ids2 = this.client.insertRecords(records, this.accountName,
-		        100);
-		System.out.println(this.client
-		        .getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 10));
+		System.out.println(this.client.getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 10));
+		final List<TransactionRecord> ids2 = this.client.insertRecords(records, this.accountName, 100, filter);
+		System.out.println(this.client.getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 10));
 		System.out.println(record);
 		Assert.assertEquals(0, ids2.size());
 	}
 
 	@Test
-	public final void testInsertRecordsNoDuplicates()
-	        throws ClearcheckbookException, ParseException {
+	public final void testInsertRecordsNoDuplicates() throws ClearcheckbookException, ParseException {
+		TransactionRecordFilter filter = (record) -> true;
 		final List<TransactionRecord> records = new ArrayList<>();
-		records.add(new TransactionRecord(12.34, "test deposit", new Date(),
-		        String.valueOf(Math.round(Math.random() * 100000000)), "test payer"));
-		records.add(new TransactionRecord(-12.34, "test payment", new Date(),
-		        String.valueOf(Math.round(Math.random() * 100000000)), "test payee"));
+		records.add(new TransactionRecord(12.34, "test deposit", LocalDate.now(),
+				String.valueOf(Math.round(Math.random() * 100000000)), "test payer"));
+		records.add(new TransactionRecord(-12.34, "test payment", LocalDate.now(),
+				String.valueOf(Math.round(Math.random() * 100000000)), "test payee"));
 
-		final List<TransactionRecord> ids = this.client.insertRecords(records, this.accountName,
-		        100);
+		final List<TransactionRecord> ids = this.client.insertRecords(records, this.accountName, 100, filter);
 		Assert.assertEquals(records.size(), ids.size());
 
 	}
@@ -146,17 +138,16 @@ public class ClearCheckBookApiClientIT {
 	@Test
 	public final void testInsertRecordWithCompare() throws ClearcheckbookException, ParseException {
 		final List<TransactionRecord> records = this.client
-		        .getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 10);
+				.getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 10);
 
 		final TransactionRecord record = this.createTestRecord();
 		final String id = this.client.insertRecord(record, this.accountName);
 		Assert.assertNotNull(id);
 		final List<TransactionRecord> records2 = this.client
-		        .getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 10);
+				.getTransactionRecordsForAccount(this.client.getAccount(this.accountName), 10);
 		System.out.println("was " + records);
 		System.out.println("now " + records2);
-		Assert.assertTrue("Was " + records.size() + " now " + records2.size(),
-		        records2.size() == (records.size() + 1));
+		Assert.assertTrue("Was " + records.size() + " now " + records2.size(), records2.size() == (records.size() + 1));
 		System.out.println(records2);
 		Assert.assertTrue("Cant find " + record + " in " + records2, records2.contains(record));
 

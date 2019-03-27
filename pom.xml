@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.leonarduk</groupId>
 	<artifactId>robotbookkeeper</artifactId>
-	<version>1.6</version>
+	<version>1.7</version>
 	<name>Robot Bookkeeper</name>
 	<description>Robot Bookkeeper</description>
 	<url>http://leonarduk.com/maven2</url>
@@ -12,7 +12,7 @@
 		<log4j.version>1.2.17</log4j.version>
 		<junit.version>4.13-beta-2</junit.version>
 		<java.version>11</java.version>
-		<webscraper-core.version>1.0.22</webscraper-core.version>
+		<webscraper-core.version>1.0.23</webscraper-core.version>
 		<clearcheckbookapi-core.version>1.4</clearcheckbookapi-core.version>
 		<jacoco.version>0.8.3</jacoco.version>
 		<versions-maven-plugin.version>2.7</versions-maven-plugin.version>

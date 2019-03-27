@@ -17,6 +17,7 @@ import com.leonarduk.bookkeeper.ValueSnapshotProvider;
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.StringConversionUtils;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.bookkeeper.web.download.StatementDownloader;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
 import com.leonarduk.web.BaseSeleniumPage;
@@ -62,11 +63,11 @@ public class AmexDownloadTransactions implements TransactionDownloader, Statemen
 	}
 
 	@Override
-	public List<TransactionRecord> saveTransactions() throws IOException {
+	public List<TransactionRecord> saveTransactions(TransactionRecordFilter filter) throws IOException {
 		final QifFileParser parser = new QifFileParser();
 		final String fileName = this.downloadTransactionsFile();
 		BaseSeleniumPage.waitForPageToLoad(this.config.getWebDriver());
-		return parser.parse(fileName);
+		return parser.parse(fileName, filter);
 	}
 
 	/**

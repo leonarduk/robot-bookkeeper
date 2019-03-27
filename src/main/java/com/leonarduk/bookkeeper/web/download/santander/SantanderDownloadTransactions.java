@@ -12,9 +12,10 @@ import org.apache.log4j.Logger;
 
 import com.leonarduk.bookkeeper.file.QifFileParser;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.bookkeeper.web.download.StatementDownloader;
 import com.leonarduk.bookkeeper.web.download.TransactionDownloader;
-import com.leonarduk.web.BaseSeleniumPage;
+import com.leonarduk.web.BasePage;
 
 /**
  * The Class SantanderDownloadTransactions.
@@ -25,8 +26,8 @@ import com.leonarduk.web.BaseSeleniumPage;
  * @version $Date: $: Date of last commit
  * @since 6 Feb 2015
  */
-public class SantanderDownloadTransactions extends BaseSeleniumPage
-        implements TransactionDownloader, StatementDownloader {
+public class SantanderDownloadTransactions extends BasePage<SantanderDownloadTransactions>
+		implements TransactionDownloader, StatementDownloader {
 
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = Logger.getLogger(SantanderDownloadTransactions.class);
@@ -37,26 +38,24 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage
 	/**
 	 * Instantiates a new santander download transactions.
 	 *
-	 * @param login
-	 *            the login
+	 * @param login the login
 	 */
 	public SantanderDownloadTransactions(final SantanderLogin login) {
-		super(login.getWebDriver(), login.getExpectedUrl());
+		super(login.getBrowserController(), login.getExpectedUrl());
 		this.loginPage = login;
 	}
 
 	/**
 	 * Click e documents.
+	 * 
+	 * @throws IOException
 	 */
-	private void clickEDocuments() {
+	private void clickEDocuments() throws IOException {
 		this.findElementByXpath(MyAccountsMenu.EDocuments.url()).click();
 	}
 
-	/**
-	 * Download latest statement.
-	 */
 	@Override
-	public final void downloadLatestStatement() {
+	public final void downloadLatestStatement() throws IOException {
 		this.isLoaded();
 		this.clickEDocuments();
 		this.waitForPageToLoad();
@@ -64,35 +63,24 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage
 		this.waitForPageToLoad();
 	}
 
-	/**
-	 * Download statement.
-	 *
-	 * @param index
-	 *            the index
-	 */
-	private void downloadStatement(final int index) {
-		this.getWebDriver().switchTo().frame(0);
+	private void downloadStatement(final int index) throws IOException {
+		this.selectFrame(0);
 		this.findElementByXpath("//*[@id=\"" + index + "\"]").click();
 	}
 
 	@Override
-	public final List<TransactionRecord> saveTransactions() throws IOException {
+	public final List<TransactionRecord> saveTransactions(TransactionRecordFilter filter) throws IOException {
 		this.isLoaded();
 		final QifFileParser parser = new QifFileParser();
 		final String fileName = this.downloadTransactionsFile();
 		if (fileName == null) {
 			return new ArrayList<>();
 		}
-		return parser.parse(fileName);
+		return parser.parse(fileName, filter);
 	}
 
-	/**
-	 * Download transactions.
-	 *
-	 * @return the string
-	 */
 	@Override
-	public final String downloadTransactionsFile() {
+	public final String downloadTransactionsFile() throws IOException {
 		// select transactions
 		final String xpath = "//*[@id=\"submenu\"]/ul/li[2]/a";
 		this.findElementByXpath(xpath).click();
@@ -105,8 +93,7 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage
 		// select 1 - XLS ; 2 - QIF ; 3 - QIF ; 4 - PDF ; 5 - TXT
 		this.findElementByXpath("//*[@id=\"sel_downloadto\"]/option[2]").click();
 		// click Download
-		this.findElementByXpath(
-		        "//*[@id=\"content\"]/div[2]/div/form/fieldset/div[2]/span[1]/input").click();
+		this.findElementByXpath("//*[@id=\"content\"]/div[2]/div/form/fieldset/div[2]/span[1]/input").click();
 		this.waitForPageToLoad();
 
 		String file = null;
@@ -119,19 +106,13 @@ public class SantanderDownloadTransactions extends BaseSeleniumPage
 		return file;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.openqa.selenium.support.ui.LoadableComponent#load()
-	 */
 	@Override
-	protected final void load() {
+	protected void load() throws IOException {
 		this.loginPage.get();
 		try {
-			Thread.sleep(BaseSeleniumPage.ONE_SECOND_IN_MS);
-		}
-		catch (final InterruptedException e) {
-			SantanderDownloadTransactions.LOGGER.info("Interrupted", e);
+			Thread.sleep(BasePage.ONE_SECOND_IN_MS);
+		} catch (final InterruptedException e) {
+			LOGGER.info("Interrupted", e);
 		}
 	}
 

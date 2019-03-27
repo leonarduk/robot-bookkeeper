@@ -6,8 +6,10 @@
  */
 package com.leonarduk.bookkeeper.web.download;
 
+import java.io.IOException;
+
 public interface StatementDownloader {
 
-	void downloadLatestStatement();
+	void downloadLatestStatement() throws IOException;
 
 }

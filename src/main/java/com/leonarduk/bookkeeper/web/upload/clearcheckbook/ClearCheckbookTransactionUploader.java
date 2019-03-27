@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.leonarduk.bookkeeper.file.QifFileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.bookkeeper.web.download.clearcheckbook.ClearCheckBookApiClient;
 import com.leonarduk.bookkeeper.web.upload.TransactionUploader;
 import com.leonarduk.clearcheckbook.ClearcheckbookException;
@@ -44,10 +45,9 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	static final By IMPORT_PAGE = By.linkText("Import Transactions");
 
 	/** The Constant TOOLS_PAGE. */
-	static final By				TOOLS_PAGE	= By.linkText("Tools");
+	static final By TOOLS_PAGE = By.linkText("Tools");
 	/** The Constant LOGGER. */
-	private final static Logger	LOGGER		= Logger
-	        .getLogger(ClearCheckbookTransactionUploader.class);
+	private final static Logger LOGGER = Logger.getLogger(ClearCheckbookTransactionUploader.class);
 
 	/** The config. */
 	private final ClearCheckbookConfig config;
@@ -58,15 +58,7 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	/** The login. */
 	private final ClearCheckBookLogin login;
 
-	/**
-	 * Instantiates a new clear checkbook transaction uploader.
-	 *
-	 * @param config
-	 *            the config
-	 * @param account
-	 */
-	public ClearCheckbookTransactionUploader(final ClearCheckbookConfig config,
-	        final String account) {
+	public ClearCheckbookTransactionUploader(final ClearCheckbookConfig config, final String account) {
 		this.config = config;
 		this.login = new ClearCheckBookLogin(config);
 		this.account = account;
@@ -75,10 +67,8 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	/**
 	 * Choose file to upload.
 	 *
-	 * @param fileToUpload
-	 *            the file to upload
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @param fileToUpload the file to upload
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void chooseFileToUpload(final String fileToUpload) throws IOException {
 		final WebDriver driver = this.config.getWebDriver();
@@ -99,26 +89,21 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	public void close() throws Exception {
 		try {
 			this.config.getWebDriver().close();
-		}
-		catch (final Throwable r) {
+		} catch (final Throwable r) {
 		}
 	}
 
 	/**
 	 * General settings.
 	 *
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void generalSettings() throws IOException {
 		try {
-			new Select(this.config.getWebDriver()
-			        .findElement(ClearCheckbookTransactionUploader.IMPORT_TO_ACCOUNT_LINK))
-			                .selectByVisibleText(this.account);
-		}
-		catch (final NoSuchElementException e) {
-			ClearCheckbookTransactionUploader.LOGGER.error("Failed to find element in amexSettings",
-			        e);
+			new Select(this.config.getWebDriver().findElement(ClearCheckbookTransactionUploader.IMPORT_TO_ACCOUNT_LINK))
+					.selectByVisibleText(this.account);
+		} catch (final NoSuchElementException e) {
+			ClearCheckbookTransactionUploader.LOGGER.error("Failed to find element in amexSettings", e);
 			throw e;
 		}
 	}
@@ -135,11 +120,9 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	/**
 	 * Import transactions.
 	 *
-	 * @param removeDuplicates
-	 *            the remove duplicates
+	 * @param removeDuplicates the remove duplicates
 	 * @return the string
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private String importTransactions(final boolean removeDuplicates) throws IOException {
 		final WebDriver driver = this.config.getWebDriver();
@@ -155,8 +138,7 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 
 		if (driver.findElements(By.id("jive")).size() > 0) {
 			driver.findElement(By.id("jive")).click();
-			final String results = driver.findElement(By.xpath("//*[@id=\"importTransactions\"]"))
-			        .getText();
+			final String results = driver.findElement(By.xpath("//*[@id=\"importTransactions\"]")).getText();
 			driver.findElement(By.name("submit[all]")).click();
 			return results;
 		}
@@ -166,13 +148,12 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	/**
 	 * Removes the duplicates by page.
 	 *
-	 * @param driver
-	 *            the driver
+	 * @param driver the driver
 	 */
 	private void removeDuplicatesByPage(final WebDriver driver) {
 		final String numberOfDupsXpath = "/html/body/div[2]/h3";
-		Integer duplicates = Integer.valueOf(driver.findElement(By.xpath(numberOfDupsXpath))
-		        .getText().replace(" Duplicates Found", "").replace(" Duplicate Found", ""));
+		Integer duplicates = Integer.valueOf(driver.findElement(By.xpath(numberOfDupsXpath)).getText()
+				.replace(" Duplicates Found", "").replace(" Duplicate Found", ""));
 
 		while (duplicates.intValue() > 0) {
 			driver.findElement(By.id("selectAllCheckbox")).click();
@@ -181,18 +162,16 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 			driver.findElement(By.xpath(updateFilterXpath)).click();
 
 			duplicates = Integer.valueOf(driver.findElement(By.xpath(numberOfDupsXpath)).getText()
-			        .replace(" Duplicates Found", "").replace(" Duplicate Found", ""));
+					.replace(" Duplicates Found", "").replace(" Duplicate Found", ""));
 		}
 	}
 
 	/**
 	 * Upload to clear checkbook.
 	 *
-	 * @param fileToUpload
-	 *            the file to upload
+	 * @param fileToUpload the file to upload
 	 * @return the string
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public String uploadToClearCheckbook(final String fileToUpload) throws IOException {
 		this.login.login();
@@ -206,26 +185,25 @@ public class ClearCheckbookTransactionUploader implements AutoCloseable, Transac
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * com.leonarduk.bookkeeper.web.upload.TransactionUploader#uploadTransactions(java.util.List)
+	 * com.leonarduk.bookkeeper.web.upload.TransactionUploader#uploadTransactions(
+	 * java.util.List)
 	 */
 	@Override
-	public List<TransactionRecord> writeTransactions(final List<TransactionRecord> transactions)
-	        throws IOException {
+	public List<TransactionRecord> writeTransactions(final List<TransactionRecord> transactions, final String fileName,
+			TransactionRecordFilter filter) throws IOException {
 		try {
-			return this.uploadViaApi(transactions);
-		}
-		catch (final ParseException e) {
+			return this.uploadViaApi(transactions, filter);
+		} catch (final ParseException e) {
 			throw new IOException(e);
 		}
 	}
 
-	public List<TransactionRecord> uploadViaApi(final List<TransactionRecord> transactions)
-	        throws IOException, ParseException {
+	public List<TransactionRecord> uploadViaApi(final List<TransactionRecord> transactions,
+			TransactionRecordFilter filter) throws IOException, ParseException {
 		final ClearCheckBookApiClient apiClient = new ClearCheckBookApiClient(this.config);
 		try {
-			return apiClient.insertRecords(transactions, this.account, 500);
-		}
-		catch (final ClearcheckbookException e) {
+			return apiClient.insertRecords(transactions, this.account, 500, filter);
+		} catch (final ClearcheckbookException e) {
 			throw new IOException("Failed to save transactions", e);
 		}
 	}

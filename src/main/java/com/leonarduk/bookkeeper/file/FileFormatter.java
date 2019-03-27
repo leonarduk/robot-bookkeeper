@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface FileFormatter {
 
-	File format(List<TransactionRecord> transactionRecords, String outputFileName)
-	        throws IOException;
+	File format(List<TransactionRecord> transactionRecords, String outputFileName, TransactionRecordFilter filter)
+			throws IOException;
 
 }

@@ -5,6 +5,7 @@ package com.leonarduk.bookkeeper.web.upload.clearcheckbook;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.leonarduk.bookkeeper.file.DateUtils;
 import com.leonarduk.bookkeeper.file.FileFormatter;
 import com.leonarduk.bookkeeper.file.QifFileFormatter;
 import com.leonarduk.bookkeeper.file.TransactionRecord;
+import com.leonarduk.bookkeeper.file.TransactionRecordFilter;
 import com.leonarduk.web.SeleniumUtils;
 import com.leonarduk.webscraper.core.FileUtils;
 
@@ -62,12 +64,13 @@ public class ClearCheckbookTransactionUploaderIT {
 		final FileFormatter formatter = new QifFileFormatter(QifFileFormatter.CCB_FORMAT);
 		final List<TransactionRecord> transactionRecords = new ArrayList<>();
 		transactionRecords.add(new TransactionRecord(-12.23, "Payment",
-		        DateUtils.stringToDate("2016/06/23"), "1", "Payee"));
+		        DateUtils.parse("2016/06/23"), "1", "Payee"));
 		transactionRecords.add(new TransactionRecord(2.23, "Receipt",
-		        DateUtils.stringToDate("2016/06/26"), "2", "Payee2"));
+				DateUtils.parse("2016/06/26"), "2", "Payee2"));
 		final File tempDir = FileUtils.createTempDir();
 		final String outputFileName = tempDir.getAbsolutePath() + "/output.qif";
-		formatter.format(transactionRecords, outputFileName);
+		TransactionRecordFilter filter = (record) -> true; 
+		formatter.format(transactionRecords, outputFileName, filter);
 		final String results = this.clearCheckbook.uploadToClearCheckbook(outputFileName);
 		System.out.println(results);
 	}
