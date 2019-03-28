@@ -33,6 +33,19 @@ public class FreeAgentUploadTransactions extends BaseSeleniumPage implements Tra
 
 	private final FreeAgentLogin loginPage;
 
+	public String getAccountID() {
+		if(accountID == null) {
+			throw new NullPointerException("Account ID not set");
+		}
+		return accountID;
+	}
+
+	public void setAccountID(String accountID) {
+		this.accountID = accountID;
+	}
+
+	private String accountID;
+
 	public static QifFileFormatter getQifFileFormatter() {
 		return new QifFileFormatter(QifFileFormatter.FREEAGENT_FORMAT);
 
@@ -67,17 +80,20 @@ public class FreeAgentUploadTransactions extends BaseSeleniumPage implements Tra
 	public final List<TransactionRecord> writeTransactions(final List<TransactionRecord> transactions,
 			final String outputFileName, TransactionRecordFilter filter) throws IOException {
 		FreeAgentUploadTransactions.getQifFileFormatter().format(transactions, outputFileName, filter);
-		this.uploadTransactions(new FreeagentFile(outputFileName));
+		this.uploadTransactions(new FreeagentFile(outputFileName), getAccountID());
 		return transactions;
 	}
 
-	public final void uploadTransactions(final FreeagentFile file) {
-		this.getWebDriver().get("https://leonarduk.freeagent.com/bank_accounts/2234/upload/new");
+	public final void uploadTransactions(final FreeagentFile file, final String accountId) {
+		this.getWebDriver().get("https://leonarduk.freeagent.com/bank_accounts/"
+				+ accountId
+				+ "/upload/new");
 		this.waitForPageToLoad();
 		final WebElement element = this.getWebDriver().findElement(By.name("upload[attachment]"));
 		element.sendKeys(file.getFreeagentFile().getAbsolutePath());
 		// *[@id="upload_statement_form"]/p[3]/input
 		this.waitForPageToLoad();
 		this.getWebDriver().findElement(By.name("commit")).click();
+		this.waitForPageToLoad();
 	}
 }

@@ -50,7 +50,7 @@ public class FreeAgentUploadTransactionsIT {
 		TransactionRecordFilter filter = (record) -> true; 
 		formatter.format(transactionRecords, outputFileName, filter);
 
-		this.transactions.uploadTransactions(new FreeagentFile(outputFileName));
+		this.transactions.uploadTransactions(new FreeagentFile(outputFileName), "1234");
 	}
 
 }

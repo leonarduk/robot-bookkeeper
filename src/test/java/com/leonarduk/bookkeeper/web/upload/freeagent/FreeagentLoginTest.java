@@ -54,7 +54,7 @@ public class FreeagentLoginTest {
 	public final void testIsLoaded() {
 		try {
 			this.login.get();
-			this.login.uploadTransactions(new FreeagentFile("/tmp/heaDd2/Statements09015613132580.qif"));
+			this.login.uploadTransactions(new FreeagentFile("/tmp/heaDd2/Statements09015613132580.qif"), "1234");
 		} catch (final Exception e) {
 			Assert.fail("Caught exception: " + e.getLocalizedMessage());
 		}
