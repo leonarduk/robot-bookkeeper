@@ -256,7 +256,7 @@ Exit code: 1 - javadoc: error - The code being documented uses packages in the u
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
-			<version>5.5.13</version>
+			<version>5.5.13.3</version>
 		</dependency>
 
 	</dependencies>
