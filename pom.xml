@@ -222,7 +222,7 @@ Exit code: 1 - javadoc: error - The code being documented uses packages in the u
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>4.0.1</version>
+			<version>4.1.2</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>xml-apis</artifactId>
